@@ -2,3 +2,27 @@
 	text-align: center;
 
 }
+
+.form-createPlano {
+	padding: 10px;
+	background-color: rgb(216, 240, 243);
+}
+.form-createPlano option{
+	background-color: rgb(204, 235, 255);
+}
+.optionTrue {
+	color: rgb(83, 255, 26);
+}
+.statusTrue {
+	color: rgb(83, 255, 26);
+}
+.optionFalse {
+	color: rgb(255, 77, 77);
+}
+.statusFalse {
+	color: rgb(255, 77, 77);
+}
+
+#tableCreatePlano {
+	background-color: rgb(230, 243, 255);
+}

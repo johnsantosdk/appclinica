@@ -8,7 +8,8 @@ class Plano extends Model
 {
 
 	protected $fillable = [
-        'nome'
+        'nome',
+        'status_plano'
     ];
 
     public function caonvenios() {

@@ -12,11 +12,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/jquery-3.3.1min.js') }}" defer></script>
+    {{--  <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}" defer></script>--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -83,7 +83,37 @@
         </main>
     </div>
 
-        @yield('script')
-        
+<script>    
+    $(document).ready( function($){
+        //csrf_token
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        {{-- @yield('script') --}} 
+
+        //BEGIN <<EDIT MODAL>>
+            $(document).on('cllick','planos-list #edit', function(){
+                var id = $(this).data('id');
+                var nome = $(this).data('nome');
+                var status = $(this).data('status');
+
+                $.post('{{ route('plano.editPlano') }}', {id:id}, function(data){
+                    $('#editPlanoModal').find('#Iid').value(data.id);
+                    $('#editPlanoModal').find('#Inome').value(data.nome);
+                    $('#editPlanoModal').find('#Istatus').value(data.status);
+                
+                    $('#editPlanoModal').modal('show');
+                    $('#form-edit-plano').show();
+                    $('.modal-title').text('Editar Plano');
+                });
+            });
+        //END EDIT MODAL
+    });
+    
+</script>
+     
 </body>
 </html>

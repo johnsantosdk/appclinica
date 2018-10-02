@@ -6,6 +6,7 @@ use App\Plano;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\PlanoRequest;
 
 class PlanoController extends Controller
 {
@@ -37,19 +38,22 @@ class PlanoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlanoRequest $request)
     {
-        $plano = Plano::create([
-            'nome'          => strtoupper($request->input('Nnome')),
-            'status_plano'  => $request->input('Nstatus',1),
-        ]);
+        if($request->all()){
+            $plano = Plano::create([
+                'nome'          => strtoupper($request->input('Nnome')),
+                'status_plano'  => $request->input('Nstatus'),
+            ]);
 
-        Session::flash('flash_message', [
-            'msg' => "Plano cadastrado com SUCESSO!",
-            'class'  => "alert-success"
-        ]);
+            Session::flash('flash_message', [
+                'msg' => "Plano cadastrado com SUCESSO!",
+                'class'  => "alert-success"
+            ]);
 
-        return redirect()->back();
+            return redirect()->back();
+        }else
+            return redirect()->back();
     }
 
     /**
@@ -60,7 +64,7 @@ class PlanoController extends Controller
      */
     public function show(Plano $plano)
     {
-        //
+        return view('plano.create');
     }
 
     public function list()
@@ -79,6 +83,19 @@ class PlanoController extends Controller
         //
     }
 
+    public function editPlano(PlanoRequestst $plano)
+    {
+        if($plano->ajax())
+        {
+            $id = $plano->id;
+
+            $plano = Plano::find($id);
+
+            return Response($plano);
+        }
+
+        //return Response($plano);
+    }
     /**
      * Update the specified resource in storage.
      *
