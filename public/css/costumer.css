@@ -26,3 +26,14 @@
 #tableCreatePlano {
 	background-color: rgb(230, 243, 255);
 }
+
+/**CSS maskara de telephone**/
+input#phone {
+  font-family: monospace;
+}
+label {
+  display: block;
+}
+div {
+  margin: 0 0 1rem 0;
+}

@@ -10,6 +10,11 @@ class Convenio extends Model
 {
     //
 
+    protected $fillable = [
+        'matricula',
+        'plano'
+    ];
+
     public function paciente() {
 
     	return $this->belongsTo('App\Paciente');

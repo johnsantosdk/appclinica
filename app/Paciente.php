@@ -16,7 +16,8 @@ class Paciente extends Model
         'data_nascimento',
         'cpf',
         'email',
-        'atendente_id'
+        'atendente_id',
+        'convenio_id'
     ];
 
     public function consulta() {

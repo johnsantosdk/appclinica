@@ -33,7 +33,7 @@
 						<label for="Istatus">Status:</label>
 						<select id="Istatus" name="Nstatus" class="form-control" placeholder="Status do Plano">
 							<option value=""></option>
-							<option value="{{ 1 }}" class="optionTrue">Atendendo</option>
+							<option value="{{ 1 }}" class="optionTrue">Ativo</option>
 							<option value="{{ 0 }}" class="optionFalse">Suspenso</option>
 						</select>
 					</div>
@@ -57,25 +57,32 @@
 								<th scope="row">{{ $plano->id}}</th>
 								<td>{{ $plano->nome }}</td>
 								@if ($plano->status_plano == 1)
-								 	<td class="statusTrue">ATENDENDO</td>
+								 	<td class="statusTrue">ATIVO</td>
 								@else
 									<td class="statusFalse">SUSPENSO</td>
 								@endif
 								<td>
-									<a href="">
-										<button type="button" 
-												class="btn btn-info"
-												data-toggle="modal"
-		                                        data-target="#editPlanoModal"
-		                                        data-id="{{$plano->id}}"
-		                                        data-nome="{{$plano->nome}}"
-												data-status="{{$plano->status}}"
-		                                        id="edit">
-									    	Editar
-										</button>
-									</a>
-
-									<a href=""><button type="button" class="btn btn-danger">Deletar</button></a>
+									<button type="button" 
+											class="btn btn-info"
+											data-toggle="modal"
+		                                    data-target="#editPlanoModal"
+		                                    data-id="{{$plano->id}}"
+		                                    data-nome="{{$plano->nome}}"
+											data-status="{{$plano->status_plano}}"
+		                                    id="tableEditButton">
+									Editar
+									</button>
+									
+									<button type="button" 
+											class="btn btn-danger"
+											data-toggle="modal"
+		                                    data-target="#deletePlanoModal"
+		                                    data-id="{{$plano->id}}"
+		                                    data-nome="{{$plano->nome}}"
+											data-status="{{$plano->status_plano}}"
+		                                    id="tableDeleteButton">
+									Deletar
+									</button>
 								</td>
 							</tr>
 						@endforeach
@@ -94,8 +101,11 @@
             <p>{{   $planos->links() }}</p>
         </div>
 </div>
+{{-- includes de modals --}}
 {{-- Modal edit --}}
 @include('plano.modals.modal_edit_plano')
+{{-- Modal delete --}}
+@include('plano.modals.modal_delete_plano')
 @endsection
 
 @section('script')

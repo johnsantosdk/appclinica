@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use App\Plano;
+use App\Convenio;
+
 class PacienteController extends Controller
 {
     /**
@@ -24,8 +28,9 @@ class PacienteController extends Controller
      */
     public function create()
     {
+        $planos = DB::table('planos')->select('id', 'nome')->where('status_plano', '=', 1)->orderBy('nome')->get();
         
-        return view('paciente.create');
+        return view('paciente.create', compact('planos'));
     }
 
     /**
@@ -37,14 +42,27 @@ class PacienteController extends Controller
     public function store(Request $request)
     {
         
+        $convenio = Convenio::create([
+            'matricula' => $request->input('Nmat'),
+            'plano' => $request->input('Nplano'),
+        ]);
+
+        $plano = Convenio::select('id')->where('matricula', '=', $convenio->matricula)->first();
+   
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
             'data_nascimento' => $request->input('Nnasc'),
             'cpf'             => $request->input('Ncpf'),
             'email'           => $request->input('Nemail'),
             'atendente_id'    => $request->input('NidAten', 1),
-            
+            'convenio_id'     => $plano->id,
         ]);
+
+        Session::flash('flash_message', [
+                'msg' => "Paciente cadastrado  com SUCESSO!",
+                'class'  => "alert-success"
+        ]);
+
 
         return redirect()->back();
     }
@@ -94,6 +112,11 @@ class PacienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Paciente $paciente)
+    {
+        //
+    }
+
+    public function listPlanos()
     {
         //
     }

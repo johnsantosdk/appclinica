@@ -30,11 +30,12 @@ Route::group(['prefix' => 'paciente', 'as' => 'paciente.'], function() {
 	Route::post('/updatePaciente',		['as' => 'updatePaciente',	'uses' => 'PacienteController@updatePaciente']);//rota de teste para ajax
 	Route::post('/destroyPaciente',		['as' => 'destroyPaciente',	'uses' => 'PacienteController@destroyPaciente']);//rota de teste para ajax
 	Route::post('/infoPaciente',		['as' => 'infoPaciente',	'uses' => 'PacienteController@infoPaciente']);//rota de teste para ajax
-	Route::get('/store',			 	['as' => 'store',			'uses' => 'PacienteController@store']);
+	Route::post('/store',			 	['as' => 'store',			'uses' => 'PacienteController@store']);
 	Route::get('/show',					['as' => 'show',			'uses' => 'PacienteController@show']);
 	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'PacienteController@edit']);
 	Route::put('/update/{id}',		 	['as' => 'update',			'uses' => 'PacienteController@update']);
 	Route::get('/destroy/{id}',			['as' => 'destroy',			'uses' => 'PacienteController@destroy']);
+	Route::get('/test',					['as' => 'test',			'uses' => 'PacienteController@listPlanos']);
 });
 
 //Rotas para Medico
@@ -77,11 +78,12 @@ Route::group(['prefix' => 'plano', 'as' => 'plano.'], function() {
 	Route::get('/',					 	['as' => 'index',			'uses' => 'PlanoController@index']);
 	Route::get('/create',			 	['as' => 'create',			'uses' => 'PlanoController@create']);
 	Route::post('/addPlano',			['as' => 'addPlano',		'uses' => 'PlanoController@addPlano']);//rota de teste para ajax
-	Route::post('/editPlano{id?}',		['as' => 'editPlano',		'uses' => 'PlanoController@editPlano']);//rota de teste para ajax
-	Route::post('/updatePlano',			['as' => 'updatePlano',		'uses' => 'PlanoController@updatePlano']);//rota de teste para ajax
+	Route::post('/editPlano',			['as' => 'editPlano',		'uses' => 'PlanoController@editPlano']);//rota de teste para ajax
+	Route::get('/updatePlano',			['as' => 'updatePlano',		'uses' => 'PlanoController@updatePlano']);//rota de teste para ajax
 	Route::post('/destroyPlano',		['as' => 'destroyPlano',	'uses' => 'PlanoController@destroyPlano']);//rota de teste para ajax
 	Route::post('/infoPlano',			['as' => 'infoPlano',		'uses' => 'PlanoController@infoPlano']);//rota de teste para ajax
 	Route::get('/store',			 	['as' => 'store',			'uses' => 'PlanoController@store']);
+	Route::post('/showPlano',			['as' => 'showPlano',		'uses' => 'PlanoController@showPlano']);
 	Route::get('/show',					['as' => 'show',			'uses' => 'PlanoController@show']);
 	Route::get('/list',					['as' => 'list',			'uses' => 'PlanoController@list']);
 	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'PlanoController@edit']);
@@ -126,4 +128,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
 
 Auth::routes();
 
+Route::get('/test', 'TestController@index')->name('route.test');
 Route::get('/home', 'HomeController@index')->name('home');

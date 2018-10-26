@@ -42,7 +42,7 @@ class PlanoController extends Controller
     {
         if($request->all()){
             $plano = Plano::create([
-                'nome'          => strtoupper($request->input('Nnome')),
+                'nome'          => mb_convert_case($request->input('Nnome'), MB_CASE_TITLE,"UTF-8"),
                 'status_plano'  => $request->input('Nstatus'),
             ]);
 
@@ -83,11 +83,22 @@ class PlanoController extends Controller
         //
     }
 
-    public function editPlano(PlanoRequestst $plano)
+    public function showPlano(Request $request)
     {
-        if($plano->ajax())
+        if($request->ajax())
         {
-            $id = $plano->id;
+            $id = $request->id;
+            $plano = Plano::find($id);
+            
+            return Response($plano);
+        }
+    }
+
+    public function editPlano(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
 
             $plano = Plano::find($id);
 
@@ -108,14 +119,40 @@ class PlanoController extends Controller
         //
     }
 
+    public function updatePlano(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->input('Nid');
+            $plano = Plano::find($id);
+            $plano->status_plano = $request->input('Nstatus');
+            $plano->save();
+
+            return Response($request);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Plano  $plano
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Plano $plano)
+    public function destroyPlano(Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $id = $request->input('Nid');
+
+            $plano = Plano::find($id);
+
+            $plano->delete();
+
+            Session::flash('flash_message', [
+                'msg' => "O plano foi deletado com SUCESSO",
+                'class' => "alert-success"
+            ]);
+        }
+
     }
 }

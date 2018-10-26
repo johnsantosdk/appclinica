@@ -28,7 +28,7 @@ class PlanoRequest extends FormRequest
     public function rules()
     {
         return [
-            'Nnome' => 'required|max:255|alpha_num',
+            'Nnome' => 'required|max:255',
             'Nstatus' => 'required',
         ];
     }
