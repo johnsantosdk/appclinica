@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Paciente;
 use App\Plano;
 use App\Convenio;
+use App\Telefone;
 
 class PacienteController extends Controller
 {
@@ -42,29 +43,71 @@ class PacienteController extends Controller
     public function store(Request $request)
     {
         
-        $convenio = Convenio::create([
-            'matricula' => $request->input('Nmat'),
-            'plano' => $request->input('Nplano'),
-        ]);
-
-        $plano = Convenio::select('id')->where('matricula', '=', $convenio->matricula)->first();
-   
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
             'data_nascimento' => $request->input('Nnasc'),
+            'sexo'            => $request->input('Nsexo'),
             'cpf'             => $request->input('Ncpf'),
             'email'           => $request->input('Nemail'),
-            'atendente_id'    => $request->input('NidAten', 1),
-            'convenio_id'     => $plano->id,
         ]);
+        //capturando o id inserido para poder gravar o convenio e os telefones se existirem
+        $pacienteId = Paciente::select('id')->where('cpf', '=', $paciente->cpf)->first();
 
+
+        if($request->input('Nmat')){
+            $convenio = Convenio::create([
+                'matricula'     => $request->input('Nmat'),
+                'plano_id'      => $request->input('NplanoId'),
+                'paciente_id'   => $pacienteId->id,
+            ]);
+            
+            $convenioId = Convenio::select('id')->where('matricula', '=', $convenio->matricula)->first();
+
+            DB::table('pacientes')->where('id', $pacienteId->id)->update(['convenio_id' => $convenioId->id]);
+        }
+        
+   
+
+       if($request->input('NtelR')){
+            $telefone = Telefone::create([
+                'tipo'          => 'RES',
+                'numero'        => $request->input('NtelR'),
+                'paciente_id'   => $pacienteId->id,
+            ]);
+
+            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+
+            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+        }
+        if($request->input('NtelE')){
+            $telefone = Telefone::create([
+                'tipo'          => 'EMP',
+                'numero'        => $request->input('NtelE'),
+                'paciente_id'   => $pacienteId->id,
+            ]);
+
+            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+
+            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+        }
+        if($request->input('NtelC')){
+            $telefone = Telefone::create([
+                'tipo'          => 'CEL',
+                'numero'        => $request->input('NtelC'),
+                'paciente_id'   => $pacienteId->id,
+            ]);
+
+            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+
+            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+        }
         Session::flash('flash_message', [
                 'msg' => "Paciente cadastrado  com SUCESSO!",
                 'class'  => "alert-success"
         ]);
 
 
-        return redirect()->back();
+        return redirect()->back()->withInput();
     }
 
     /**

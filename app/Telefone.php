@@ -7,7 +7,11 @@ use App\Paciente;
 
 class Telefone extends Model
 {
-    //
+        protected $fillable = [
+        	'tipo',
+        	'numero',
+        	'paciente_id'
+    ];
 
     public function paciente() {
 

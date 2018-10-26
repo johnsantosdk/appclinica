@@ -12,7 +12,8 @@ class Convenio extends Model
 
     protected $fillable = [
         'matricula',
-        'plano'
+        'paciente_id',
+        'plano_id'
     ];
 
     public function paciente() {

@@ -63,19 +63,12 @@
 									<label for="ItelC">Celular:</label>
 									<input type="text" id="ItelC" name="NtelC" class="form-control">
 								</div>
-
-								{{-- div teste --}}
-									<div>
-									    <label for="phone">Phone</label>
-									    <!-- or set via JS -->
-									    <input id="phone" type="text" />
-									</div>
 							</div>
 						<fieldset>
 						<legend>Dados do Plano de Saúde</legend>
 						<div class="form-group">
-							<label for="Iplano">Plano:</label>
-							<select id="Iplano" name="Nplano" class="form-control">
+							<label for="IplanoId">Plano:</label>
+							<select id="IplanoId" name="NplanoId" class="form-control">
 								{{ $i = 0 }}
 								<option value=""></option>
 									@foreach($planos as $plano)
