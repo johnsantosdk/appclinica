@@ -14,24 +14,23 @@
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value={{ old('Nnome') }}>
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ old('Nnome') }}">
 						</div>
 
 						<div class="form-group">
 							<label for="Inasc">Nasc.:</label>
-							<input type="date" id="Inasc" name="Nnasc" class="form-control">
+							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ old('Nnasc') }}">
 						</div>
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" checked>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" {{ old('Nsexo') == "M" ? 'checked' : ''}} checked>
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F">
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F" {{ old('Nsexo') == "F" ? 'checked' : ''}}>
 								<label class="form-check-label" for="IsexoF">
 							    	Femenino
 							  	</label>
@@ -39,12 +38,12 @@
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="number" id="Icpf" name="Ncpf" class="form-control" >
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="{{ old('Ncpf') }}" >
 						</div>
 
 						<div class="form-group">
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" value="{{ old('Nemail') }}">
 						</div>
 						<hr>
 
@@ -53,15 +52,15 @@
 							<div class="form-group">
 								<div>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="(DDD) NNNN-NNNN">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="(DDD) NNNN-NNNN" value="{{ old('NtelR') }}">
 								</div>
 								<div>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" data-format="+55 (ddd) d dddd-dddd" placeholder="(DDD) NNNN-NNNN">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="(DDD) NNNN-NNNN" value="{{ old('NtelE') }}">
 								</div>
 								<div>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="(DDD) 9NNNN-NNNN">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="(DDD) 9NNNN-NNNN" value="{{ old('NtelC') }}">
 								</div>
 							</div>
 						<fieldset>
@@ -78,7 +77,7 @@
 						</div>
 						<div class="form-group">
 							<label for="Imat">Matricula:</label>
-							<input type="text" id="Imat" name="Nmat" class="form-control">
+							<input type="text" id="Imat" name="Nmat" class="form-control" value="{{ old('Nmat') }}">
 						</div>
 					</fieldset>
 					
@@ -92,6 +91,5 @@
 			</form>
 		</div>
 	</div>
-
 </div>
 @endsection

@@ -14,6 +14,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     {{--  <script src="{{ URL::asset('js/jquery-3.3.1.min.js') }}" defer></script>--}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -179,10 +180,18 @@
         location.reload();
     });
         //<<<END <<DELETE PLANO NODEL>>
+
+        //Máscara para o cpf
+        $('#Icpf').mask('000.000.000-00');
+        //Mascara para telefone fixo
+        $('#ItelR').mask('(00)0000-0000');
+        $('#ItelE').mask('(00)0000-0000');
+        //Máscara para telefone celular
+        $('#ItelC').mask('(00)00000-0000');
     });
     
 //TELEPHONE MASK
-
+//CPF MASK
 </script>
 
 </body>

@@ -43,6 +43,8 @@ class PacienteController extends Controller
      */
     public function store(MultiploFormPacienteRequest $request)
     {
+        $validado = 1;
+
         //Persiste um novo paciente
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
@@ -54,21 +56,19 @@ class PacienteController extends Controller
         //capturando o id inserido para poder gravar o convenio e os telefones se existirem
         $pacienteId = Paciente::select('id')->where('cpf', '=', $paciente->cpf)->first();
 
-
+        //Cadastro do convenio do paciente
         if($request->input('Nmat')){
             $convenio = Convenio::create([
                 'matricula'     => $request->input('Nmat'),
                 'plano_id'      => $request->input('NplanoId'),
                 'paciente_id'   => $pacienteId->id,
             ]);
-            
+            //Captura o id gerado acima
             $convenioId = Convenio::select('id')->where('matricula', '=', $convenio->matricula)->first();
-
+            //enserir no campo convenio_id da tabela paciente
             DB::table('pacientes')->where('id', $pacienteId->id)->update(['convenio_id' => $convenioId->id]);
         }
-        
-   
-
+        //Inserção dos telefones 
        if($request->input('NtelR')){
             $telefone = Telefone::create([
                 'tipo'          => 'RES',
@@ -102,13 +102,16 @@ class PacienteController extends Controller
 
             DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
-                Session::flash('flash_message', [
-                    'msg' => "Paciente cadastrado  com SUCESSO!",
-                    'class'  => "alert-success"
-                ]);
 
+        if($validado == 1){
+            Session::flash('flash_message', [
+                'msg' => "Paciente cadastrado  com SUCESSO!",
+                'class'  => "alert-success"
+            ]);
+            return redirect()->route('paciente.create');
+        }
 
-        return Redirect::to('paciente.create')->withInput();
+        return redirect()->route('paciente.create')->withInput(); 
     }
 
     /**
