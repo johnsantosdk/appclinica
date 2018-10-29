@@ -8,13 +8,13 @@
 
 	<div class='row'>
 		<div class="col-sm-10">
-			<form action="{{ action('PacienteController@store') }}" method="post">
+			<form action="{{ route('paciente.store') }}" method="post">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control">
+							<input type="text" id="Inome" name="Nnome" class="form-control" value={{ old('Nnome') }}>
 						</div>
 
 						<div class="form-group">
@@ -53,15 +53,15 @@
 							<div class="form-group">
 								<div>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="(DDD) NNNN-NNNN">
 								</div>
 								<div>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" data-format="+55 (ddd) d dddd-dddd">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" data-format="+55 (ddd) d dddd-dddd" placeholder="(DDD) NNNN-NNNN">
 								</div>
 								<div>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="(DDD) 9NNNN-NNNN">
 								</div>
 							</div>
 						<fieldset>

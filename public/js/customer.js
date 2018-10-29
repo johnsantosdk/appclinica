@@ -28,7 +28,3 @@ $(document).ready( function($){
         //END EDIT MODAL
     });
 **/
-
-$(":input").inputmask();
-
-$("#phone").inputmask({"mask": "(999) 999-9999"});

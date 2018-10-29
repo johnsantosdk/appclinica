@@ -10,10 +10,9 @@ class TestController extends Controller
     public function index()
     {
 
-    	$query = DB::select("select nome 
-    							from pacientes
-    							where id = 1
-    						   ");
+    	$query = DB::select("select * 
+    						 from pacientes
+    						");
 
 
     	return response()->json($query);

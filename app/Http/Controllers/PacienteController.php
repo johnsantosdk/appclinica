@@ -9,6 +9,7 @@ use App\Paciente;
 use App\Plano;
 use App\Convenio;
 use App\Telefone;
+use App\Http\Requests\MultiploFormPacienteRequest;
 
 class PacienteController extends Controller
 {
@@ -40,9 +41,9 @@ class PacienteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MultiploFormPacienteRequest $request)
     {
-        
+        //Persiste um novo paciente
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
             'data_nascimento' => $request->input('Nnasc'),
@@ -101,13 +102,13 @@ class PacienteController extends Controller
 
             DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
-        Session::flash('flash_message', [
-                'msg' => "Paciente cadastrado  com SUCESSO!",
-                'class'  => "alert-success"
-        ]);
+                Session::flash('flash_message', [
+                    'msg' => "Paciente cadastrado  com SUCESSO!",
+                    'class'  => "alert-success"
+                ]);
 
 
-        return redirect()->back()->withInput();
+        return Redirect::to('paciente.create')->withInput();
     }
 
     /**
