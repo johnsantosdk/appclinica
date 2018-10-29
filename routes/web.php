@@ -31,9 +31,9 @@ Route::group(['prefix' => 'paciente', 'as' => 'paciente.'], function() {
 	Route::post('/destroyPaciente',		['as' => 'destroyPaciente',	'uses' => 'PacienteController@destroyPaciente']);//rota de teste para ajax
 	Route::post('/infoPaciente',		['as' => 'infoPaciente',	'uses' => 'PacienteController@infoPaciente']);//rota de teste para ajax
 	Route::post('/store',			 	['as' => 'store',			'uses' => 'PacienteController@store']);
-	Route::get('/show',					['as' => 'show',			'uses' => 'PacienteController@show']);
-	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'PacienteController@edit']);
-	Route::put('/update/{id}',		 	['as' => 'update',			'uses' => 'PacienteController@update']);
+	Route::post('/show',				['as' => 'show',			'uses' => 'PacienteController@show']);
+	Route::get('/edit',				 	['as' => 'edit',			'uses' => 'PacienteController@edit']);
+	Route::put('/update',			 	['as' => 'update',			'uses' => 'PacienteController@update']);
 	Route::get('/destroy/{id}',			['as' => 'destroy',			'uses' => 'PacienteController@destroy']);
 	Route::get('/test',					['as' => 'test',			'uses' => 'PacienteController@listPlanos']);
 });

@@ -124,9 +124,9 @@ class PacienteController extends Controller
     {
         $cpf = $request->input('Ncpf');
         //$paciente = Paciente::find();
-        $paciente = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'cpf', 'email')->where('cpf', $cpf)->get();
+        $paciente = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->first();
 
-        return $paciente;
+        return view('paciente.edit', compact('paciente'));
     }
 
     /**
@@ -137,7 +137,9 @@ class PacienteController extends Controller
      */
     public function edit(Paciente $paciente)
     {
-        //
+        
+
+        return view('paciente.edit', compact('paciente'));
     }
 
     /**

@@ -1,36 +1,47 @@
 @extends('layouts.app')
 
-@section('title', 'Registro de Paciente')
+@section('title', 'Editando Cadastro')
 
 @section('content')
 
 <div class="container">
-
 	<div class='row'>
 		<div class="col-sm-10">
-			<form action="{{ route('paciente.store') }}" method="post">
+			<form action="{{ route('paciente.show') }}" method="post">
+				{{ csrf_field() }}
+				<div class="form-group">
+					<label for="Ncpf">CPF:</label>
+					<input type="text" id="Icpf" name="Ncpf" class="form-control">
+				</div>
+				<button type="submit" class="btn btn-primary"> Pesquisar</button>
+			</form>
+			
+
+			{{-- Form de visulalização e edição --}}
+			@if(!empty($paciente))
+				<form action="{{ route('paciente.update') }}">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ old('Nnome') }}">
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ $paciente->nome }}">
 						</div>
 
 						<div class="form-group">
 							<label for="Inasc">Nasc.:</label>
-							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ old('Nnasc') }}">
+							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ $paciente->data_nascimento }}">
 						</div>
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" {{ old('Nsexo') == "M" ? 'checked' : ''}} checked>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" {{ $paciente->sexo == "M" ? 'checked' : ''}} checked>
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F" {{ old('Nsexo') == "F" ? 'checked' : ''}}>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F" {{ $paciente->sexo == "F" ? 'checked' : ''}}>
 								<label class="form-check-label" for="IsexoF">
 							    	Femenino
 							  	</label>
@@ -38,15 +49,15 @@
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="{{ old('Ncpf') }}" >
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="{{ $paciente->cpf }}" >
 						</div>
 
 						<div class="form-group">
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control" value="{{ old('Nemail') }}">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" value="{{ $paciente->email }}">
 						</div>
 						<hr>
-
+						{{--  
 						<fieldset>
 							<legend>Telefones:</legend> 
 							<div class="form-group">
@@ -87,8 +98,10 @@
 						<input type="number" id="IidAten" name="NidAten" value="1" hidden>
 					</div>
 				</fieldset>
+				--}}
 				<button type="submit" class="btn btn-primary">Registrar</button>
-			</form>
+				</form>
+			@endif
 		</div>
 	</div>
 </div>
