@@ -93,3 +93,9 @@
 	</div>
 </div>
 @endsection
+
+@section('customer-javaScript')
+{{-- <script> --}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}}	
+
+{{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
+@endsection

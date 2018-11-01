@@ -99,6 +99,89 @@
 @include('plano.modals.modal_delete_plano')
 @endsection
 
-@section('script')
+@section('customer-javaScript')
+{{-- <script> --}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}}
+    //>>>BEGIN <<EDIT MODAL>>
+        $(document).on('click','#tableEditButton', function(){
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+            var status = $(this).data('status');
 
+            $.post('{{ action('PlanoController@editPlano') }}', {id:id}, function(data){
+                $('#editPlanoModal').find('#Iid').val(data.id);
+                $('#editPlanoModal').find('#Inome').val(data.nome);
+                $('#editPlanoModal').find('#Istatus').val(data.status);
+                    
+                $('#form-edit-plano').show();
+                $('.modal-title').text('Editar Plano');
+            });
+        });
+    //<<<END <<EDIT MODAL>>
+
+    //>>>BEGIN <<UPDATE MODAL>>
+        $("#updateButtonModal").click(function(){
+            $.ajax({
+                type : 'get',
+                url  : '{{ action('PlanoController@updatePlano') }}',
+                datatype: 'json',
+                data: $("#form-edit-plano").serialize(),
+                success: function(data)
+                { console.log(data);
+                    var tr = $('<tr/>');
+                    tr.append($("<td/>",{
+                        text : data.id
+                    })).append($("<td/>",{
+                        text : data.nome
+                    })).append($("<td/>",{
+                        text : data.status
+                    })).append($("<td/>",{
+                        html: "<button type='button' class='btn btn-info' data-toggle='modal' data-target='#editPlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"' id='tableEditModal'>Editar</button>" + "<button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deletePlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"'>Deletar</button>"
+                    }))
+                    $('#planos-list tr#plano'+data.id).replaceWith(tr);
+                    }
+
+                })
+                    location.reload();
+            });
+    //<<<END <<UPDATE MODAL>>
+
+    //>>>BEGIN <<SHOW MODAL DELETE>>
+        $(document).on('click', '#planos-list #tableDeleteButton', function(){
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+            var status = $(this).data('status');
+            $.post('{{ action('PlanoController@showPlano') }}', {id:id}, function(data){
+                $('#deletePlanoModal').find('input#Iid').val(data.id)
+                $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.id);
+                $('#deletePlanoModal').find('p#nome').html('<strong style="font-size:18px">Name:</strong> '+data.nome);
+                if(data.status_plano == 1){
+                    var status = ["ATIVO", "SUSPENSO"];
+                    $('#deletePlanoModal').find('p#status').html('<strong style="font-size:18px">Status:</strong> '+status[0]);
+                }else
+                    $('#deletePlanoModal').find('p#status').html('<strong style="font-size:18px">Status:</strong> '+status[1]);
+                //------------------------------------------------------------------
+                $('.modal-body').show();
+                $('.modal-title').text('Deletar Plano');
+                });
+        });
+    //<<<END <<SHOW MODAL DELETE>>
+
+    //>>>BEGIN <<DELETE PLANO NODEL>>
+        $("#deleteButtonModal").click(function(){
+            $.ajax({
+                type : 'POST',
+                url  : '{{ action('PlanoController@destroyPlano') }}',
+                datatype: 'json',
+                data : $("#form-delete-plano").serialize(),
+                success: function(data)
+                {
+                    console.log(data);
+                    $('#planos-list tr#plano'+data.id).remove();
+                    $('#deletePlanoModal').closest();
+                }
+            })
+            location.reload();
+        });
+    //<<<END <<DELETE PLANO NODEL>>
+{{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

@@ -1,25 +1,16 @@
-@extends('layouts.app')
-
-@section('title', 'Editando Cadastro')
-
-@section('content')
-
-<div class="container">
-	<div class='row'>
-		<div class="col-sm-10">
-			<form action="{{ route('paciente.show') }}" method="post">
-				{{ csrf_field() }}
-				<div class="form-group">
-					<label for="Ncpf">CPF:</label>
-					<input type="text" id="Icpf" name="Ncpf" class="form-control">
-				</div>
-				<button type="submit" class="btn btn-primary"> Pesquisar</button>
-			</form>
-			
-
+<!-- Modal Edit-->
+<div class="modal fade" id="editPlanoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header modal-edit-css">
+        <h5 class="modal-title" id="editModalLabel">Editar Plano</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 			{{-- Form de visulalização e edição --}}
-			@if(!empty($paciente))
-				<form action="{{ route('paciente.update') }}">
+			<form action="{{ route('paciente.update') }}" class="form-horizontal" role="form" id="form-edit-paciente">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>
@@ -99,10 +90,13 @@
 					</div>
 				</fieldset>
 				--}}
-				<button type="submit" class="btn btn-primary">Registrar</button>
-				</form>
-			@endif
-		</div>
-	</div>
+				<!--<button type="submit" class="btn btn-primary">Registrar</button>-->
+				</form>			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="updateButtonModal">Update</button>
+      </div>
+    </div>
+  </div>
 </div>
-@endsection

@@ -120,13 +120,24 @@ class PacienteController extends Controller
      * @param  \App\Paciente  $paciente
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function findPaciente(Request $request)
     {
-        $cpf = $request->input('Ncpf');
+        //$cpf = $request->input('Ncpf');
         //$paciente = Paciente::find();
-        $paciente = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->first();
+        //$paciente = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->first();
 
-        return view('paciente.edit', compact('paciente'));
+        return view('paciente.find');
+    }
+
+    public function listPaciente(Request $request)
+    {
+        if($request->input('Nnome'))
+        
+        if($request->input('Ncpf')){
+            $cpf = $request->input('Ncpf');
+            $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->get();
+        }
+        return view('paciente.find', compact('pacientes'));
     }
 
     /**
@@ -161,11 +172,6 @@ class PacienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Paciente $paciente)
-    {
-        //
-    }
-
-    public function listPlanos()
     {
         //
     }
