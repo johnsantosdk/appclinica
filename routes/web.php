@@ -23,20 +23,20 @@ Route::get('/test', function () {
 //Rotas para Paciente
 Route::group(['prefix' => 'paciente', 'as' => 'paciente.'], function() {
 	//URL = paciente/index
-	Route::get('/',					 	['as' => 'index',			'uses' => 'PacienteController@index']);
-	Route::get('/create',			 	['as' => 'create',			'uses' => 'PacienteController@create']);
-	Route::post('/addPaciente',			['as' => 'addPaciente',		'uses' => 'PacienteController@addPaciente']);//rota de teste para ajax
-	Route::post('/editPaciente{id?}',	['as' => 'editPaciente',	'uses' => 'PacienteController@editPaciente']);//rota de teste para ajax
-	Route::post('/updatePaciente',		['as' => 'updatePaciente',	'uses' => 'PacienteController@updatePaciente']);//rota de teste para ajax
-	Route::post('/destroyPaciente',		['as' => 'destroyPaciente',	'uses' => 'PacienteController@destroyPaciente']);//rota de teste para ajax
-	Route::post('/infoPaciente',		['as' => 'infoPaciente',	'uses' => 'PacienteController@infoPaciente']);//rota de teste para ajax
-	Route::post('/store',			 	['as' => 'store',			'uses' => 'PacienteController@store']);
-	Route::get('/findPaciente',			['as' => 'findPaciente',	'uses' => 'PacienteController@findPaciente']);
-	Route::post('/listPaciente',		['as' => 'listPaciente',	'uses' => 'PacienteController@listPaciente']);
-	Route::get('/edit',				 	['as' => 'edit',			'uses' => 'PacienteController@edit']);
-	Route::put('/update',			 	['as' => 'update',			'uses' => 'PacienteController@update']);
-	Route::get('/destroy/{id}',			['as' => 'destroy',			'uses' => 'PacienteController@destroy']);
-	Route::get('/test',					['as' => 'test',			'uses' => 'PacienteController@listPlanos']);
+	Route::get('/',					 					['as' => 'index',			'uses' => 'PacienteController@index']);
+	Route::get('/create',			 					['as' => 'create',			'uses' => 'PacienteController@create']);
+	Route::post('/addPaciente',							['as' => 'addPaciente',		'uses' => 'PacienteController@addPaciente']);//rota de teste para ajax
+	Route::post('/editPaciente{id?}',					['as' => 'editPaciente',	'uses' => 'PacienteController@editPaciente']);//rota de teste para ajax
+	Route::post('/updatePaciente',						['as' => 'updatePaciente',	'uses' => 'PacienteController@updatePaciente']);//rota de teste para ajax
+	Route::post('/destroyPaciente',						['as' => 'destroyPaciente',	'uses' => 'PacienteController@destroyPaciente']);//rota de teste para ajax
+	Route::post('/infoPaciente',						['as' => 'infoPaciente',	'uses' => 'PacienteController@infoPaciente']);//rota de teste para ajax
+	Route::post('/store',			 					['as' => 'store',			'uses' => 'PacienteController@store']);
+	Route::get('/findPaciente',							['as' => 'findPaciente',	'uses' => 'PacienteController@findPaciente']);
+	Route::match(['get','post'], '/listPaciente',		['as' => 'listPaciente',	'uses' => 'PacienteController@listPaciente']);
+	Route::get('/edit',				 					['as' => 'edit',			'uses' => 'PacienteController@edit']);
+	Route::put('/update',			 					['as' => 'update',			'uses' => 'PacienteController@update']);
+	Route::get('/destroy/{id}',							['as' => 'destroy',			'uses' => 'PacienteController@destroy']);
+	Route::get('/test',									['as' => 'test',			'uses' => 'PacienteController@listPlanos']);
 });
 
 //Rotas para Medico

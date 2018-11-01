@@ -12,27 +12,29 @@
 				<div class="row">
 					<div class="col">
 						<div class="form-group">
-							<label for="Nnome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control">
+							<label for="Inome">Nome:</label>
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ old('Nnome') }}">
 						</div>
 					</div>
 					<div class="col">
 						<div class="form-group">
-							<label for="Ncpf">CPF:</label>
+							<label for="Icpf">CPF:</label>
 							<input type="text" id="Icpf" name="Ncpf" class="form-control">
 						</div>
 					</div>
 					<div class="col">
 						<div class="form-group">
-							<label for="Nnasc">Data Nascimento:</label>
+							<label for="Inasc">Data Nascimento:</label>
 							<input type="date" id="Inasc" name="Nnasc" class="form-control">
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary"> Pesquisar</button>
 						</div>
 					</div>
 				</div>
 				
-
-				
-				<button type="submit" class="btn btn-primary"> Pesquisar</button>
 			</form>
 			{{-- $pacientes --}}
 			@if(isset($pacientes))
@@ -43,7 +45,7 @@
 								<th scope="col">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
-								<th scope="col" class="text-center">Contato</th>
+								<th scope="col" class="text-center">Data Nascimento</th>
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</thead>
@@ -51,9 +53,9 @@
 							@foreach ($pacientes as $paciente)
 								<tr id="paciente{{ $paciente->id }}">{{-- id de cada registro --}}
 									<th scope="row">{{ $paciente->id }}</th>
-									<td class="text-center">{{ $paciente->nome }}</td>
+									<td class="">{{ $paciente->nome }}</td>
 									<td class="text-center">{{ $paciente->cpf }}</td>
-									<td class="text-center">NULL{{-- $paciente->contato --}}</td>
+									<td class="text-center">{{ $paciente->data_nascimento }}</td>
 									<td class="text-center">
 										<button type="button" 
 												class="btn btn-success"
@@ -62,6 +64,7 @@
 			                                    data-id="{{$paciente->id}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-cpf="{{$paciente->cpf}}"
+												data-nasc="{{ $paciente->data_nascimento }}"
 			                                    id="tableEditButton">
 										Agendar Consulta
 										</button>
@@ -73,6 +76,7 @@
 			                                    data-id="{{$paciente->id}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-cpf="{{$paciente->cpf}}"
+												data-nasc="{{ $paciente->data_nascimento }}"
 			                                    id="tableEditButton">
 										Editar
 										</button>
@@ -84,6 +88,7 @@
 			                                    data-id="{{$paciente->id}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-status="{{$paciente->cpf}}"
+												data-nasc="{{ $paciente->data_nascimento }}"
 			                                    id="tableDeleteButton">
 										Deletar
 										</button>
@@ -96,7 +101,7 @@
 								<th scope="col" class="text-center">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
-								<th scope="col" class="text-center">Contato</th>
+								<th scope="col" class="text-center">Data Nascimento</th>
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</tfooter>
@@ -105,5 +110,18 @@
 			@endif
 		</div>
 	</div>
+	{{--  
+	@if(isset($pacientes))
+		<div class="text-center">
+	        {{   $pacientes->links() }}
+	    </div>
+	@endif
+	--}}
 </div>
+
+{{-- includes de modals --}}
+{{-- Modal edit --}}
+@include('paciente.modals.modal_edit_paciente')
+{{-- Modal delete
+@include('paciente.modals.modal_delete_plano') --}}
 @endsection

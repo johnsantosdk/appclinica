@@ -131,12 +131,37 @@ class PacienteController extends Controller
 
     public function listPaciente(Request $request)
     {
-        if($request->input('Nnome'))
+        
+        if($request->input('Nnome')){
+            $string = $request->input('Nnome');
+            $pacientes = DB::table('pacientes')
+                           ->select('pacientes.id', 'pacientes.nome', 'pacientes.data_nascimento', 'pacientes.cpf')
+                           ->where('nome', 'like', '%'.$string.'%')
+                           ->orderBy('nome', 'asc')
+                           ->get();
+        }
+
         
         if($request->input('Ncpf')){
             $cpf = $request->input('Ncpf');
-            $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->get();
+            $pacientes = DB::table('pacientes')
+                           ->select('id', 'nome', 'data_nascimento', 'cpf')
+                           ->where('cpf', $cpf)
+                           ->first();
         }
+
+        if($request->input('Nnasc')){
+            $date = $request->input('Nnasc');
+            $pacientes = DB::table('pacientes')
+                           ->select('id', 'nome', 'data_nascimento', 'cpf')
+                           ->where('data_nascimento', $date)
+                           ->get();
+        }
+/**
+        if($request->input('Nnome') || $request->input('Ncpf') || $request->input('Nnasc')){
+            $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'cpf')->where('nome', 'like', '%'.$request->input('Nnome').'%')->orWhere('cpf', $request->input('Ncpf'))->orWhere('data_nascimento', $request->input('Nnasc'))->paginate(15);
+        }**/
+        
         return view('paciente.find', compact('pacientes'));
     }
 

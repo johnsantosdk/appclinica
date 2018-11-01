@@ -1,9 +1,9 @@
 <!-- Modal Edit-->
-<div class="modal fade" id="editPlanoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
+<div class="modal fade" id="editPacienteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header modal-edit-css">
-        <h5 class="modal-title" id="editModalLabel">Editar Plano</h5>
+        <h5 class="modal-title" id="editPacienteLabel">Editar Cadastro de Paciente</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -16,23 +16,23 @@
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ $paciente->nome }}">
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="">
 						</div>
 
 						<div class="form-group">
 							<label for="Inasc">Nasc.:</label>
-							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ $paciente->data_nascimento }}">
+							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="">
 						</div>
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" {{ $paciente->sexo == "M" ? 'checked' : ''}} checked>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM"  value="" checked>
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F" {{ $paciente->sexo == "F" ? 'checked' : ''}}>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="">
 								<label class="form-check-label" for="IsexoF">
 							    	Femenino
 							  	</label>
@@ -40,12 +40,12 @@
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="{{ $paciente->cpf }}" >
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="">
 						</div>
 
 						<div class="form-group">
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control" value="{{ $paciente->email }}">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" value="">
 						</div>
 						<hr>
 						{{--  
