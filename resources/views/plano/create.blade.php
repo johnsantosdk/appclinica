@@ -104,8 +104,6 @@
     //>>>BEGIN <<EDIT MODAL>>
         $(document).on('click','#tableEditButton', function(){
             var id = $(this).data('id');
-            var nome = $(this).data('nome');
-            var status = $(this).data('status');
 
             $.post('{{ action('PlanoController@editPlano') }}', {id:id}, function(data){
                 $('#editPlanoModal').find('#Iid').val(data.id);

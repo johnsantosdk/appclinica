@@ -144,10 +144,9 @@ class PacienteController extends Controller
         
         if($request->input('Ncpf')){
             $cpf = $request->input('Ncpf');
-            $pacientes = DB::table('pacientes')
-                           ->select('id', 'nome', 'data_nascimento', 'cpf')
+            $pacientes = Paciente::select('id', 'nome', 'data_nascimento', 'cpf')
                            ->where('cpf', $cpf)
-                           ->first();
+                           ->get();
         }
 
         if($request->input('Nnasc')){
@@ -161,8 +160,10 @@ class PacienteController extends Controller
         if($request->input('Nnome') || $request->input('Ncpf') || $request->input('Nnasc')){
             $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'cpf')->where('nome', 'like', '%'.$request->input('Nnome').'%')->orWhere('cpf', $request->input('Ncpf'))->orWhere('data_nascimento', $request->input('Nnasc'))->paginate(15);
         }**/
+
+        $planos = DB::table('planos')->select('id', 'nome')->where('status_plano', '=', 1)->orderBy('nome')->get();
         
-        return view('paciente.find', compact('pacientes'));
+        return view('paciente.find', compact('pacientes', 'planos'));
     }
 
     /**
@@ -176,6 +177,28 @@ class PacienteController extends Controller
         
 
         return view('paciente.edit', compact('paciente'));
+    }
+
+    public function editPaciente(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+            
+         /**   $paciente = DB::table('pacientes')
+                          ->leftJoin('convenios', 'convenios.paciente_id', '=', 'pacientes.id')
+                          ->leftJoin('telefones', 'telefones.paciente_id', '=', 'pacientes.id')
+                          ->select('pacientes.nome, pacientes.sexo, pacientes.data_nascimento, pacientes.cpf, pacientes.email, telefones.tipo, telefones.numero, convenios.id, convenios.matricula, convenios.plano_id')
+                          ->where('pacientes.id', '=', $id)
+                          ->get();**/
+            //$paciente = Paciente::find($id);
+            //$convenio = "convenios";
+            $paciente = DB::select('call getpaciente(?)', array($id));
+            
+            return response($paciente);
+        }
+
+        return response('nada');
     }
 
     /**

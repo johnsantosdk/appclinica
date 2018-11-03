@@ -36,6 +36,7 @@
 				</div>
 				
 			</form>
+		
 			{{-- $pacientes --}}
 			@if(isset($pacientes))
 				<div class="table-responsive">
@@ -60,12 +61,12 @@
 										<button type="button" 
 												class="btn btn-success"
 												data-toggle="modal"
-			                                    data-target="#editPacienteModal"
+			                                    data-target="#agendaPacienteModal"
 			                                    data-id="{{$paciente->id}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-cpf="{{$paciente->cpf}}"
 												data-nasc="{{ $paciente->data_nascimento }}"
-			                                    id="tableEditButton">
+			                                    id="tableAgendaButton">
 										Agendar Consulta
 										</button>
 
@@ -98,7 +99,7 @@
 						</tbody>
 						<tfooter>
 							<tr>
-								<th scope="col" class="text-center">ID</th>
+								<th scope="col" class="">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
 								<th scope="col" class="text-center">Data Nascimento</th>
@@ -122,6 +123,90 @@
 {{-- includes de modals --}}
 {{-- Modal edit --}}
 @include('paciente.modals.modal_edit_paciente')
-{{-- Modal delete
-@include('paciente.modals.modal_delete_plano') --}}
+{{-- Modal delete--}}
+@include('paciente.modals.modal_delete_paciente') 
+@endsection
+
+@section('customer-javaScript')
+
+{{-- <script> <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
+		//>>>BEGIN <<REQUEST FROM DATABASE>>
+		//<<<END REQUEST FROM DATABASE
+
+	    //>>>BEGIN <<EDIT MODAL>>
+        $(document).on('click','#tableEditButton', function(){
+            var id = $(this).data('id');
+
+            $.post('{{ action('PacienteController@editPaciente') }}', {id:id}, function(data){
+                console.log(data.length == 1);
+                console.log(data.length == 2);
+                console.log(data.length == 3);
+                console.log(data)
+                $('#editPacienteModal').find('#Iid').val(data[0].id);
+                $('#editPacienteModal').find('#Inome').val(data[0].nome);
+                $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
+                if(data[0].sexo == 'F'){
+                	$('#editPacienteModal').find('#IsexoF').attr("checked");
+                }
+                $('#editPacienteModal').find('#Icpf').val(data[0].cpf);
+                $('#editPacienteModal').find('#Iemail').val(data[0].email);
+                if(data.length == 1){
+                	if(data[0].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+                	}if(data[0].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+                	}if(data[0].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+                	}
+            	}if(data.length == 2){
+                	if(data[0].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+                	}if(data[0].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+                	}if(data[0].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+                	}
+                	if(data[1].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[1].numero);
+                	}if(data[1].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[1].numero);
+                	}if(data[1].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[1].numero);
+                	}					
+            	}
+            	if(data.length == 3){
+                	if(data[0].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+                	}if(data[0].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+                	}if(data[0].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+                	}
+                	if(data[1].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[1].numero);
+                	}if(data[1].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[1].numero);
+                	}if(data[1].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[1].numero);
+                	}
+                	if(data[2].tipo == 'RES'){
+						$('#editPacienteModal').find('#ItelR').val(data[2].numero);
+                	}if(data[2].tipo == 'EMP'){
+						$('#editPacienteModal').find('#ItelE').val(data[2].numero);
+                	}if(data[2].tipo == 'CEL'){
+						$('#editPacienteModal').find('#ItelC').val(data[2].numero);
+                	}					
+            	}
+                //$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+                //$('#editPacienteModal').find('#ItelE').val(data[1].numero);
+                //$('#editPacienteModal').find('#ItelC').val(data[2].numero);
+                $('#editPacienteModal').find('#IplanoId').val(data[0].plano);
+                $('#editPacienteModal').find('#Imat').val(data[0].matricula);
+                    
+                $('#form-edit-plano').show();
+                $('.modal-title').text('Editar Plano');
+            });
+        });
+    //<<<END <<EDIT MODAL>>
+{{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

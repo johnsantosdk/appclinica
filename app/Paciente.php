@@ -20,7 +20,7 @@ class Paciente extends Model
         'convenio_id'
     ];
 
-    public function consulta() {
+    public function consultas() {
 
     	return $this->hasMany('App\Consulta');
     }
@@ -30,7 +30,7 @@ class Paciente extends Model
     	return $this->hasMany('App\Convenio');
     }
 
-    public function telefone() {
+    public function telefones() {
 
     	return $this->hasMany('App\Telefone');
     }

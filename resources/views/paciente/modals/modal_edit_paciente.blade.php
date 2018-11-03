@@ -26,13 +26,13 @@
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM"  value="" checked>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" checked>
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="">
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF">
 								<label class="form-check-label" for="IsexoF">
 							    	Femenino
 							  	</label>
@@ -47,22 +47,21 @@
 							<label for="Iemail">E-mail</label>
 							<input type="email" id="Iemail" name="Nemail" class="form-control" value="">
 						</div>
-						<hr>
-						{{--  
+						<hr>  
 						<fieldset>
 							<legend>Telefones:</legend> 
 							<div class="form-group">
 								<div>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="{{ old('NtelR') }}">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="">
 								</div>
 								<div>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="{{ old('NtelE') }}">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="">
 								</div>
 								<div>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="{{ old('NtelC') }}">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="">
 								</div>
 							</div>
 						<fieldset>
@@ -72,14 +71,16 @@
 							<select id="IplanoId" name="NplanoId" class="form-control">
 								{{ $i = 0 }}
 								<option value=""></option>
+								@if(isset($planos))
 									@foreach($planos as $plano)
 										<option value="{{ $plano->id}}">{{ ++$i }} - {{ $plano->nome }}</option>
 									@endforeach
+								@endif
 							</select>
 						</div>
 						<div class="form-group">
 							<label for="Imat">Matricula:</label>
-							<input type="text" id="Imat" name="Nmat" class="form-control" value="{{ old('Nmat') }}">
+							<input type="text" id="Imat" name="Nmat" class="form-control" value="">
 						</div>
 					</fieldset>
 					
@@ -89,7 +90,7 @@
 						<input type="number" id="IidAten" name="NidAten" value="1" hidden>
 					</div>
 				</fieldset>
-				--}}
+				
 				<!--<button type="submit" class="btn btn-primary">Registrar</button>-->
 				</form>			
       </div>
