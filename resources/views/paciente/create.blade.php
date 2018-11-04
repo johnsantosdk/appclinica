@@ -18,7 +18,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="Inasc">Nasc.:</label>
+							<label for="Inasc">Data Nascimento:</label>
 							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ old('Nnasc') }}">
 						</div>
 						<div class="form-group">

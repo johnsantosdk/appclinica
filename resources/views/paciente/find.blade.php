@@ -141,12 +141,13 @@
                 console.log(data.length == 1);
                 console.log(data.length == 2);
                 console.log(data.length == 3);
+                console.log(data[0].sexo == 'F');
                 console.log(data)
                 $('#editPacienteModal').find('#Iid').val(data[0].id);
                 $('#editPacienteModal').find('#Inome').val(data[0].nome);
                 $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
                 if(data[0].sexo == 'F'){
-                	$('#editPacienteModal').find('#IsexoF').attr("checked");
+                	$('#editPacienteModal').find('#IsexoF').prop('checked', true);
                 }
                 $('#editPacienteModal').find('#Icpf').val(data[0].cpf);
                 $('#editPacienteModal').find('#Iemail').val(data[0].email);
@@ -197,16 +198,15 @@
 						$('#editPacienteModal').find('#ItelC').val(data[2].numero);
                 	}					
             	}
-                //$('#editPacienteModal').find('#ItelR').val(data[0].numero);
-                //$('#editPacienteModal').find('#ItelE').val(data[1].numero);
-                //$('#editPacienteModal').find('#ItelC').val(data[2].numero);
-                $('#editPacienteModal').find('#IplanoId').val(data[0].plano);
-                $('#editPacienteModal').find('#Imat').val(data[0].matricula);
-                    
+                $('#editPacienteModal').find('#IplanoId').val(data[0].plano_id);
+                $('#editPacienteModal').find('#Imat').val(data[0].matricula);   
                 $('#form-edit-plano').show();
                 $('.modal-title').text('Editar Plano');
             });
         });
+		$('#editPacienteModal').on('hidden.bs.modal', function () {
+    		window.alert('hidden event fired!');
+		});
     //<<<END <<EDIT MODAL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

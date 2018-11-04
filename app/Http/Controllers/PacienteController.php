@@ -48,8 +48,8 @@ class PacienteController extends Controller
         //Persiste um novo paciente
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
-            'data_nascimento' => $request->input('Nnasc'),
             'sexo'            => $request->input('Nsexo'),
+            'data_nascimento' => $request->input('Nnasc'),
             'cpf'             => $request->input('Ncpf'),
             'email'           => $request->input('Nemail'),
         ]);
