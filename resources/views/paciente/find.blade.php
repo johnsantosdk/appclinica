@@ -138,64 +138,76 @@
             var id = $(this).data('id');
 
             $.post('{{ action('PacienteController@editPaciente') }}', {id:id}, function(data){
-                console.log(data.length == 1);
-                console.log(data.length == 2);
-                console.log(data.length == 3);
-                console.log(data[0].sexo == 'F');
-                console.log(data)
+                    //MASKARAS
+				    //$('#editPacienteModal').find('#Icpf').mask('000.000.000-00');
+				    //Mascara para telefone fixo
+				    $('#editPacienteModal').find('#ItelR').mask('(00)0000-0000');
+				    $('#editPacienteModal').find('#ItelE').mask('(00)0000-0000');
+				    //Máscara para telefone celular
+				    $('#editPacienteModal').find('#ItelC').mask('(00)00000-0000');
+               console.log(data)
+                //LIMPA O FORMULÁRIO ANTES DE INSERIR AS INFORMAÇÕES
+                $(':input','#form-edit-paciente')
+  				.not(':button, :submit, :reset, :hidden')
+  				.val('')
+  				.removeAttr('selected');
+  				//INSERÇÃO DOS DADOS NO DEVIDOS CAMPOS/INPUTS
                 $('#editPacienteModal').find('#Iid').val(data[0].id);
                 $('#editPacienteModal').find('#Inome').val(data[0].nome);
                 $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
+                //
                 if(data[0].sexo == 'F'){
                 	$('#editPacienteModal').find('#IsexoF').prop('checked', true);
                 }
-                $('#editPacienteModal').find('#Icpf').val(data[0].cpf);
+                $('#editPacienteModal').find('#Icpf').val(data[0].cpf).mask('000.000.000-00');
                 $('#editPacienteModal').find('#Iemail').val(data[0].email);
-                if(data.length == 1){
+				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
+                if((data.length == 1) && (data[0].tipo != null) && (data[0].numero != null)) {
                 	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
                 	}
-            	}if(data.length == 2){
+            	}
+            	if(data.length == 2){
                 	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
                 	}
                 	if(data[1].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[1].numero).mask('(00)0000-0000');
                 	}if(data[1].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[1].numero).mask('(00)0000-0000');
                 	}if(data[1].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[1].numero).mask('(00)00000-0000');
                 	}					
             	}
             	if(data.length == 3){
                 	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
                 	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
                 	}
                 	if(data[1].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[1].numero).mask('(00)0000-0000');
                 	}if(data[1].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[1].numero).mask('(00)0000-0000');
                 	}if(data[1].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[1].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[1].numero).mask('(00)00000-0000');
                 	}
                 	if(data[2].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[2].numero);
+						$('#editPacienteModal').find('#ItelR').val(data[2].numero).mask('(00)0000-0000');
                 	}if(data[2].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[2].numero);
+						$('#editPacienteModal').find('#ItelE').val(data[2].numero).mask('(00)0000-0000');
                 	}if(data[2].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[2].numero);
+						$('#editPacienteModal').find('#ItelC').val(data[2].numero).mask('(00)00000-0000');
                 	}					
             	}
                 $('#editPacienteModal').find('#IplanoId').val(data[0].plano_id);
@@ -208,5 +220,22 @@
     		window.alert('hidden event fired!');
 		});
     //<<<END <<EDIT MODAL>>
+
+    //>>>BEGIN <<UPDATE MODAL>>
+        $("#updateButtonModal").click(function(){
+            $.ajax({
+                type : 'get',
+                url  : '{{ action('PacienteController@updatePaciente') }}',
+                datatype: 'json',
+                data: $("#form-edit-paciente").serialize(),
+                success: function(data)
+                { console.log(data);
+                    
+                }
+
+                })
+
+        });
+    //<<<END <<UPDATE MODAL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

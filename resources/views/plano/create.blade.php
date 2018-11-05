@@ -101,7 +101,7 @@
 
 @section('customer-javaScript')
 {{-- <script> --}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}}
-    //>>>BEGIN <<EDIT MODAL>>
+    //>>>BEGIN <<SHOW EDIT MODAL>>
         $(document).on('click','#tableEditButton', function(){
             var id = $(this).data('id');
 
@@ -114,7 +114,7 @@
                 $('.modal-title').text('Editar Plano');
             });
         });
-    //<<<END <<EDIT MODAL>>
+    //<<<END <<SHOW EDIT MODAL>>
 
     //>>>BEGIN <<UPDATE MODAL>>
         $("#updateButtonModal").click(function(){

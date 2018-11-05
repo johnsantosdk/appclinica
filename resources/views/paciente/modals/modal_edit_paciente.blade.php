@@ -16,17 +16,17 @@
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value="">
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="" readonly="true">
 						</div>
 
 						<div class="form-group">
 							<label for="Inasc">Nasc.:</label>
-							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="">
+							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="" readonly="true">
 						</div>
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" checked>
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" checked readonly="true">
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
@@ -40,12 +40,12 @@
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="">
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="" readonly="true">
 						</div>
 
 						<div class="form-group">
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control" value="">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" value="" readonly="true">
 						</div>
 						<hr>  
 						<fieldset>
@@ -53,22 +53,22 @@
 							<div class="form-group">
 								<div>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="" readonly="true">
 								</div>
 								<div>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="" readonly="true">
 								</div>
 								<div>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="" readonly="true">
 								</div>
 							</div>
 						<fieldset>
 						<legend>Dados do Plano de Saúde</legend>
 						<div class="form-group">
 							<label for="IplanoId">Plano:</label>
-							<select id="IplanoId" name="NplanoId" class="form-control">
+							<select id="IplanoId" name="NplanoId" class="form-control" readonly="true">
 								{{ $i = 0 }}
 								<option value=""></option>
 								@if(isset($planos))
@@ -80,7 +80,7 @@
 						</div>
 						<div class="form-group">
 							<label for="Imat">Matricula:</label>
-							<input type="text" id="Imat" name="Nmat" class="form-control" value="">
+							<input type="text" id="Imat" name="Nmat" class="form-control" value="" readonly="true">
 						</div>
 					</fieldset>
 					

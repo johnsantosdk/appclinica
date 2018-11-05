@@ -26,8 +26,8 @@ Route::group(['prefix' => 'paciente', 'as' => 'paciente.'], function() {
 	Route::get('/',					 					['as' => 'index',			'uses' => 'PacienteController@index']);
 	Route::get('/create',			 					['as' => 'create',			'uses' => 'PacienteController@create']);
 	Route::post('/addPaciente',							['as' => 'addPaciente',		'uses' => 'PacienteController@addPaciente']);//rota de teste para ajax
-	Route::post('/editPaciente',					['as' => 'editPaciente',	'uses' => 'PacienteController@editPaciente']);//rota de teste para ajax
-	Route::post('/updatePaciente',						['as' => 'updatePaciente',	'uses' => 'PacienteController@updatePaciente']);//rota de teste para ajax
+	Route::post('/editPaciente',						['as' => 'editPaciente',	'uses' => 'PacienteController@editPaciente']);//rota de teste para ajax
+	Route::match(['get','post'], '/updatePaciente',		['as' => 'updatePaciente',	'uses' => 'PacienteController@updatePaciente']);//rota de teste para ajax
 	Route::post('/destroyPaciente',						['as' => 'destroyPaciente',	'uses' => 'PacienteController@destroyPaciente']);//rota de teste para ajax
 	Route::post('/infoPaciente',						['as' => 'infoPaciente',	'uses' => 'PacienteController@infoPaciente']);//rota de teste para ajax
 	Route::post('/store',			 					['as' => 'store',			'uses' => 'PacienteController@store']);
