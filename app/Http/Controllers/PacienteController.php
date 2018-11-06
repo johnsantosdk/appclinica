@@ -208,13 +208,94 @@ class PacienteController extends Controller
      * @param  \App\Paciente  $paciente
      * @return \Illuminate\Http\Response
      */
-    public function updatePaciente(MultiploFormPacienteRequest $request)
+    public function updatePaciente(Request $request)
     {
+        $id = $request->input('NidPaci');
         if($request->ajax()){
+            $paciente = Paciente::find($id);
+            $paciente->nome             = $request->input('Nnome');
+            $paciente->sexo             = $request->input('Nsexo');
+            $paciente->data_nascimento  = $request->input('Nnasc');
+            $paciente->cpf              = $request->input('Ncpf');
+            $paciente->email            = $request->input('Nemail');
+            $paciente->save();
+            
+            if($request->input('NtelR')){
+              /**  $telIdR = Telefone::select('id')->whereColumn([
+                                                    ['paciente_id', '=', $id],
+                                                    ['numero', '=', $request->input('NtelR')]
+                                ])->first();**/
+                $telIdR = DB::table('telefones')->select('id')->whereColumn([
+                                                    ['paciente_id', '=', $id],
+                                                    ['numero', '=', $request->input('NtelR')]
+                                ])->first();
+                if(isset($telIdR)){
+                    $telefoneR = Telefone::find($telIdR);
+                    $telefoneR->numero = $request->input('NtelR');
+                    $telefoneR->save();
+                }else{
+                    $telefoneR = new Telefone;
+                    $telefoneR->tipo = 'RES';
+                    $telefoneR->numero = $request->input('NtelR');
+                    $telefoneR->save();
+                }
+            }
+            if($request->input('NtelE')){
+                $telIdE = Telefone::select('id')->whereColumn([
+                                                    ['paciente_id', '=', $id],
+                                                    ['numero', '=', $request->input('NtelE')]
+                                                ])
+                                  ->first();
 
+                if(isset($telIdE)){
+                    $telefoneE = Telefone::find($telIdE);
+                    $telefoneE->numero = $request->input('NtelE');
+                    $telefoneE->save();
+                }else{
+                    $telefoneE = new Telefone;
+                    $telefoneE->tipo = 'EMP';
+                    $telefoneE->numero = $request->input('NtelE');
+                    $telefoneE->save();
+                }
+            }
+            if($request->input('NtelC')){
+                $telIdC = Telefone::select('id')->whereColumn([
+                                                    ['paciente_id', '=', $id],
+                                                    ['numero', '=', $request->input('NtelC')]
+                                                ])
+                                  ->first();
+
+                if(isset($telIdC)){
+                    $telefoneC = Telefone::find($telIdC);
+                    $telefoneC->numero = $request->input('NtelC');
+                    $telefoneC->save();
+                }else{
+                    $telefoneC = new Telefone;
+                    $telefoneC->tipo = 'CEL';
+                    $telefoneC->numero = $request->input('NtelC');
+                    $telefoneC->save();
+                }
+            }
+
+            if($request->input('Nmat')){
+                $convId = Convenio::select('id')->where('paciente_id', '=', $id)->first();
+                if(isset($convId)){
+                    $convenio = Convenio::find($convId);
+                    $convenio->matricula    = $request->input('Nmat');
+                    $convenio->plano_id     = $request->input('NidPlan');
+                    $convenio->save();
+                }else{
+                    $convenio = new Convenio;
+                    $convenio->matricula    = $request->input('Nmat');
+                    $convenio->plano_id     = $request->input('NidPlan');
+                    $convenio->save();
+                }
+            }
+            //return view('paciente.find', compact($p));
+            return response($request);
         }
 
-        return "aqui";
+        
     }
 
     /**

@@ -7,11 +7,13 @@ use App\Paciente;
 
 class Telefone extends Model
 {
-        protected $fillable = [
-        	'tipo',
-        	'numero',
-        	'paciente_id'
+    protected $fillable = [
+        'tipo',
+        'numero',
+        'paciente_id'
     ];
+
+    //protected $foreignKey = 'paciente_id';
 
     public function paciente() {
 

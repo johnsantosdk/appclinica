@@ -18,6 +18,7 @@ class Paciente extends Model
         'cpf',
         'email',
         'atendente_id',
+        'tealefone_id',
         'convenio_id'
     ];
 

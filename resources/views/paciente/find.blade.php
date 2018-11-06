@@ -152,13 +152,17 @@
   				.val('')
   				.removeAttr('selected');
   				//INSERÇÃO DOS DADOS NO DEVIDOS CAMPOS/INPUTS
-                $('#editPacienteModal').find('#Iid').val(data[0].id);
+                $('#editPacienteModal').find('#IidPaci').val(data[0].id);
                 $('#editPacienteModal').find('#Inome').val(data[0].nome);
                 $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
                 //
                 if(data[0].sexo == 'F'){
-                	$('#editPacienteModal').find('#IsexoF').prop('checked', true);
-                }
+                	$('#editPacienteModal').find('#IsexoF').prop('checked', true).val('F');
+                }if(data[0].sexo == 'M'){
+					$('#editPacienteModal').find('#IsexoM').prop('checked', true).val('M');
+            	}
+                console.log(data[0].sexo)//
+                $('#editPacienteModal').find('#IidPlan').val(data[0].planoid);
                 $('#editPacienteModal').find('#Icpf').val(data[0].cpf).mask('000.000.000-00');
                 $('#editPacienteModal').find('#Iemail').val(data[0].email);
 				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
@@ -216,24 +220,27 @@
                 $('.modal-title').text('Editar Plano');
             });
         });
-		$('#editPacienteModal').on('hidden.bs.modal', function () {
-    		window.alert('hidden event fired!');
-		});
+
     //<<<END <<EDIT MODAL>>
 
     //>>>BEGIN <<UPDATE MODAL>>
-        $("#updateButtonModal").click(function(){
+        $('#buttonSubmitFormPaciente').click(function(){
+            var formData = $('#form-edit-paciente').serialize();
             $.ajax({
-                type : 'get',
-                url  : '{{ action('PacienteController@updatePaciente') }}',
+                type : 'POST',
+                url  : '{{ route('paciente.updatePaciente') }}',
                 datatype: 'json',
-                data: $("#form-edit-paciente").serialize(),
+                data: formData,
                 success: function(data)
-                { console.log(data);
-                    
-                }
+                { 
+                    console.log(data);
+                },
+                error: function(xhr)
+                {
+					console.log("buceta");
+            	}
 
-                })
+            });
 
         });
     //<<<END <<UPDATE MODAL>>

@@ -10,29 +10,29 @@
       </div>
       <div class="modal-body">
 			{{-- Form de visulalização e edição --}}
-			<form action="{{ route('paciente.update') }}" class="form-horizontal" role="form" id="form-edit-paciente">
+			<form action="{{ route('paciente.updatePaciente') }}" class="form-horizontal" role="form" id="form-edit-paciente">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value="" readonly="true">
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="" >
 						</div>
 
 						<div class="form-group">
 							<label for="Inasc">Nasc.:</label>
-							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="" readonly="true">
+							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="">
 						</div>
 						<div class="form-group">
 							Sexo:
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" checked readonly="true">
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" checked>
 								<label class="form-check-label" for="IsexoM">
 							    	Masculino
 							  	</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF">
+								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F">
 								<label class="form-check-label" for="IsexoF">
 							    	Femenino
 							  	</label>
@@ -40,12 +40,12 @@
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="" readonly="true">
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="">
 						</div>
 
 						<div class="form-group">
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control" value="" readonly="true">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" value="" >
 						</div>
 						<hr>  
 						<fieldset>
@@ -53,22 +53,22 @@
 							<div class="form-group">
 								<div>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="" readonly="true">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="" >
 								</div>
 								<div>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="" readonly="true">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="">
 								</div>
 								<div>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="" readonly="true">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="">
 								</div>
 							</div>
 						<fieldset>
 						<legend>Dados do Plano de Saúde</legend>
 						<div class="form-group">
 							<label for="IplanoId">Plano:</label>
-							<select id="IplanoId" name="NplanoId" class="form-control" readonly="true">
+							<select id="IplanoId" name="NplanoId" class="form-control">
 								{{ $i = 0 }}
 								<option value=""></option>
 								@if(isset($planos))
@@ -80,13 +80,19 @@
 						</div>
 						<div class="form-group">
 							<label for="Imat">Matricula:</label>
-							<input type="text" id="Imat" name="Nmat" class="form-control" value="" readonly="true">
+							<input type="text" id="Imat" name="Nmat" class="form-control" value="">
 						</div>
 					</fieldset>
 					
 
 					<!-- ID do usuário que está fazendo o cadastro-->
 					<div class="form-group" >
+						<input type="number" id="IidPaci" name="NidPaci" value="" hidden>
+						{{--  <input type="number" id="IidConv" name="NidConv" value="" hidden>
+						<input type="number" id="IidTelR" name="NidTelR" value="" hidden>
+						<input type="number" id="IidTelE" name="NidTelE" value="" hidden>
+						<input type="number" id="IidTelC" name="NidTelC" value="" hidden>--}}
+						<input type="number" id="IidPlan" name="NidPlan" value="" hidden>
 						<input type="number" id="IidAten" name="NidAten" value="1" hidden>
 					</div>
 				</fieldset>
@@ -96,7 +102,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="updateButtonModal">Update</button>
+          <button type="submit" class="btn btn-primary" id="buttonSubmitFormPaciente">Update</button>
+        {{--<input type="submit" class="btn btn-primary" value="Salvar">--}}
       </div>
     </div>
   </div>

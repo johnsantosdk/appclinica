@@ -28,8 +28,8 @@ class PacienteRequest extends FormRequest
             'Nnome'     => 'required|max:50',
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
-            'Ncpf'      => 'required|cpf',
-            'Nemail'    => 'nullable|email',
+            'Ncpf'      => 'required|unique:pacientes,cpf|cpf',
+            'Nemail'    => 'required|unique:pacientes,email|email',
         ];
     }
 
@@ -47,7 +47,10 @@ class PacienteRequest extends FormRequest
             'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
             'Ncpf.required'     => 'Informe o cpf.',
             'Ncpf.cpf'          => 'CPF inválido.',
-            'Nemail.email'      => 'Este email não é válido.'
+            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro.',
+            'Nemail.required'   => 'É necessário preencher o campo email.',
+            'Nemail.email'      => 'Este email não é válido.',
+            'Nemail.unique'     => 'Este email já está sendo utilizado.'
         ];
     }
 
