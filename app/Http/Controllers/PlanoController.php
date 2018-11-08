@@ -43,7 +43,7 @@ class PlanoController extends Controller
         if($request->all()){
             $plano = Plano::create([
                 'nome'          => mb_convert_case($request->input('Nnome'), MB_CASE_TITLE,"UTF-8"),
-                'status_plano'  => $request->input('Nstatus'),
+                'status'  => $request->input('Nstatus'),
             ]);
 
             Session::flash('flash_message', [
@@ -87,7 +87,7 @@ class PlanoController extends Controller
     {
         if($request->ajax())
         {
-            $id = $request->id;
+            $id = $request->idplano;
             $plano = Plano::find($id);
             
             return Response($plano);
@@ -98,7 +98,7 @@ class PlanoController extends Controller
     {
         if($request->ajax())
         {
-            $id = $request->id;
+            $id = $request->idplano;
 
             $plano = Plano::find($id);
 
@@ -125,7 +125,7 @@ class PlanoController extends Controller
         {
             $id = $request->input('Nid');
             $plano = Plano::find($id);
-            $plano->status_plano = $request->input('Nstatus');
+            $plano->status = $request->input('Nstatus');
             $plano->save();
 
             return Response($request);

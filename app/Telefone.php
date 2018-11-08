@@ -10,10 +10,11 @@ class Telefone extends Model
     protected $fillable = [
         'tipo',
         'numero',
-        'paciente_id'
+        'pacienteid'
     ];
 
-    //protected $foreignKey = 'paciente_id';
+
+    //protected $foreignKey = 'pacienteid';
 
     public function paciente() {
 

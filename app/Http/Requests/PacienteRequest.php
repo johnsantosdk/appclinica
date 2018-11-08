@@ -29,7 +29,7 @@ class PacienteRequest extends FormRequest
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
             'Ncpf'      => 'required|unique:pacientes,cpf|cpf',
-            'Nemail'    => 'required|unique:pacientes,email|email',
+            'Nemail'    => 'unique:pacientes,email|email',
         ];
     }
 
@@ -48,7 +48,6 @@ class PacienteRequest extends FormRequest
             'Ncpf.required'     => 'Informe o cpf.',
             'Ncpf.cpf'          => 'CPF inválido.',
             'Ncpf.unique'       => 'Este CPF pertence a outro cadastro.',
-            'Nemail.required'   => 'É necessário preencher o campo email.',
             'Nemail.email'      => 'Este email não é válido.',
             'Nemail.unique'     => 'Este email já está sendo utilizado.'
         ];

@@ -13,7 +13,7 @@ class Medico extends Model
 	//Um médico pode ter várias consultas marcadas para ele
     public function consulta() {
 
-    	return $this->hasMany('App\Consulta');
+    	return $this->hasMany('App\Consulta', 'medicoid');
     }
     //Um médico pode ter várias especialidades
     public function especialidade() {

@@ -1,0 +1,7 @@
+CREATE PROCEDURE GETIDTELEFONE(PID INT, N VARCHAR(15))
+BEGIN
+	SELECT idtelefone 
+	FROM telefones
+	WHERE (pacienteid = PID) AND (numero = N);
+END
+$ 

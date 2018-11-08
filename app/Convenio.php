@@ -12,8 +12,8 @@ class Convenio extends Model
 
     protected $fillable = [
         'matricula',
-        'paciente_id',
-        'plano_id'
+        'pacienteid',
+        'planoid'
     ];
 
     public function paciente() {
@@ -23,7 +23,7 @@ class Convenio extends Model
 
     public function consulta() {
 
-    	return $this->hasMany('App\Consulta');
+    	return $this->hasMany('App\Consulta', 'convenioid');
     }
 
     public function plano() {

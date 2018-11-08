@@ -20,23 +20,16 @@
 						</div>
 
 						<div class="form-group">
-							<label for="Inasc">Nasc.:</label>
+							<label for="Inasc">Nascimento:</label>
 							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="">
 						</div>
 						<div class="form-group">
-							Sexo:
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" checked>
-								<label class="form-check-label" for="IsexoM">
-							    	Masculino
-							  	</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F">
-								<label class="form-check-label" for="IsexoF">
-							    	Femenino
-							  	</label>
-							</div>
+							<label for="Isexo">Sexo:</label>
+							<select name="Nsexo" id="Isexo" class="form-control">
+								<option value=""></option>
+								<option value="masculino">Masculino</option>
+								<option value="femenino">Femenino</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
@@ -73,7 +66,7 @@
 								<option value=""></option>
 								@if(isset($planos))
 									@foreach($planos as $plano)
-										<option value="{{ $plano->id}}">{{ ++$i }} - {{ $plano->nome }}</option>
+										<option value="{{ $plano->idplano}}">{{ ++$i }} - {{ $plano->nome }}</option>
 									@endforeach
 								@endif
 							</select>

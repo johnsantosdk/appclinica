@@ -9,12 +9,33 @@ class TestController extends Controller
 {
     public function index()
     {
+    	$numero = '(98)98877-6655';
 
-    	$query = DB::select("select * 
-    						 from pacientes
-    						");
+/**        $telIdR = DB::table('telefones')
+        			->select('idtelefone')
+        			->whereColumn([
+                                  ['pacienteid', '=', 1],
+                                  ['numero', '=', '(98)98877-6655']
+                                  ])->first();**/
 
+    	$query = DB::select(DB::raw("select idtelefone, numero from telefones where (pacienteid = 1) and (tipo = 'CEL')"));
 
-    	return response()->json($query);
+		$arr = array(['nome' => 'Airton', 'sexo' => 'masculino']);
+    	
+    	$obj = DB::select('call getidtelefone(?,?)', array(1,'(98)98877-6655'));
+    	
+    	$bool = 'Nao Passou por dentro do if';
+    	if(isset($query[0]->idtelefone)){
+    		$bool = 'Entrou dentro do if';
+    	}
+
+    	$bool2 = 'Nao Passou por dentro do if';
+    	if(isset($query[0]->idtelefone, $query[0]->numero)){
+    		if($query[0]->numero == $numero){
+    			$bool2 = 'Passou por dentro do if';
+    		}
+    	}
+
+    	return response()->json($bool2);
     }
 }

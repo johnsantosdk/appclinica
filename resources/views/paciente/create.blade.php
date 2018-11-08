@@ -21,20 +21,14 @@
 							<label for="Inasc">Data Nascimento:</label>
 							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="{{ old('Nnasc') }}">
 						</div>
+
 						<div class="form-group">
-							Sexo:
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoM" value="M" {{ old('Nsexo') == "M" ? 'checked' : ''}} checked>
-								<label class="form-check-label" for="IsexoM">
-							    	Masculino
-							  	</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="Nsexo" id="IsexoF" value="F" {{ old('Nsexo') == "F" ? 'checked' : ''}}>
-								<label class="form-check-label" for="IsexoF">
-							    	Femenino
-							  	</label>
-							</div>
+							<label for="Isexo">Sexo:</label>
+							<select name="Nsexo" id="Isexo" class="form-control">
+								<option value=""></option>
+								<option value="MASCULINO">Masculino</option>
+								<option value="FEMENINO">Femenino</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
@@ -71,7 +65,7 @@
 								{{ $i = 0 }}
 								<option value=""></option>
 									@foreach($planos as $plano)
-										<option value="{{ $plano->id}}">{{ ++$i }} - {{ $plano->nome }}</option>
+										<option value="{{ $plano->idplano}}">{{ ++$i }} - {{ $plano->nome }}</option>
 									@endforeach
 							</select>
 						</div>

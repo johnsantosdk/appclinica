@@ -30,7 +30,7 @@ class PacienteController extends Controller
      */
     public function create()
     {
-        $planos = DB::table('planos')->select('id', 'nome')->where('status_plano', '=', 1)->orderBy('nome')->get();
+        $planos = DB::table('planos')->select('idplano', 'nome')->where('status', '=', 1)->orderBy('nome')->get();
         
         return view('paciente.create', compact('planos'));
     }
@@ -49,58 +49,58 @@ class PacienteController extends Controller
         $paciente = Paciente::create([
             'nome'            => $request->input('Nnome'),
             'sexo'            => $request->input('Nsexo'),
-            'data_nascimento' => $request->input('Nnasc'),
+            'nascimento'      => $request->input('Nnasc'),
             'cpf'             => $request->input('Ncpf'),
             'email'           => $request->input('Nemail'),
         ]);
         //capturando o id inserido para poder gravar o convenio e os telefones se existirem
-        $pacienteId = Paciente::select('id')->where('cpf', '=', $paciente->cpf)->first();
+        $pacienteId = Paciente::select('idpaciente')->where('cpf', '=', $paciente->cpf)->first();
 
         //Cadastro do convenio do paciente
         if($request->input('Nmat')){
             $convenio = Convenio::create([
                 'matricula'     => $request->input('Nmat'),
-                'plano_id'      => $request->input('NplanoId'),
-                'paciente_id'   => $pacienteId->id,
+                'planoid'      => $request->input('NplanoId'),
+                'pacienteid'   => $pacienteId->id,
             ]);
             //Captura o id gerado acima
-            $convenioId = Convenio::select('id')->where('matricula', '=', $convenio->matricula)->first();
+            //$convenioId = Convenio::select('idconvenio')->where('matricula', '=', $convenio->matricula)->first();
             //enserir no campo convenio_id da tabela paciente
-            DB::table('pacientes')->where('id', $pacienteId->id)->update(['convenio_id' => $convenioId->id]);
+            //DB::table('pacientes')->where('idpaciente', $pacienteId->id)->update(['convenio_id' => $convenioId->id]);
         }
         //Inserção dos telefones 
        if($request->input('NtelR')){
             $telefone = Telefone::create([
                 'tipo'          => 'RES',
                 'numero'        => $request->input('NtelR'),
-                'paciente_id'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->id,
             ]);
 
-            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
 
-            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
         if($request->input('NtelE')){
             $telefone = Telefone::create([
                 'tipo'          => 'EMP',
                 'numero'        => $request->input('NtelE'),
-                'paciente_id'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->id,
             ]);
 
-            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
 
-            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
         if($request->input('NtelC')){
             $telefone = Telefone::create([
                 'tipo'          => 'CEL',
                 'numero'        => $request->input('NtelC'),
-                'paciente_id'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->id,
             ]);
 
-            $telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
+            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
 
-            DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
 
         if($validado == 1){
@@ -135,7 +135,7 @@ class PacienteController extends Controller
         if($request->input('Nnome')){
             $string = $request->input('Nnome');
             $pacientes = DB::table('pacientes')
-                           ->select('pacientes.id', 'pacientes.nome', 'pacientes.data_nascimento', 'pacientes.cpf')
+                           ->select('pacientes.idpaciente', 'pacientes.nome', 'pacientes.nascimento', 'pacientes.cpf')
                            ->where('nome', 'like', '%'.$string.'%')
                            ->orderBy('nome', 'asc')
                            ->get();
@@ -144,7 +144,7 @@ class PacienteController extends Controller
         
         if($request->input('Ncpf')){
             $cpf = $request->input('Ncpf');
-            $pacientes = Paciente::select('id', 'nome', 'data_nascimento', 'cpf')
+            $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
                            ->where('cpf', $cpf)
                            ->get();
         }
@@ -152,8 +152,8 @@ class PacienteController extends Controller
         if($request->input('Nnasc')){
             $date = $request->input('Nnasc');
             $pacientes = DB::table('pacientes')
-                           ->select('id', 'nome', 'data_nascimento', 'cpf')
-                           ->where('data_nascimento', $date)
+                           ->select('idpaciente', 'nome', 'nascimento', 'cpf')
+                           ->where('nascimento', $date)
                            ->get();
         }
 /**
@@ -161,7 +161,7 @@ class PacienteController extends Controller
             $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'cpf')->where('nome', 'like', '%'.$request->input('Nnome').'%')->orWhere('cpf', $request->input('Ncpf'))->orWhere('data_nascimento', $request->input('Nnasc'))->paginate(15);
         }**/
 
-        $planos = DB::table('planos')->select('id', 'nome')->where('status_plano', '=', 1)->orderBy('nome')->get();
+        $planos = DB::table('planos')->select('idplano', 'nome')->where('status', '=', 1)->orderBy('nome')->get();
         
         return view('paciente.find', compact('pacientes', 'planos'));
     }
@@ -211,91 +211,91 @@ class PacienteController extends Controller
     public function updatePaciente(Request $request)
     {
         $id = $request->input('NidPaci');
+        $telR = $request->input('NtelR');
+        $telE = $request->input('NtelE');
+        $telC = $request->input('NtelC');
+
         if($request->ajax()){
-            $paciente = Paciente::find($id);
-            $paciente->nome             = $request->input('Nnome');
-            $paciente->sexo             = $request->input('Nsexo');
-            $paciente->data_nascimento  = $request->input('Nnasc');
-            $paciente->cpf              = $request->input('Ncpf');
-            $paciente->email            = $request->input('Nemail');
-            $paciente->save();
-            
-            if($request->input('NtelR')){
-              /**  $telIdR = Telefone::select('id')->whereColumn([
-                                                    ['paciente_id', '=', $id],
-                                                    ['numero', '=', $request->input('NtelR')]
-                                ])->first();**/
-                $telIdR = DB::table('telefones')->select('id')->whereColumn([
-                                                    ['paciente_id', '=', $id],
-                                                    ['numero', '=', $request->input('NtelR')]
-                                ])->first();
-                if(isset($telIdR)){
-                    $telefoneR = Telefone::find($telIdR);
-                    $telefoneR->numero = $request->input('NtelR');
-                    $telefoneR->save();
-                }else{
+            $paciente = DB::table('pacientes')
+                          ->where('idpaciente', $id)
+                          ->update(['nome'          => $request->input('Nnome')],
+                                   ['sexo'          => $request->input('Nsexo')],
+                                   ['nascimento'    => $request->input('Nnasc')],
+                                   ['cpf'           => $request->input('Ncpf')],
+                                   ['email'         => $request->input('Nemail')]
+                                  );
+
+            if(isset($telR)){
+                $telIdR = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'RES'))"));
+                
+                if(isset($telIdR[0]->idtelefone, $telIdR[0]->numero)){
+                    if($telIdR[0]->numero != $telR){
+                        $telefoneR = DB::table('telefones')
+                                       ->where('idtelefone', $telIdR[0]->idtelefone)
+                                       ->update(['numero' => $telR]);
+                    }
+                }if(!isset($telIdR[0]->idtelefone)){
                     $telefoneR = new Telefone;
                     $telefoneR->tipo = 'RES';
-                    $telefoneR->numero = $request->input('NtelR');
+                    $telefoneR->numero = $telR;
+                    $telefoneR->pacienteid = $id;
                     $telefoneR->save();
                 }
             }
-            if($request->input('NtelE')){
-                $telIdE = Telefone::select('id')->whereColumn([
-                                                    ['paciente_id', '=', $id],
-                                                    ['numero', '=', $request->input('NtelE')]
-                                                ])
-                                  ->first();
-
-                if(isset($telIdE)){
-                    $telefoneE = Telefone::find($telIdE);
-                    $telefoneE->numero = $request->input('NtelE');
-                    $telefoneE->save();
-                }else{
+            if(isset($telE)){
+                $telIdE = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'EMP'))"));
+                if(isset($telIdE[0]->idtelefone, $telIdE[0]->numero)){
+                    if($telIdE[0]->numero != $telE){
+                        $telefoneE = DB::table('telefones')
+                                       ->where('idtelefone', $telIdE[0]->idtelefone)
+                                       ->update(['numero' => $telE]);
+                    }
+                }if(!isset($telIdE[0]->idtelefone)){
                     $telefoneE = new Telefone;
                     $telefoneE->tipo = 'EMP';
-                    $telefoneE->numero = $request->input('NtelE');
+                    $telefoneE->numero = $telE;
+                    $telefoneE->pacienteid = $id;
                     $telefoneE->save();
                 }
             }
-            if($request->input('NtelC')){
-                $telIdC = Telefone::select('id')->whereColumn([
-                                                    ['paciente_id', '=', $id],
-                                                    ['numero', '=', $request->input('NtelC')]
-                                                ])
-                                  ->first();
-
-                if(isset($telIdC)){
-                    $telefoneC = Telefone::find($telIdC);
-                    $telefoneC->numero = $request->input('NtelC');
-                    $telefoneC->save();
-                }else{
+            if(isset($telC)){
+                $telIdC = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'CEL'))"));
+                if(isset($telIdC[0]->idtelefone, $telIdC[0]->numero)){
+                    if($telIdC[0]->numero != $telC){
+                        $telefoneC = DB::table('telefones')
+                                    ->where('idtelefone', $telIdC[0]->idtelefone)
+                                    ->update(['numero' => $telC]);
+                    }
+                }
+                if(!isset($telIdC[0]->idtelefone)){
                     $telefoneC = new Telefone;
                     $telefoneC->tipo = 'CEL';
-                    $telefoneC->numero = $request->input('NtelC');
+                    $telefoneC->numero = $telC;
+                    $telefoneC->pacienteid = $id;
                     $telefoneC->save();
                 }
             }
-
-            if($request->input('Nmat')){
-                $convId = Convenio::select('id')->where('paciente_id', '=', $id)->first();
+            $mat = $request->input('Nmat');
+            $tipo = $request->input('NplanoId');
+            if(isset($mat, $tipo)){
+                $convId = Convenio::select('idconvenio')->where('pacienteid', '=', $id)->first();
                 if(isset($convId)){
-                    $convenio = Convenio::find($convId);
-                    $convenio->matricula    = $request->input('Nmat');
-                    $convenio->plano_id     = $request->input('NidPlan');
-                    $convenio->save();
-                }else{
+                    $convenio = DB::table('convenios')
+                                  ->where('idconvenio', $convId)
+                                  ->update(['matricula' => $mat],
+                                           ['planoid'   => $tipo]
+                                          );
+                }if(!isset($convId)){
                     $convenio = new Convenio;
                     $convenio->matricula    = $request->input('Nmat');
-                    $convenio->plano_id     = $request->input('NidPlan');
+                    $convenio->planoid      = $request->input('NidPlan');
+                    $convenio->pacienteid   = $id;
                     $convenio->save();
                 }
             }
             //return view('paciente.find', compact($p));
             return response($request);
-        }
-
-        
+        }  
     }
 
     /**

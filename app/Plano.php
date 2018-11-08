@@ -9,11 +9,11 @@ class Plano extends Model
 
 	protected $fillable = [
         'nome',
-        'status_plano'
+        'status'
     ];
 
     public function caonvenios() {
 
-    	return $this->hasMany('App\Convenios');
+    	return $this->hasMany('App\Convenios', 'planoid');
     }
 }

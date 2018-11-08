@@ -52,20 +52,20 @@
 						</thead>
 						<tbody id="pacientes-list">
 							@foreach ($pacientes as $paciente)
-								<tr id="paciente{{ $paciente->id }}">{{-- id de cada registro --}}
-									<th scope="row">{{ $paciente->id }}</th>
+								<tr id="paciente{{ $paciente->idpaciente }}">{{-- id de cada registro --}}
+									<th scope="row">{{ $paciente->idpaciente }}</th>
 									<td class="">{{ $paciente->nome }}</td>
 									<td class="text-center">{{ $paciente->cpf }}</td>
-									<td class="text-center">{{ $paciente->data_nascimento }}</td>
+									<td class="text-center">{{ $paciente->nascimento }}</td>
 									<td class="text-center">
 										<button type="button" 
 												class="btn btn-success"
 												data-toggle="modal"
 			                                    data-target="#agendaPacienteModal"
-			                                    data-id="{{$paciente->id}}"
+			                                    data-id="{{$paciente->idpaciente}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-cpf="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->data_nascimento }}"
+												data-nasc="{{ $paciente->nascimento }}"
 			                                    id="tableAgendaButton">
 										Agendar Consulta
 										</button>
@@ -74,10 +74,10 @@
 												class="btn btn-info"
 												data-toggle="modal"
 			                                    data-target="#editPacienteModal"
-			                                    data-id="{{$paciente->id}}"
+			                                    data-id="{{$paciente->idpaciente}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-cpf="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->data_nascimento }}"
+												data-nasc="{{ $paciente->nascimento }}"
 			                                    id="tableEditButton">
 										Editar
 										</button>
@@ -86,10 +86,10 @@
 												class="btn btn-danger"
 												data-toggle="modal"
 			                                    data-target="#deletePacienteModal"
-			                                    data-id="{{$paciente->id}}"
+			                                    data-id="{{$paciente->idpaciente}}"
 			                                    data-nome="{{$paciente->nome}}"
 												data-status="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->data_nascimento }}"
+												data-nasc="{{ $paciente->nascimento }}"
 			                                    id="tableDeleteButton">
 										Deletar
 										</button>
@@ -152,16 +152,15 @@
   				.val('')
   				.removeAttr('selected');
   				//INSERÇÃO DOS DADOS NO DEVIDOS CAMPOS/INPUTS
-                $('#editPacienteModal').find('#IidPaci').val(data[0].id);
+                $('#editPacienteModal').find('#IidPaci').val(data[0].idpaciente);
                 $('#editPacienteModal').find('#Inome').val(data[0].nome);
                 $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
                 //
-                if(data[0].sexo == 'F'){
-                	$('#editPacienteModal').find('#IsexoF').prop('checked', true).val('F');
-                }if(data[0].sexo == 'M'){
-					$('#editPacienteModal').find('#IsexoM').prop('checked', true).val('M');
+                if(data[0].sexo == 'femenino'){
+                	$('#editPacienteModal').find('#Isexo').val("femenino");
+                }if(data[0].sexo == 'masculino'){
+					$('#editPacienteModal').find('#Isexo').val("masculino");
             	}
-                console.log(data[0].sexo)//
                 $('#editPacienteModal').find('#IidPlan').val(data[0].planoid);
                 $('#editPacienteModal').find('#Icpf').val(data[0].cpf).mask('000.000.000-00');
                 $('#editPacienteModal').find('#Iemail').val(data[0].email);
@@ -214,7 +213,7 @@
 						$('#editPacienteModal').find('#ItelC').val(data[2].numero).mask('(00)00000-0000');
                 	}					
             	}
-                $('#editPacienteModal').find('#IplanoId').val(data[0].plano_id);
+                $('#editPacienteModal').find('#IplanoId').val(data[0].planoid);
                 $('#editPacienteModal').find('#Imat').val(data[0].matricula);   
                 $('#form-edit-plano').show();
                 $('.modal-title').text('Editar Plano');

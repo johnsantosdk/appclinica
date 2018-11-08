@@ -44,8 +44,8 @@
 					</thead>
 					<tbody id="planos-list">
 						@foreach ($planos as $plano)
-							<tr id="plano{{ $plano->id }}">
-								<th scope="row">{{ $plano->id}}</th>
+							<tr id="plano{{ $plano->idplano }}">
+								<th scope="row">{{ $plano->idplano}}</th>
 								<td>{{ $plano->nome }}</td>
 								@if ($plano->status_plano == 1)
 								 	<td class="statusTrue">ATIVO</td>
@@ -57,9 +57,9 @@
 											class="btn btn-info"
 											data-toggle="modal"
 		                                    data-target="#editPlanoModal"
-		                                    data-id="{{$plano->id}}"
+		                                    data-id="{{$plano->idplano}}"
 		                                    data-nome="{{$plano->nome}}"
-											data-status="{{$plano->status_plano}}"
+											data-status="{{$plano->status}}"
 		                                    id="tableEditButton">
 									Editar
 									</button>
@@ -68,9 +68,9 @@
 											class="btn btn-danger"
 											data-toggle="modal"
 		                                    data-target="#deletePlanoModal"
-		                                    data-id="{{$plano->id}}"
+		                                    data-id="{{$plano->idplano}}"
 		                                    data-nome="{{$plano->nome}}"
-											data-status="{{$plano->status_plano}}"
+											data-status="{{$plano->status}}"
 		                                    id="tableDeleteButton">
 									Deletar
 									</button>
@@ -106,7 +106,7 @@
             var id = $(this).data('id');
 
             $.post('{{ action('PlanoController@editPlano') }}', {id:id}, function(data){
-                $('#editPlanoModal').find('#Iid').val(data.id);
+                $('#editPlanoModal').find('#Iid').val(data.idplano);
                 $('#editPlanoModal').find('#Inome').val(data.nome);
                 $('#editPlanoModal').find('#Istatus').val(data.status);
                     
@@ -127,7 +127,7 @@
                 { console.log(data);
                     var tr = $('<tr/>');
                     tr.append($("<td/>",{
-                        text : data.id
+                        text : data.idplano
                     })).append($("<td/>",{
                         text : data.nome
                     })).append($("<td/>",{
@@ -149,10 +149,10 @@
             var nome = $(this).data('nome');
             var status = $(this).data('status');
             $.post('{{ action('PlanoController@showPlano') }}', {id:id}, function(data){
-                $('#deletePlanoModal').find('input#Iid').val(data.id)
+                $('#deletePlanoModal').find('input#Iid').val(data.idplano)
                 $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.id);
                 $('#deletePlanoModal').find('p#nome').html('<strong style="font-size:18px">Name:</strong> '+data.nome);
-                if(data.status_plano == 1){
+                if(data.status == 1){
                     var status = ["ATIVO", "SUSPENSO"];
                     $('#deletePlanoModal').find('p#status').html('<strong style="font-size:18px">Status:</strong> '+status[0]);
                 }else

@@ -14,26 +14,23 @@ class Paciente extends Model
     protected $fillable = [
         'nome',
         'sexo',
-        'data_nascimento',
+        'nascimento',
         'cpf',
         'email',
-        'atendente_id',
-        'tealefone_id',
-        'convenio_id'
     ];
 
     public function consultas() {
 
-    	return $this->hasMany('App\Consulta');
+    	return $this->hasMany('App\Consulta', 'pacienteid');
     }
 
     public function convenio() {
 
-    	return $this->hasMany('App\Convenio');
+    	return $this->hasMany('App\Convenio', 'pacienteid');
     }
 
     public function telefones() {
 
-    	return $this->hasMany('App\Telefone');
+    	return $this->hasMany('App\Telefone', 'pacienteid');
     }
 }
