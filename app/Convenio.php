@@ -11,6 +11,7 @@ class Convenio extends Model
     //
 
     protected $fillable = [
+        'idconvenio',
         'matricula',
         'pacienteid',
         'planoid'

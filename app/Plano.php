@@ -8,6 +8,7 @@ class Plano extends Model
 {
 
 	protected $fillable = [
+        'idplano',
         'nome',
         'status'
     ];

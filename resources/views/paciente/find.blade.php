@@ -28,19 +28,23 @@
 							<input type="date" id="Inasc" name="Nnasc" class="form-control">
 						</div>
 					</div>
-					<div class="col">
-						<div class="form-group">
-							<button type="submit" class="btn btn-primary"> Pesquisar</button>
-						</div>
+
+				</div>
+				<div class="">
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" id="searchSubmit"> Pesquisar</button>
 					</div>
 				</div>
-				
 			</form>
-		
-			{{-- $pacientes --}}
-			@if(isset($pacientes))
+			@if(isset($pacientes) && count($pacientes) == 0)
+				<div class="alert alert-info" id="testFade">
+	  				<strong>Sem resultas!</strong> Nenhum resultado encontrado para os dados informados acima.
+				</div>
+			@endif
+			@if(isset($pacientes) && (count($pacientes) > 0))
 				<div class="table-responsive">
 	  				<table class="table" id="tableListPaciente">
+	  					<div><p><strong>Total</strong>: {{ count($pacientes) }} cadastro(s)</p></div> 
 						<thead class="">
 							<tr>
 								<th scope="col">ID</th>
@@ -130,6 +134,9 @@
 @section('customer-javaScript')
 
 {{-- <script> <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
+	$("#searchSubmit").click(function(){
+        $("#testFade").fadeOut(1000)
+    });
 		//>>>BEGIN <<REQUEST FROM DATABASE>>
 		//<<<END REQUEST FROM DATABASE
 

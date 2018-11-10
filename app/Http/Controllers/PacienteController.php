@@ -276,25 +276,22 @@ class PacienteController extends Controller
                 }
             }
             $mat = $request->input('Nmat');
-            $tipo = $request->input('NplanoId');
-            if(isset($mat, $tipo)){
-                $convId = Convenio::select('idconvenio')->where('pacienteid', '=', $id)->first();
-                if(isset($convId)){
-                    $convenio = DB::table('convenios')
-                                  ->where('idconvenio', $convId)
-                                  ->update(['matricula' => $mat],
-                                           ['planoid'   => $tipo]
-                                          );
-                }if(!isset($convId)){
+            $planoid = $request->input('NplanoId');
+            if(isset($mat, $planoid)){
+                $convenio = DB::select(DB::raw("select idconvenio, matricula, planoid from convenios where pacienteid = '$id'"));
+                foreach($convenio as $conv){}
+                if(isset($conv->idconvenio) && (($mat != $conv->matricula) || ($planoid != $conv->planoid)) ){
+                    DB::select(DB::raw("update convenios set matricula = '$mat', planoid = '$planoid' where pacienteid = '$id'"));
+                }if(isset($conv->idconvenio) == null){
                     $convenio = new Convenio;
-                    $convenio->matricula    = $request->input('Nmat');
-                    $convenio->planoid      = $request->input('NidPlan');
+                    $convenio->matricula    = $mat;
+                    $convenio->planoid      = $planoid;
                     $convenio->pacienteid   = $id;
                     $convenio->save();
                 }
             }
             //return view('paciente.find', compact($p));
-            return response($request);
+            //return response($request);
         }  
     }
 

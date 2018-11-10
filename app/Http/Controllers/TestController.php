@@ -35,7 +35,15 @@ class TestController extends Controller
     			$bool2 = 'Passou por dentro do if';
     		}
     	}
+        foreach ($query as $q) {
+            
+        }
+        $i = count($query);
 
-    	return response()->json($bool2);
+                $convenio = DB::select(DB::raw("select idconvenio, matricula, planoid from convenios where pacienteid = '50'"));
+                foreach($convenio as $conv){}
+                
+
+    	return response()->json(isset($conv->idconvenio) == null );
     }
 }
