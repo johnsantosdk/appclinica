@@ -78,7 +78,7 @@
         </nav>
         <main class="py-4">
             <div id="includes">
-                @include('layouts._include._flash_message')
+                {{--  @include('layouts._include._flash_message')--}}
             </div>
             @yield('content')
         </main>

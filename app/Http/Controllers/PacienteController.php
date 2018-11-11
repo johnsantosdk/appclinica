@@ -210,31 +210,28 @@ class PacienteController extends Controller
      */
     public function updatePaciente(Request $request)
     {
-        $id = $request->input('NidPaci');
-        $telR = $request->input('NtelR');
-        $telE = $request->input('NtelE');
-        $telC = $request->input('NtelC');
-
         if($request->ajax()){
-            $paciente = DB::table('pacientes')
-                          ->where('idpaciente', $id)
-                          ->update(['nome'          => $request->input('Nnome')],
-                                   ['sexo'          => $request->input('Nsexo')],
-                                   ['nascimento'    => $request->input('Nnasc')],
-                                   ['cpf'           => $request->input('Ncpf')],
-                                   ['email'         => $request->input('Nemail')]
-                                  );
+            $id     = $request->input('NidPaci');
+            $nome   = $request->input('Nnome');
+            $sexo   = $request->input('Nsexo');
+            $nasc   = $request->input('Nnasc');
+            $cpf    = $request->input('Ncpf');
+            $email  = $request->input('Nemail');
+            $telR   = $request->input('NtelR');
+            $telE   = $request->input('NtelE');
+            $telC   = $request->input('NtelC');
 
+            DB::select(DB::raw("UPDATE pacientes SET nome = '$nome', sexo = '$sexo', nascimento = '$nasc', cpf = '$cpf', email = '$email' WHERE idpaciente = '$id' "));
             if(isset($telR)){
-                $telIdR = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'RES'))"));
-                
-                if(isset($telIdR[0]->idtelefone, $telIdR[0]->numero)){
-                    if($telIdR[0]->numero != $telR){
+                $phoneR = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'RES'))"));
+                foreach($phoneR as $pR){}
+                if(isset($pR->idtelefone, $pR->numero)){
+                    if($pR->numero != $telR){
                         $telefoneR = DB::table('telefones')
-                                       ->where('idtelefone', $telIdR[0]->idtelefone)
+                                       ->where('idtelefone', $pR->idtelefone)
                                        ->update(['numero' => $telR]);
                     }
-                }if(!isset($telIdR[0]->idtelefone)){
+                }if(!isset($pR->idtelefone)){
                     $telefoneR = new Telefone;
                     $telefoneR->tipo = 'RES';
                     $telefoneR->numero = $telR;
@@ -243,14 +240,15 @@ class PacienteController extends Controller
                 }
             }
             if(isset($telE)){
-                $telIdE = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'EMP'))"));
-                if(isset($telIdE[0]->idtelefone, $telIdE[0]->numero)){
-                    if($telIdE[0]->numero != $telE){
+                $phoneE = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'EMP'))"));
+                foreach($phoneE as $pE){}
+                if(isset($pR->idtelefone, $pR->numero)){
+                    if($pR->numero != $telE){
                         $telefoneE = DB::table('telefones')
-                                       ->where('idtelefone', $telIdE[0]->idtelefone)
+                                       ->where('idtelefone', $pR->idtelefone)
                                        ->update(['numero' => $telE]);
                     }
-                }if(!isset($telIdE[0]->idtelefone)){
+                }if(!isset($pR->idtelefone)){
                     $telefoneE = new Telefone;
                     $telefoneE->tipo = 'EMP';
                     $telefoneE->numero = $telE;
@@ -259,15 +257,16 @@ class PacienteController extends Controller
                 }
             }
             if(isset($telC)){
-                $telIdC = DB::select(DB::raw("select idtelefone, numero from telefones where ((pacienteid = '$id') and (tipo = 'CEL'))"));
-                if(isset($telIdC[0]->idtelefone, $telIdC[0]->numero)){
-                    if($telIdC[0]->numero != $telC){
+                $phoneC = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'CEL'))"));
+                foreach($phoneC as $pC){}
+                if(isset($pC->idtelefone, $pC->numero)){
+                    if($pC->numero != $telC){
                         $telefoneC = DB::table('telefones')
-                                    ->where('idtelefone', $telIdC[0]->idtelefone)
+                                    ->where('idtelefone', $pC->idtelefone)
                                     ->update(['numero' => $telC]);
                     }
                 }
-                if(!isset($telIdC[0]->idtelefone)){
+                if(!isset($pC->idtelefone)){
                     $telefoneC = new Telefone;
                     $telefoneC->tipo = 'CEL';
                     $telefoneC->numero = $telC;
@@ -278,10 +277,10 @@ class PacienteController extends Controller
             $mat = $request->input('Nmat');
             $planoid = $request->input('NplanoId');
             if(isset($mat, $planoid)){
-                $convenio = DB::select(DB::raw("select idconvenio, matricula, planoid from convenios where pacienteid = '$id'"));
+                $convenio = DB::select(DB::raw("SELECT idconvenio, matricula, planoid FROM convenios WHERE pacienteid = '$id'"));
                 foreach($convenio as $conv){}
                 if(isset($conv->idconvenio) && (($mat != $conv->matricula) || ($planoid != $conv->planoid)) ){
-                    DB::select(DB::raw("update convenios set matricula = '$mat', planoid = '$planoid' where pacienteid = '$id'"));
+                    DB::select(DB::raw("UPDATE convenios SET matricula = '$mat', planoid = '$planoid' WHERE pacienteid = '$id'"));
                 }if(isset($conv->idconvenio) == null){
                     $convenio = new Convenio;
                     $convenio->matricula    = $mat;
@@ -290,8 +289,7 @@ class PacienteController extends Controller
                     $convenio->save();
                 }
             }
-            //return view('paciente.find', compact($p));
-            //return response($request);
+            return response($request);
         }  
     }
 

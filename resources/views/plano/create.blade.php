@@ -47,7 +47,7 @@
 							<tr id="plano{{ $plano->idplano }}">
 								<th scope="row">{{ $plano->idplano}}</th>
 								<td>{{ $plano->nome }}</td>
-								@if ($plano->status_plano == 1)
+								@if ($plano->status == 1)
 								 	<td class="statusTrue">ATIVO</td>
 								@else
 									<td class="statusFalse">SUSPENSO</td>
@@ -112,6 +112,7 @@
                     
                 $('#form-edit-plano').show();
                 $('.modal-title').text('Editar Plano');
+                console.log(data);
             });
         });
     //<<<END <<SHOW EDIT MODAL>>
@@ -139,7 +140,8 @@
                     }
 
                 })
-                    location.reload();
+                    console.log(data);
+                    //location.reload();
             });
     //<<<END <<UPDATE MODAL>>
 
@@ -149,17 +151,17 @@
             var nome = $(this).data('nome');
             var status = $(this).data('status');
             $.post('{{ action('PlanoController@showPlano') }}', {id:id}, function(data){
-                $('#deletePlanoModal').find('input#Iid').val(data.idplano)
-                $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.id);
+                $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.idplano);
                 $('#deletePlanoModal').find('p#nome').html('<strong style="font-size:18px">Name:</strong> '+data.nome);
+                var status = ["ATIVO", "SUSPENSO"];
                 if(data.status == 1){
-                    var status = ["ATIVO", "SUSPENSO"];
                     $('#deletePlanoModal').find('p#status').html('<strong style="font-size:18px">Status:</strong> '+status[0]);
                 }else
                     $('#deletePlanoModal').find('p#status').html('<strong style="font-size:18px">Status:</strong> '+status[1]);
                 //------------------------------------------------------------------
                 $('.modal-body').show();
                 $('.modal-title').text('Deletar Plano');
+                               console.log(data);
                 });
         });
     //<<<END <<SHOW MODAL DELETE>>
@@ -174,11 +176,15 @@
                 success: function(data)
                 {
                     console.log(data);
-                    $('#planos-list tr#plano'+data.id).remove();
+                    $('#planos-list tr#plano'+data.idplano).remove();
                     $('#deletePlanoModal').closest();
+                },
+                errors: function(data)
+                {
+                    console.log("falhou");
                 }
             })
-            location.reload();
+            //location.reload();
         });
     //<<<END <<DELETE PLANO NODEL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}

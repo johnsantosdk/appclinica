@@ -84,8 +84,8 @@
 						{{--  <input type="number" id="IidConv" name="NidConv" value="" hidden>
 						<input type="number" id="IidTelR" name="NidTelR" value="" hidden>
 						<input type="number" id="IidTelE" name="NidTelE" value="" hidden>
-						<input type="number" id="IidTelC" name="NidTelC" value="" hidden>--}}
-						<input type="number" id="IidPlan" name="NidPlan" value="" hidden>
+						<input type="number" id="IidTelC" name="NidTelC" value="" hidden>
+						<input type="number" id="IidPlan" name="NidPlan" value="" hidden>--}}
 						<input type="number" id="IidAten" name="NidAten" value="1" hidden>
 					</div>
 				</fieldset>

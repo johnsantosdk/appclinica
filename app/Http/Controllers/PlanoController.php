@@ -6,6 +6,7 @@ use App\Plano;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PlanoRequest;
 
 class PlanoController extends Controller
@@ -87,10 +88,10 @@ class PlanoController extends Controller
     {
         if($request->ajax())
         {
-            $id = $request->idplano;
-            $plano = Plano::find($id);
-            
-            return Response($plano);
+            $id = $request->id;
+            $planos = DB::select(DB::raw("SELECT idplano, nome, status FROM planos WHERE idplano = '$id'"));
+            foreach($planos as $plano){}
+            return response()->json($plano);
         }
     }
 
@@ -98,11 +99,10 @@ class PlanoController extends Controller
     {
         if($request->ajax())
         {
-            $id = $request->idplano;
-
-            $plano = Plano::find($id);
-
-            return Response($plano);
+            $id = $request->id;
+            $planos = DB::select(DB::raw("SELECT idplano, nome, status FROM planos WHERE idplano = '$id'"));
+            foreach($planos as $plano){}
+            return response()->json($plano);
         }
 
         //return Response($plano);
@@ -124,11 +124,10 @@ class PlanoController extends Controller
         if($request->ajax())
         {
             $id = $request->input('Nid');
-            $plano = Plano::find($id);
-            $plano->status = $request->input('Nstatus');
-            $plano->save();
+            $status = $request->input('Nstatus');
+            DB::select(DB::raw("UPDATE planos SET status = '$status' WHERE idplano = '$id'"));
 
-            return Response($request);
+            return response($request);
         }
     }
 
@@ -143,10 +142,7 @@ class PlanoController extends Controller
         if($request->ajax())
         {
             $id = $request->input('Nid');
-
-            $plano = Plano::find($id);
-
-            $plano->delete();
+            DB::select(DB::raw("DELETE FROM planos WHERE idplano = '$id'"));
 
             Session::flash('flash_message', [
                 'msg' => "O plano foi deletado com SUCESSO",
