@@ -33,9 +33,24 @@ class PacienteRequest extends FormRequest
         ];
     }
 
+    public static function getUpdateRules()
+    {
+        return [
+            'Nnome'     => 'required|max:50',
+            'Nnasc'     => 'required',
+            'Nsexo'     => 'required',
+            'Ncpf'      => 'required|unique:pacientes,cpf|cpf',
+            'Nemail'    => 'unique:pacientes,email|email',
+        ];
+    }
+
     public function rules()
     {
-        return static::getRules();
+        return array_merge(
+            static::getRules(),
+            static::getUpdateRules()
+        );
+        
     }
 
     public static function getMessages()
@@ -52,9 +67,26 @@ class PacienteRequest extends FormRequest
             'Nemail.unique'     => 'Este email já está sendo utilizado.'
         ];
     }
-
+    
+    public static function getUpdateMessages()
+    {
+        return [
+            'Nnome.required'    => 'Digite o nome do paciente.',
+            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc.',
+            'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres.',
+            'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
+            'Ncpf.required'     => 'Informe o cpf.',
+            'Ncpf.cpf'          => 'CPF inválido.',
+            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro.',
+            'Nemail.email'      => 'Este email não é válido.',
+            'Nemail.unique'     => 'Este email já está sendo utilizado.'
+        ];
+    }
     public function messages()
     {
-        return static::getMesssages();
+        return array_merge(
+            static::getMesssages(),
+            static::getUpdateMessages()
+        );
     }
 }

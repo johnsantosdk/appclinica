@@ -10,6 +10,7 @@ use App\Plano;
 use App\Convenio;
 use App\Telefone;
 use App\Http\Requests\MultiploFormPacienteRequest;
+use App\Http\Requests\UpdatePacienteRequest;
 
 class PacienteController extends Controller
 {
@@ -63,10 +64,6 @@ class PacienteController extends Controller
                 'planoid'      => $request->input('NplanoId'),
                 'pacienteid'   => $pacienteId->id,
             ]);
-            //Captura o id gerado acima
-            //$convenioId = Convenio::select('idconvenio')->where('matricula', '=', $convenio->matricula)->first();
-            //enserir no campo convenio_id da tabela paciente
-            //DB::table('pacientes')->where('idpaciente', $pacienteId->id)->update(['convenio_id' => $convenioId->id]);
         }
         //Inserção dos telefones 
        if($request->input('NtelR')){
@@ -74,11 +71,7 @@ class PacienteController extends Controller
                 'tipo'          => 'RES',
                 'numero'        => $request->input('NtelR'),
                 'pacienteid'   => $pacienteId->id,
-            ]);
-
-            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
-
-            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
+            ]);          
         }
         if($request->input('NtelE')){
             $telefone = Telefone::create([
@@ -86,10 +79,6 @@ class PacienteController extends Controller
                 'numero'        => $request->input('NtelE'),
                 'pacienteid'   => $pacienteId->id,
             ]);
-
-            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
-
-            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
         if($request->input('NtelC')){
             $telefone = Telefone::create([
@@ -97,10 +86,6 @@ class PacienteController extends Controller
                 'numero'        => $request->input('NtelC'),
                 'pacienteid'   => $pacienteId->id,
             ]);
-
-            //$telefoneId = Telefone::select('id')->where('numero', '=', $telefone->numero)->first();
-
-            //DB::table('pacientes')->where('id', $pacienteId->id)->update(['telefone_id' => $telefoneId->id]);
         }
 
         if($validado == 1){
@@ -122,9 +107,6 @@ class PacienteController extends Controller
      */
     public function findPaciente(Request $request)
     {
-        //$cpf = $request->input('Ncpf');
-        //$paciente = Paciente::find();
-        //$paciente = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'sexo', 'cpf', 'email')->where('cpf', $cpf)->first();
 
         return view('paciente.find');
     }
@@ -185,14 +167,6 @@ class PacienteController extends Controller
         {
             $id = $request->id;
             
-         /**   $paciente = DB::table('pacientes')
-                          ->leftJoin('convenios', 'convenios.paciente_id', '=', 'pacientes.id')
-                          ->leftJoin('telefones', 'telefones.paciente_id', '=', 'pacientes.id')
-                          ->select('pacientes.nome, pacientes.sexo, pacientes.data_nascimento, pacientes.cpf, pacientes.email, telefones.tipo, telefones.numero, convenios.id, convenios.matricula, convenios.plano_id')
-                          ->where('pacientes.id', '=', $id)
-                          ->get();**/
-            //$paciente = Paciente::find($id);
-            //$convenio = "convenios";
             $paciente = DB::select('call getpaciente(?)', array($id));
             
             return response($paciente);
@@ -208,7 +182,7 @@ class PacienteController extends Controller
      * @param  \App\Paciente  $paciente
      * @return \Illuminate\Http\Response
      */
-    public function updatePaciente(Request $request)
+    public function updatePaciente(UpdatePacienteRequest $request)
     {
         if($request->ajax()){
             $id     = $request->input('NidPaci');
@@ -222,6 +196,7 @@ class PacienteController extends Controller
             $telC   = $request->input('NtelC');
 
             DB::select(DB::raw("UPDATE pacientes SET nome = '$nome', sexo = '$sexo', nascimento = '$nasc', cpf = '$cpf', email = '$email' WHERE idpaciente = '$id' "));
+            
             if(isset($telR)){
                 $phoneR = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'RES'))"));
                 foreach($phoneR as $pR){}
@@ -231,7 +206,7 @@ class PacienteController extends Controller
                                        ->where('idtelefone', $pR->idtelefone)
                                        ->update(['numero' => $telR]);
                     }
-                }if(!isset($pR->idtelefone)){
+                }if(isset($pR->idtelefone) == null){
                     $telefoneR = new Telefone;
                     $telefoneR->tipo = 'RES';
                     $telefoneR->numero = $telR;
@@ -248,7 +223,7 @@ class PacienteController extends Controller
                                        ->where('idtelefone', $pR->idtelefone)
                                        ->update(['numero' => $telE]);
                     }
-                }if(!isset($pR->idtelefone)){
+                }if(isset($pR->idtelefone) == null){
                     $telefoneE = new Telefone;
                     $telefoneE->tipo = 'EMP';
                     $telefoneE->numero = $telE;
@@ -266,7 +241,7 @@ class PacienteController extends Controller
                                     ->update(['numero' => $telC]);
                     }
                 }
-                if(!isset($pC->idtelefone)){
+                if(isset($pC->idtelefone) == null){
                     $telefoneC = new Telefone;
                     $telefoneC->tipo = 'CEL';
                     $telefoneC->numero = $telC;
@@ -289,7 +264,7 @@ class PacienteController extends Controller
                     $convenio->save();
                 }
             }
-            return response($request);
+          return response()->json();
         }  
     }
 

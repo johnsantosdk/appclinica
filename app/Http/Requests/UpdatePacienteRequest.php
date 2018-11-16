@@ -3,11 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\PacienteRequest;
-use App\Http\Requests\ConvenioRequest;
-use App\Http\Requests\TelefoneRequest;
 
-class MultiploFormPacienteRequest extends FormRequest
+class UpdatePacienteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,22 +21,21 @@ class MultiploFormPacienteRequest extends FormRequest
      *
      * @return array
      */
-
-    public function rules()
+        public function rules()
     {
         return array_merge(
-            PacienteRequest::getRules(),
-            ConvenioRequest::getRules(),
-            TelefoneRequest::getRules()
+            PacienteRequest::getUpdateRules(),
+            ConvenioRequest::getUpdateRules(),
+            TelefoneRequest::getUpdateRules()
         );
     }
 
     public function messages()
     {
         return array_merge(
-            PacienteRequest::getMessages(),
-            ConvenioRequest::getMessages(),
-            TelefoneRequest::getMessages()
+            PacienteRequest::getUpdateMessages(),
+            ConvenioRequest::getUpdateMessages(),
+            TelefoneRequest::getUpdateMessages()
         );
     }
 }

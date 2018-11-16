@@ -168,58 +168,23 @@
                 }if(data[0].sexo == 'masculino'){
 					$('#editPacienteModal').find('#Isexo').val("masculino");
             	}
+            	//
                 $('#editPacienteModal').find('#IidPlan').val(data[0].planoid);
                 $('#editPacienteModal').find('#Icpf').val(data[0].cpf).mask('000.000.000-00');
                 $('#editPacienteModal').find('#Iemail').val(data[0].email);
 				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
-                if((data.length == 1) && (data[0].tipo != null) && (data[0].numero != null)) {
-                	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
-                	}
-            	}
-            	if(data.length == 2){
-                	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
-                	}
-                	if(data[1].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[1].numero).mask('(00)0000-0000');
-                	}if(data[1].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[1].numero).mask('(00)0000-0000');
-                	}if(data[1].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[1].numero).mask('(00)00000-0000');
-                	}					
-            	}
-            	if(data.length == 3){
-                	if(data[0].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[0].numero).mask('(00)0000-0000');
-                	}if(data[0].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[0].numero).mask('(00)00000-0000');
-                	}
-                	if(data[1].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[1].numero).mask('(00)0000-0000');
-                	}if(data[1].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[1].numero).mask('(00)0000-0000');
-                	}if(data[1].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[1].numero).mask('(00)00000-0000');
-                	}
-                	if(data[2].tipo == 'RES'){
-						$('#editPacienteModal').find('#ItelR').val(data[2].numero).mask('(00)0000-0000');
-                	}if(data[2].tipo == 'EMP'){
-						$('#editPacienteModal').find('#ItelE').val(data[2].numero).mask('(00)0000-0000');
-                	}if(data[2].tipo == 'CEL'){
-						$('#editPacienteModal').find('#ItelC').val(data[2].numero).mask('(00)00000-0000');
-                	}					
-            	}
+					for (var i = 0; i < data.length; i++) {
+					    if((data[i].tipo != null) && (data[i].numero != null)) {
+					        if(data[i].tipo == 'RES'){
+					            $('#editPacienteModal').find('#ItelR').val(data[i].numero).mask('(00)0000-0000');
+					        }if(data[i].tipo == 'EMP'){
+					            $('#editPacienteModal').find('#ItelE').val(data[i].numero).mask('(00)0000-0000');
+					        }if(data[i].tipo == 'CEL'){
+					            $('#editPacienteModal').find('#ItelC').val(data[i].numero).mask('(00)00000-0000');
+					        }
+					    }
+					}
+				//
                 $('#editPacienteModal').find('#IplanoId').val(data[0].planoid);
                 $('#editPacienteModal').find('#Imat').val(data[0].matricula);   
                 $('#form-edit-plano').show();
@@ -243,7 +208,13 @@
                 },
                 error: function(xhr)
                 {
-					console.log("buceta");
+					var errs = xhr.responseJSON.errors; 
+					console.log(errs);
+					
+				$.each(errs, function (){
+					console.log(text(val[0]));
+				});
+
             	}
 
             });

@@ -14,52 +14,60 @@
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Nnome') ? 'has-error' : ''}}>
 							<label for="Inome">Nome:</label>
 							<input type="text" id="Inome" name="Nnome" class="form-control" value="" >
+							{!! $errors->first('Nnome', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Nnasc') ? 'has-error' : ''}}>
 							<label for="Inasc">Nascimento:</label>
 							<input type="date" id="Inasc" name="Nnasc" class="form-control" value="">
+							{!! $errors->first('Nnasc', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Nsexo') ? 'has-error' : ''}}>
 							<label for="Isexo">Sexo:</label>
 							<select name="Nsexo" id="Isexo" class="form-control">
 								<option value=""></option>
 								<option value="masculino">Masculino</option>
 								<option value="femenino">Femenino</option>
 							</select>
+							{!! $errors->first('Nsexo', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Ncpf') ? 'has-error' : ''}}>
 							<label for="Icpf">CPF:</label>
 							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="">
+							{!! $errors->first('Ncpf', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Nemail') ? 'has-error' : ''}}>
 							<label for="Iemail">E-mail</label>
 							<input type="email" id="Iemail" name="Nemail" class="form-control" value="" >
+							{!! $errors->first('Nemail', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 						<hr>  
 						<fieldset>
 							<legend>Telefones:</legend> 
 							<div class="form-group">
-								<div>
+								<div class="form-group" {{ $errors->has('NtelR') ? 'has-error' : ''}}>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="" >
+									<input type="text" id="ItelR" name="NtelR" class="form-control has-error" placeholder="type here..." value="" >
+									{!! $errors->first('NtelR', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
-								<div>
+								<div class="form-group" {{ $errors->has('NtelE') ? 'has-error' : ''}}>
 									<label for="ItelE">Empresarial:</label>
 									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="">
+									{!! $errors->first('NtelE', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
-								<div>
+								<div class="form-group" {{ $errors->has('NtelC') ? 'has-error' : ''}}>
 									<label for="ItelC">Celular:</label>
 									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="">
+									{!! $errors->first('NtelC', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
 							</div>
 						<fieldset>
 						<legend>Dados do Plano de Saúde</legend>
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('NplanoId') ? 'has-error' : ''}}>
 							<label for="IplanoId">Plano:</label>
 							<select id="IplanoId" name="NplanoId" class="form-control">
 								{{ $i = 0 }}
@@ -70,10 +78,12 @@
 									@endforeach
 								@endif
 							</select>
+							{!! $errors->first('NplanoId', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
-						<div class="form-group">
+						<div class="form-group" {{ $errors->has('Nmat') ? 'has-error' : ''}}>
 							<label for="Imat">Matricula:</label>
 							<input type="text" id="Imat" name="Nmat" class="form-control" value="">
+							{!! $errors->first('Nmat', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 					</fieldset>
 					

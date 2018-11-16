@@ -29,9 +29,21 @@ class ConvenioRequest extends FormRequest
         ];
     }
 
+    public static function getUpdateRules()
+    {
+        return [
+            'Nmat'      => 'required|max:40|alpha_num',
+            'NplanoId'  => 'required|numeric'
+        ];
+    }
+
     public function rules()
     {
-        return static::getRules();
+        return array_merge(
+            static::getRules(),
+            static::getUpdateRules()
+        );
+        
     }
 
     public static function getMessages()
@@ -45,8 +57,22 @@ class ConvenioRequest extends FormRequest
         ];
     }
 
+    public static function getUpdateMessages()
+    {
+        return [
+            'Nmat.required'     => 'Por favor, infome a matricula do plano.',
+            'Nmat.max'          => 'A matricula não pode conter mais que 40 caracters',
+            'Nmat.alpha_num'    => 'Há a presença de caracteres especais no campo matricula.',
+            'NplanoId.required' => 'Por favor, selecione o plano do paciente.',
+            'NplanoId.numeric'  => 'ERRO 401 NOT FOUNT.'
+        ];
+    }
+
     public function messages()
     {
-        return static::getMessages();
+        return array_merge(
+            static::getMessages(),
+            static::getUpdateMessages()
+        );
     }
 }

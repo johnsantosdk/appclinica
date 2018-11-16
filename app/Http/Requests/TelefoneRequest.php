@@ -30,9 +30,21 @@ class TelefoneRequest extends FormRequest
         ];
     }
 
+    public static function getUpdateRules()
+    {
+        return [
+            'NtelR' => 'nullable|telefone_com_ddd',
+            'NtelE' => 'nullable|telefone_com_ddd',
+            'NtelC' => 'nullable|celular_com_ddd',
+        ];
+    }
+
     public function rule()
     {
-        return static::getRules();
+        return array_merge(
+            static::getRules(),
+            static::getUpdateRules()
+        );
     }
 
     public static function getMessages()
@@ -44,8 +56,20 @@ class TelefoneRequest extends FormRequest
         ];
     }
 
+    public static function getUpdateMessages()
+    {
+        return [
+            'NtelR.telefone_com_ddd'    => 'Telefone residencial inválido.',
+            'NtelE.telefone_com_ddd'    => 'Telefone empresarial inválido.',
+            'NtelC.celular_com_ddd'     => 'Celular inválido.'
+        ];
+    }
+
     public function messages()
     {
-        return static::getMessages();
+        return array_merge(
+            static::getMessages(),
+            static::getUpdateMessages()
+        );
     }
 }
