@@ -208,13 +208,12 @@
                 },
                 error: function(xhr)
                 {
-					var errs = xhr.responseJSON.errors; 
-					console.log(errs);
-					
-				$.each(errs, function (){
-					console.log(text(val[0]));
-				});
-
+					console.log(xhr);
+                     //1 - Procurar o campo que tem erro de validação
+                     //2 - Inseri o texto de error logo abaixo do campo
+                     $.each(xhr.responseJSON.errors, function(key,value) {
+                        $('#'+key+'-error').append('<p class="help-block alert alert-danger">'+value+'</p>');
+                    }); 
             	}
 
             });
