@@ -18,6 +18,8 @@ class Paciente extends Model
         'cpf',
         'email',
     ];
+    
+    protected $primaryKey = 'idpaciente';
 
     public function consultas() {
 

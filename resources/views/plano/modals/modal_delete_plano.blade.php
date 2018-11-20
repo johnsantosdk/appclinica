@@ -13,7 +13,7 @@
           <div class="form-group row add" hidden>
             <label class="control-label col-sm-2" for="id">ID:</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control" id="Iid" name="Nid">
+              <input type="number" class="form-control" id="Iid" name="Nid" value="">
               <p class="error text-center alert alert-danger hidden"></p>
             </div>
           </div>

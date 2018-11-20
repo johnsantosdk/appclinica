@@ -24,8 +24,8 @@ class ConvenioRequest extends FormRequest
     public static function getRules()
     {
         return [
-            'Nmat'      => 'required|max:40|alpha_num',
-            'NplanoId'  => 'required|numeric'
+            'Nmat'      => 'nullable|max:40|alpha_num',
+            'NplanoId'  => 'nullable|numeric'
         ];
     }
 
@@ -52,8 +52,8 @@ class ConvenioRequest extends FormRequest
             'Nmat.required'     => 'Por favor, infome a matricula do plano.',
             'Nmat.max'          => 'A matricula não pode conter mais que 40 caracters',
             'Nmat.alpha_num'    => 'Há a presença de caracteres especais no campo matricula.',
-            'NplanoId.required' => 'Por favor, selecione o plano do paciente.',
-            'NplanoId.numeric'  => 'ERRO 401 NOT FOUNT.'
+            //'NplanoId.required' => 'Por favor, selecione o plano do paciente.',
+            //'NplanoId.numeric'  => 'ERRO 401 NOT FOUNT.'
         ];
     }
 

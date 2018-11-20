@@ -19,7 +19,7 @@
 					<div class="col">
 						<div class="form-group">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control">
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" placeholder="000.000.000-00">
 						</div>
 					</div>
 					<div class="col">
@@ -115,13 +115,13 @@
 			@endif
 		</div>
 	</div>
-	{{--  
-	@if(isset($pacientes))
+	{{-- --}} 
+	@if(isset($pacientes) && count($pacientes) > 1)
 		<div class="text-center">
 	        {{   $pacientes->links() }}
 	    </div>
 	@endif
-	--}}
+	
 </div>
 
 {{-- includes de modals --}}
@@ -137,13 +137,15 @@
 	$("#searchSubmit").click(function(){
         $("#testFade").fadeOut(1000)
     });
+
+
 		//>>>BEGIN <<REQUEST FROM DATABASE>>
 		//<<<END REQUEST FROM DATABASE
 
 	    //>>>BEGIN <<EDIT MODAL>>
         $(document).on('click','#tableEditButton', function(){
             var id = $(this).data('id');
-
+			$('#paciente-success').hide(1000);
             $.post('{{ action('PacienteController@editPaciente') }}', {id:id}, function(data){
                     //MASKARAS
 				    //$('#editPacienteModal').find('#Icpf').mask('000.000.000-00');
@@ -193,7 +195,6 @@
         });
 
     //<<<END <<EDIT MODAL>>
-
     //>>>BEGIN <<UPDATE MODAL>>
         $('#buttonSubmitFormPaciente').click(function(){
             var formData = $('#form-edit-paciente').serialize();
@@ -205,6 +206,9 @@
                 success: function(data)
                 { 
                     console.log(data);
+             		$('#editPacienteModal').show().scrollTop(0);
+                    $('#paciente-success').show("slow");
+                    
                 },
                 error: function(xhr)
                 {
@@ -213,12 +217,13 @@
                      //2 - Inseri o texto de error logo abaixo do campo
                      $.each(xhr.responseJSON.errors, function(key,value) {
                         $('#'+key+'-error').append('<p class="help-block alert alert-danger">'+value+'</p>');
-                    }); 
+                    });
+
             	}
-
             });
-
+            $('p.help-block').remove();
         });
+
     //<<<END <<UPDATE MODAL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

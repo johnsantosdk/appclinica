@@ -14,8 +14,10 @@ class Convenio extends Model
         'idconvenio',
         'matricula',
         'pacienteid',
-        'planoid'
+        'planoid',
     ];
+
+    protected $primaryKey = 'idconvenio';
 
     public function paciente() {
 

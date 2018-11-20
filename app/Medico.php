@@ -9,7 +9,16 @@ use App\Especialidade;
 
 class Medico extends Model
 {
-    //
+    protected $fillable = [
+    	'idmedico',
+        'nome',
+    	'cpf',
+    	'crm',
+    ];
+
+    protected $primaryKey = 'idmedico';
+
+
 	//Um médico pode ter várias consultas marcadas para ele
     public function consulta() {
 

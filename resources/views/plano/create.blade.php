@@ -11,22 +11,35 @@
 <div class="container">
 
 	<div class='row'>
+            @if (Session::has('flash_message'))
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div align="center" class="alert {{Session::get('flash_message')['class']}}">
+                                {{ Session::get('flash_message')['msg'] }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 		<div class="col-sm-10">
 			<form action="{{ action('PlanoController@store') }}" method="GET" class="form-createPlano">
 				{{ csrf_field() }}
 				<fieldset>
 					<legend>Plano</legend>
-					<div class="form-group">
+					<div class="form-group" {{ $errors->has('Nnome') ? 'has-error' : ''}}>
 						<label for="Inome">Nome:</label>
-						<input type="text" id="Inome" name="Nnome" class="form-control" style="text-transform:uppercase" autofocus>
-					</div>
-					<div class="form-group">
+						<input type="text" id="Inome" name="Nnome" class="form-control" style="text-transform:uppercase" value="{{ old('Nnome') }}" autofocus>
+					    {!! $errors->first('Nnome', '<p class="help-block alert alert-danger">:message</p>') !!}
+                    </div>
+					<div class="form-group" {{ $errors->has('Nstatus') ? 'has-error' : ''}}>
 						<label for="Istatus">Status:</label>
 						<select id="Istatus" name="Nstatus" class="form-control" placeholder="Status do Plano">
 							<option value=""></option>
 							<option value="{{ 1 }}" class="optionTrue">Ativo</option>
 							<option value="{{ 0 }}" class="optionFalse">Suspenso</option>
 						</select>
+                        {!! $errors->first('Nstatus', '<p class="help-block alert alert-danger">:message</p>') !!}
 					</div>
 				</fieldset>
 				<button type="submit" class="btn btn-primary">Registrar</button>
@@ -151,6 +164,7 @@
             var nome = $(this).data('nome');
             var status = $(this).data('status');
             $.post('{{ action('PlanoController@showPlano') }}', {id:id}, function(data){
+                $('#deletePlanoModal').find('#Iid').val(data.idplano);
                 $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.idplano);
                 $('#deletePlanoModal').find('p#nome').html('<strong style="font-size:18px">Name:</strong> '+data.nome);
                 var status = ["ATIVO", "SUSPENSO"];
@@ -175,7 +189,6 @@
                 data : $("#form-delete-plano").serialize(),
                 success: function(data)
                 {
-                    console.log(data);
                     $('#planos-list tr#plano'+data.idplano).remove();
                     $('#deletePlanoModal').closest();
                 },
@@ -184,7 +197,7 @@
                     console.log("falhou");
                 }
             })
-            //location.reload();
+            location.reload();
         });
     //<<<END <<DELETE PLANO NODEL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}

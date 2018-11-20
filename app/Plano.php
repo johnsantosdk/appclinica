@@ -10,10 +10,12 @@ class Plano extends Model
 	protected $fillable = [
         'idplano',
         'nome',
-        'status'
+        'status',
     ];
 
-    public function caonvenios() {
+    protected $primaryKey = 'idplano';
+
+    public function convenios() {
 
     	return $this->hasMany('App\Convenios', 'planoid');
     }

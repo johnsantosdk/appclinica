@@ -8,6 +8,16 @@ class Consulta extends Model
 {
     //
 
+    protected $fillable [
+        'idconsulta',
+        'data_consulta',
+        'horario',
+        'pacienteid',
+        'medicoid',
+    ];
+
+     protected $primaryKey = 'idconsulta';
+
     public function paciente() {
 
     	return $this->belongsTo('App\Paciente');

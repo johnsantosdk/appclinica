@@ -39,8 +39,8 @@ class PacienteRequest extends FormRequest
             'Nnome'     => 'required|max:50',
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
-            'Ncpf'      => 'required|unique:pacientes,cpf|cpf',
-            'Nemail'    => 'unique:pacientes,email|email',
+            'Ncpf'      => 'required|cpf',
+            'Nemail'    => 'email|email',
         ];
     }
 
@@ -57,14 +57,14 @@ class PacienteRequest extends FormRequest
     {
         return [
             'Nnome.required'    => 'Digite o nome do paciente.',
-            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc.',
-            'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres.',
-            'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
-            'Ncpf.required'     => 'Informe o cpf.',
-            'Ncpf.cpf'          => 'CPF inválido.',
-            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro.',
-            'Nemail.email'      => 'Este email não é válido.',
-            'Nemail.unique'     => 'Este email já está sendo utilizado.'
+            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
+            'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres. ',
+            'Nnasc.required'    => 'Por favor, informe a data de nascimento. ',
+            'Ncpf.required'     => 'Informe o cpf. ',
+            'Ncpf.cpf'          => 'CPF inválido. ',
+            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro. ',
+            'Nemail.email'      => 'Este email não é válido. ',
+            'Nemail.unique'     => 'Este email já está sendo utilizado. '
         ];
     }
     
@@ -72,14 +72,14 @@ class PacienteRequest extends FormRequest
     {
         return [
             'Nnome.required'    => 'Digite o nome do paciente.',
-            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc.',
-            'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres.',
+            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
+            'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres. ',
             'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
-            'Ncpf.required'     => 'Informe o cpf.',
-            'Ncpf.cpf'          => 'CPF inválido.',
-            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro.',
-            'Nemail.email'      => 'Este email não é válido.',
-            'Nemail.unique'     => 'Este email já está sendo utilizado.'
+            'Ncpf.required'     => 'Por favor, informe o cpf. ',
+            'Ncpf.cpf'          => 'O CPF informado é inválido. ',
+            'Ncpf.unique'       => 'Este CPF pertence a outro cadastro. ',
+            'Nemail.email'      => 'Este email não é válido. ',
+            'Nemail.unique'     => 'Este email já está sendo utilizado. '
         ];
     }
     public function messages()

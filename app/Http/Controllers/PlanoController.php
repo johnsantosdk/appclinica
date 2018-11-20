@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Plano;
+use App\Telefone;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
@@ -43,7 +44,7 @@ class PlanoController extends Controller
     {
         if($request->all()){
             $plano = Plano::create([
-                'nome'          => mb_convert_case($request->input('Nnome'), MB_CASE_TITLE,"UTF-8"),
+                'nome'    => mb_convert_case($request->input('Nnome'), MB_CASE_TITLE,"UTF-8"),
                 'status'  => $request->input('Nstatus'),
             ]);
 
@@ -54,7 +55,7 @@ class PlanoController extends Controller
 
             return redirect()->back();
         }else
-            return redirect()->back();
+            return redirect()->back()->withInput();
     }
 
     /**
@@ -142,13 +143,17 @@ class PlanoController extends Controller
         if($request->ajax())
         {
             $id = $request->input('Nid');
-            DB::select(DB::raw("DELETE FROM planos WHERE idplano = '$id'"));
+            if(isset($id)){
+                $telefone = Plano::find($id);
+                $telefone->delete();
 
-            Session::flash('flash_message', [
-                'msg' => "O plano foi deletado com SUCESSO",
-                'class' => "alert-success"
-            ]);
+                Session::flash('flash_message', [
+                    'msg' => "O plano foi deletado com SUCESSO",
+                    'class' => "alert-success"
+                ]);
+            }
+
         }
-
+        return response()->json(200);
     }
 }

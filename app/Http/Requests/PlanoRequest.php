@@ -13,10 +13,6 @@ class PlanoRequest extends FormRequest
      */
     public function authorize()
     {
-        //$plano = Plano::find($this->route('plano.update'));
-
-        //return $plano && $this->user()->can('update', $comment);
-
         return true;
     }
 

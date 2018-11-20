@@ -1,12 +1,15 @@
 <!-- Modal Edit-->
 <div class="modal fade" id="editPacienteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">  
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" id="modal-content">
       <div class="modal-header modal-edit-css">
         <h5 class="modal-title" id="editPacienteLabel">Editar Cadastro de Paciente</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+      </div>
+      <div class="alert alert-success" id="paciente-success" style="display:none;">
+      	<p>A atualização dos dados foram realizados com <strong>SUCESSO</strong>!</p>
       </div>
       <div class="modal-body">
 			{{-- Form de visulalização e edição --}}
@@ -16,7 +19,7 @@
 						<legend>Dados do Paciente</legend>
 						<div class="form-group" id="Nnome-error">
 							<label for="Inome">Nome:</label>
-							<input type="text" id="Inome" name="Nnome" class="form-control" value="" >
+							<input type="text" id="Inome" name="Nnome" class="form-control" value="" readonly="true">
 						</div>
 
 						<div class="form-group" id="Nnasc-error">
@@ -33,7 +36,7 @@
 						</div>
 						<div class="form-group" id="Ncpf-error">
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="">
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="" readonly="true">
 						</div>
 
 						<div class="form-group" id="Nemail-error">

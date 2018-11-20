@@ -8,6 +8,14 @@ class Atendente extends Model
 {
     //
 
+    protected $fillable [
+    	'idatendente',
+    	'nome',
+    	'matricula',
+    ];
+
+    protected $primaryKey = 'idatendente';
+
     public function consulta() {
 
 

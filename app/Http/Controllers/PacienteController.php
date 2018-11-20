@@ -56,13 +56,13 @@ class PacienteController extends Controller
         ]);
         //capturando o id inserido para poder gravar o convenio e os telefones se existirem
         $pacienteId = Paciente::select('idpaciente')->where('cpf', '=', $paciente->cpf)->first();
-
+        //return $pacienteId->id;
         //Cadastro do convenio do paciente
         if($request->input('Nmat')){
             $convenio = Convenio::create([
                 'matricula'     => $request->input('Nmat'),
                 'planoid'      => $request->input('NplanoId'),
-                'pacienteid'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->idpaciente,
             ]);
         }
         //Inserção dos telefones 
@@ -70,21 +70,21 @@ class PacienteController extends Controller
             $telefone = Telefone::create([
                 'tipo'          => 'RES',
                 'numero'        => $request->input('NtelR'),
-                'pacienteid'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->idpaciente,
             ]);          
         }
         if($request->input('NtelE')){
             $telefone = Telefone::create([
                 'tipo'          => 'EMP',
                 'numero'        => $request->input('NtelE'),
-                'pacienteid'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->idpaciente,
             ]);
         }
         if($request->input('NtelC')){
             $telefone = Telefone::create([
                 'tipo'          => 'CEL',
                 'numero'        => $request->input('NtelC'),
-                'pacienteid'   => $pacienteId->id,
+                'pacienteid'   => $pacienteId->idpaciente,
             ]);
         }
 
@@ -113,7 +113,8 @@ class PacienteController extends Controller
 
     public function listPaciente(Request $request)
     {
-        
+        $planos = DB::table('planos')->select('idplano', 'nome')->where('status', '=', 1)->orderBy('nome')->get();
+
         if($request->input('Nnome')){
             $string = $request->input('Nnome');
             $pacientes = DB::table('pacientes')
@@ -121,31 +122,31 @@ class PacienteController extends Controller
                            ->where('nome', 'like', '%'.$string.'%')
                            ->orderBy('nome', 'asc')
                            ->get();
-        }
 
-        
+            return view('paciente.find', compact('pacientes', 'planos'));
+        }
         if($request->input('Ncpf')){
             $cpf = $request->input('Ncpf');
             $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
                            ->where('cpf', $cpf)
                            ->get();
-        }
 
+            return view('paciente.find', compact('pacientes', 'planos'));
+        }
         if($request->input('Nnasc')){
             $date = $request->input('Nnasc');
             $pacientes = DB::table('pacientes')
                            ->select('idpaciente', 'nome', 'nascimento', 'cpf')
                            ->where('nascimento', $date)
                            ->get();
-        }
-/**
-        if($request->input('Nnome') || $request->input('Ncpf') || $request->input('Nnasc')){
-            $pacientes = DB::table('pacientes')->select('id', 'nome', 'data_nascimento', 'cpf')->where('nome', 'like', '%'.$request->input('Nnome').'%')->orWhere('cpf', $request->input('Ncpf'))->orWhere('data_nascimento', $request->input('Nnasc'))->paginate(15);
-        }**/
 
-        $planos = DB::table('planos')->select('idplano', 'nome')->where('status', '=', 1)->orderBy('nome')->get();
-        
-        return view('paciente.find', compact('pacientes', 'planos'));
+            return view('paciente.find', compact('pacientes', 'planos'));
+        }else{
+            $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
+                                 ->paginate(5);
+
+            return view('paciente.find', compact('pacientes', 'planos'));
+        }  
     }
 
     /**
@@ -189,14 +190,31 @@ class PacienteController extends Controller
             $nome   = $request->input('Nnome');
             $sexo   = $request->input('Nsexo');
             $nasc   = $request->input('Nnasc');
-            $cpf    = $request->input('Ncpf');
-            $email  = $request->input('Nemail');
+            $cpf    = $request->input('Ncpf');//tratamento para duplicação de cpf
+            $email  = $request->input('Nemail');//tratamento para duplicação de e-mail
             $telR   = $request->input('NtelR');
             $telE   = $request->input('NtelE');
             $telC   = $request->input('NtelC');
+            $paciente = Paciente::find($id);
+            //DB::select(DB::raw("UPDATE pacientes SET nome = '$nome', sexo = '$sexo', nascimento = '$nasc', cpf = '$cpf', email = '$email' WHERE idpaciente = '$id' "));
+            if(isset($nome) && ($nome != $paciente->nome)){
+                $paciente->nome = $nome;
+            }
+            if(isset($sexo) && ($sexo != $paciente->sexo)){
+                $paciente->sexo = $sexo;
+            }
+            if(isset($nasc) && ($nasc != $paciente->nascimento)){
+                $paciente->nascimento = $nasc;
+            }
+            if(isset($cpf) && ($cpf != $paciente->cpf)){
+                $paciente->cpf = $cpf;
+            }
+            if(isset($email) && ($email != $paciente->email)){
+                $paciente->email = $email;
+            }
+            //salva as alterações
+            $paciente->save();
 
-            DB::select(DB::raw("UPDATE pacientes SET nome = '$nome', sexo = '$sexo', nascimento = '$nasc', cpf = '$cpf', email = '$email' WHERE idpaciente = '$id' "));
-            
             if(isset($telR)){
                 $phoneR = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'RES'))"));
                 foreach($phoneR as $pR){}
@@ -217,10 +235,10 @@ class PacienteController extends Controller
             if(isset($telE)){
                 $phoneE = DB::select(DB::raw("SELECT idtelefone, numero FROM telefones WHERE ((pacienteid = '$id') AND (tipo = 'EMP'))"));
                 foreach($phoneE as $pE){}
-                if(isset($pR->idtelefone, $pR->numero)){
-                    if($pR->numero != $telE){
+                if(isset($pE->idtelefone, $pE->numero)){
+                    if($pE->numero != $telE){
                         $telefoneE = DB::table('telefones')
-                                       ->where('idtelefone', $pR->idtelefone)
+                                       ->where('idtelefone', $pE->idtelefone)
                                        ->update(['numero' => $telE]);
                     }
                 }if(isset($pR->idtelefone) == null){
@@ -264,7 +282,7 @@ class PacienteController extends Controller
                     $convenio->save();
                 }
             }
-          return response()->json();
+          return response()->json(200);
         }  
     }
 
