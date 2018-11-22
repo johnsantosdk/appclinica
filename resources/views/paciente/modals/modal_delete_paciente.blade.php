@@ -9,15 +9,20 @@
         </button>
       </div>
       <div class="modal-body">
-              <p id="deleteModalNome"><strong>Nome</strong>: </p>
-              <p id="deleteModalCpf"><strong>CPF</strong>: </p>
-              <p id="deleteModalNasc"><strong>Data Nascimento</strong>: </p>
-              <p id="deleteModalEmail"><strong>Email</strong>: </p>
-              <p id="deleteModalContato"><strong>Contato</strong>: </p>
+        <p id="deleteModalId"></p>
+        <p id="deleteModalNome"></p>
+        <p id="deleteModalNasc"></p>
+        <p id="deleteModalCpf"></p>
+        <p id="deleteModalEmail"></p>
       </div>
+      <form action="{{ route('paciente.destroyPaciente') }}" method="POST" id="form-delete-paciente" hidden>
+        <div class="form-group">
+          <input type="number" id="Iid" name="Nid" value="">
+        </div>
+      </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="deleteButtonModal">Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Fechar</button>
+        <button type="submit" class="btn btn-primary" id="deleteButtonModalPaciente">Deletar Cadastro</button>
       </div>
     </div>
   </div>

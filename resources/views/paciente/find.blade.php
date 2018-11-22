@@ -139,10 +139,9 @@
     });
 
 
-		//>>>BEGIN <<REQUEST FROM DATABASE>>
-		//<<<END REQUEST FROM DATABASE
-
-	    //>>>BEGIN <<EDIT MODAL>>
+	//>>>BEGIN <<REQUEST FROM DATABASE>>
+	//<<<END REQUEST FROM DATABASE
+	//>>>BEGIN <<EDIT MODAL>>
         $(document).on('click','#tableEditButton', function(){
             var id = $(this).data('id');
 			$('#paciente-success').hide(1000);
@@ -154,7 +153,7 @@
 				    $('#editPacienteModal').find('#ItelE').mask('(00)0000-0000');
 				    //Máscara para telefone celular
 				    $('#editPacienteModal').find('#ItelC').mask('(00)00000-0000');
-               console.log(data)
+               //console.log(data)
                 //LIMPA O FORMULÁRIO ANTES DE INSERIR AS INFORMAÇÕES
                 $(':input','#form-edit-paciente')
   				.not(':button, :submit, :reset, :hidden')
@@ -193,7 +192,6 @@
                 $('.modal-title').text('Editar Plano');
             });
         });
-
     //<<<END <<EDIT MODAL>>
     //>>>BEGIN <<UPDATE MODAL>>
         $('#buttonSubmitFormPaciente').click(function(){
@@ -205,14 +203,14 @@
                 data: formData,
                 success: function(data)
                 { 
-                    console.log(data);
+                    //console.log(data);
              		$('#editPacienteModal').show().scrollTop(0);
                     $('#paciente-success').show("slow");
                     
                 },
                 error: function(xhr)
                 {
-					console.log(xhr);
+					//console.log(xhr);
                      //1 - Procurar o campo que tem erro de validação
                      //2 - Inseri o texto de error logo abaixo do campo
                      $.each(xhr.responseJSON.errors, function(key,value) {
@@ -223,7 +221,47 @@
             });
             $('p.help-block').remove();
         });
-
     //<<<END <<UPDATE MODAL>>
+    //>>>BEGIN <<SHOW MODAL DELETE>>
+        $(document).on('click', '#tableDeleteButton', function(){
+            var id = $(this).data('id');
+			console.log('id = '+id+' antes de exluir');
+            $.post('{{ route('paciente.showPaciente') }}', {id:id}, function(data){
+                $('#deletePacienteModal').find('input#Iid').val(data.idpaciente);
+                $('#deletePacienteModal').find('p#deleteModalId').html('<strong style="font-size:18px">ID:</strong> '+data.idpaciente);
+                $('#deletePacienteModal').find('p#deleteModalNome').html('<strong style="font-size:18px">Nome:</strong> '+data.nome);
+                $('#deletePacienteModal').find('p#deleteModalNasc').html('<strong style="font-size:18px">Data Nascimento:</strong> '+data.nascimento);
+                $('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CPF:</strong> '+data.cpf);
+                $('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">E-mail:</strong> '+data.email);
+                
+                //------------------------------------------------------------------
+                $('.modal-body').show();
+                $('.modal-title').text('Deletar Paciente');
+                               console.log(data);
+                });
+        });
+    //<<<END <<SHOW MODAL DELETE>>
+    //>>>BEGIN <<DELETE PLANO NODEL>>
+        $("#deleteButtonModalPaciente").click(function(){
+            $.ajax({
+                type : 'POST',
+                url  : '{{ action('PacienteController@destroyPaciente') }}',
+                datatype: 'json',
+                data : $("#form-delete-paciente").serialize(),
+                success: function(data)
+                {
+                	console.log('Dados vindo do controller'+ data);
+                    $('tr#paciente'+data).remove();
+                    $('#deletePacienteModal').closest();
+                    $('#closeModal').trigger('click');
+                },
+                errors: function(xhr)
+                {
+                    console.log("FAIL");
+                }
+            })
+            //location.reload();
+        });
+    //<<<END <<DELETE PLANO NODEL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

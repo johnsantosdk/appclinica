@@ -292,8 +292,31 @@ class PacienteController extends Controller
      * @param  \App\Paciente  $paciente
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Paciente $paciente)
+    public function showPaciente(Request $request)
     {
-        //
+        if($request->ajax()){
+            $id = $request->id;
+            $paciente = Paciente::find($id);
+
+            return response()->json($paciente);
+        }
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Paciente  $paciente
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyPaciente(Request $request)
+    {
+        if($request->ajax()){
+            $id = $request->input('Nid');
+            $paciente = Paciente::find($id);
+            $paciente->delete();
+
+            return response()->json($id);
+
+        }        
+    }
+
 }

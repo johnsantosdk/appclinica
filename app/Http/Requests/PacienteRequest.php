@@ -25,22 +25,22 @@ class PacienteRequest extends FormRequest
     public static function getRules()
     {
         return [
-            'Nnome'     => 'required|max:50',
+            'Nnome'     => 'required|regex:/[^0-9][A-Za-z]$/|max:50',
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
             'Ncpf'      => 'required|unique:pacientes,cpf|cpf',
-            'Nemail'    => 'unique:pacientes,email|email',
+            'Nemail'    => 'nullable|unique:pacientes,email|email',
         ];
     }
 
     public static function getUpdateRules()
     {
         return [
-            'Nnome'     => 'required|max:50',
+            'Nnome'     => 'required|alpha|max:50',
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
             'Ncpf'      => 'required|cpf',
-            'Nemail'    => 'email|email',
+            'Nemail'    => 'nullable|email|email',
         ];
     }
 
@@ -57,11 +57,12 @@ class PacienteRequest extends FormRequest
     {
         return [
             'Nnome.required'    => 'Digite o nome do paciente.',
-            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
+            'Nnome.regex'       => 'Não é aceito números [1,2,3, ...] e nem caracters especiais, como: [!,@,#,$,%,¨,&,*,(,),{,},-,=,+,§,.. etc.]',
             'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres. ',
             'Nnasc.required'    => 'Por favor, informe a data de nascimento. ',
-            'Ncpf.required'     => 'Informe o cpf. ',
-            'Ncpf.cpf'          => 'CPF inválido. ',
+            'Nsexo.required'    => 'Por favor, informe o sexo. ',
+            'Ncpf.required'     => 'Por favor, informe o cpf. ',
+            'Ncpf.cpf'          => 'O CPF informado é inválido. ',
             'Ncpf.unique'       => 'Este CPF pertence a outro cadastro. ',
             'Nemail.email'      => 'Este email não é válido. ',
             'Nemail.unique'     => 'Este email já está sendo utilizado. '
@@ -72,9 +73,10 @@ class PacienteRequest extends FormRequest
     {
         return [
             'Nnome.required'    => 'Digite o nome do paciente.',
-            'Nnome.alpha'       => 'Não é aceito caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
+            'Nnome.alpha'       => 'Não é aceito números [1,2,3, ...] e nem caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
             'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres. ',
             'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
+            'Nsexo.required'    => 'Por favor, informe o sexo. ',
             'Ncpf.required'     => 'Por favor, informe o cpf. ',
             'Ncpf.cpf'          => 'O CPF informado é inválido. ',
             'Ncpf.unique'       => 'Este CPF pertence a outro cadastro. ',
