@@ -36,7 +36,7 @@ class PacienteRequest extends FormRequest
     public static function getUpdateRules()
     {
         return [
-            'Nnome'     => 'required|alpha|max:50',
+            'Nnome'     => 'required|regex:/[^0-9][A-Za-z]$/|max:50',
             'Nnasc'     => 'required',
             'Nsexo'     => 'required',
             'Ncpf'      => 'required|cpf',
@@ -73,7 +73,7 @@ class PacienteRequest extends FormRequest
     {
         return [
             'Nnome.required'    => 'Digite o nome do paciente.',
-            'Nnome.alpha'       => 'Não é aceito números [1,2,3, ...] e nem caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
+            'Nnome.regex'       => 'Não é aceito números [1,2,3, ...] e nem caracters especiais, como: !,@,#,$,%,¨,&,*,(,),-,=,+,§,.. etc. ',
             'Nnome.max'         => 'O nome só pode conter no máximo 50 caracteres. ',
             'Nnasc.required'    => 'Por favor, informe a data de nascimento.',
             'Nsexo.required'    => 'Por favor, informe o sexo. ',

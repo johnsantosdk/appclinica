@@ -7,6 +7,9 @@
 <div class="container">
 	<div class='row'>
 		<div class="col-sm-10">
+			<div id="alertDeletetPaciente">
+				
+			</div>
 			<form action="{{ route('paciente.listPaciente') }}" method="post">
 				{{ csrf_field() }}
 				<div class="row">
@@ -164,15 +167,20 @@
                 $('#editPacienteModal').find('#Inome').val(data[0].nome);
                 $('#editPacienteModal').find('#Inasc').val(data[0].nascimento);
                 //
-                if(data[0].sexo == 'femenino'){
+                if(data[0].sexo == 'femenino' || data[0].sexo == 'FEMENINO'){
                 	$('#editPacienteModal').find('#Isexo').val("femenino");
-                }if(data[0].sexo == 'masculino'){
+                }if(data[0].sexo == 'masculino' || data[0].sexo == 'MASCULINO'){
 					$('#editPacienteModal').find('#Isexo').val("masculino");
             	}
             	//
                 $('#editPacienteModal').find('#IidPlan').val(data[0].planoid);
                 $('#editPacienteModal').find('#Icpf').val(data[0].cpf).mask('000.000.000-00');
-                $('#editPacienteModal').find('#Iemail').val(data[0].email);
+                if(data[0].email == null){
+					$('#editPacienteModal').find('#Iemail').val();
+            	}else{
+					$('#editPacienteModal').find('#Iemail').val(data[0].email);
+            	}
+                
 				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
 					for (var i = 0; i < data.length; i++) {
 					    if((data[i].tipo != null) && (data[i].numero != null)) {
@@ -225,6 +233,7 @@
     //>>>BEGIN <<SHOW MODAL DELETE>>
         $(document).on('click', '#tableDeleteButton', function(){
             var id = $(this).data('id');
+            $('#deletePacienteModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p id="deleteModalId"></p><p id="deleteModalNome"></p><p id="deleteModalNasc"></p><p id="deleteModalCpf"></p><p id="deleteModalEmail"></p></div>');
 			console.log('id = '+id+' antes de exluir');
             $.post('{{ route('paciente.showPaciente') }}', {id:id}, function(data){
                 $('#deletePacienteModal').find('input#Iid').val(data.idpaciente);
@@ -232,7 +241,9 @@
                 $('#deletePacienteModal').find('p#deleteModalNome').html('<strong style="font-size:18px">Nome:</strong> '+data.nome);
                 $('#deletePacienteModal').find('p#deleteModalNasc').html('<strong style="font-size:18px">Data Nascimento:</strong> '+data.nascimento);
                 $('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CPF:</strong> '+data.cpf);
-                $('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">E-mail:</strong> '+data.email);
+                if(data.email != null){
+					$('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">E-mail:</strong> '+data.email);
+            	}
                 
                 //------------------------------------------------------------------
                 $('.modal-body').show();
@@ -251,13 +262,14 @@
                 success: function(data)
                 {
                 	console.log('Dados vindo do controller'+ data);
+                	$('#deletePacienteModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p class="help-block alert alert-success text-center">Registro deletado com <strong>SUCESSO!</strong></p></div>');
                     $('tr#paciente'+data).remove();
-                    $('#deletePacienteModal').closest();
-                    $('#closeModal').trigger('click');
+                    //$('#closeModal').trigger('click');
                 },
                 errors: function(xhr)
                 {
                     console.log("FAIL");
+                    $('#deletePacienteModal').find('#modalReplace').replaceWith('<p class="help-block alert alert-info text-center"><strong>OPS!</strong> Algo de errado aconteceu. O registro não foi deletado. Contate o <strong>SUPPORT</strong></p>');
                 }
             })
             //location.reload();

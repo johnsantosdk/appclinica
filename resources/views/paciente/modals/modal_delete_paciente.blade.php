@@ -8,7 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modalReplace">
         <p id="deleteModalId"></p>
         <p id="deleteModalNome"></p>
         <p id="deleteModalNasc"></p>
@@ -22,7 +22,7 @@
       </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Fechar</button>
-        <button type="submit" class="btn btn-primary" id="deleteButtonModalPaciente">Deletar Cadastro</button>
+        <button type="submit" class="btn btn-danger" id="deleteButtonModalPaciente">Deletar Cadastro</button>
       </div>
     </div>
   </div>
