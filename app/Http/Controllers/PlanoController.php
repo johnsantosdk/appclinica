@@ -125,10 +125,13 @@ class PlanoController extends Controller
         if($request->ajax())
         {
             $id = $request->input('Nid');
-            $status = $request->input('Nstatus');
-            DB::select(DB::raw("UPDATE planos SET status = '$status' WHERE idplano = '$id'"));
+            //$status = $request->input('Nstatus');
+            $plano = Plano::find($id);
+            $plano->status = $request->input('Nstatus');
+            $plano->save();
+            //DB::select(DB::raw("UPDATE planos SET status = '$status' WHERE idplano = '$id'"));
 
-            return response($request);
+            return response($plano);
         }
     }
 
@@ -147,10 +150,7 @@ class PlanoController extends Controller
                 $telefone = Plano::find($id);
                 $telefone->delete();
 
-                Session::flash('flash_message', [
-                    'msg' => "O plano foi deletado com SUCESSO",
-                    'class' => "alert-success"
-                ]);
+                return response()->json($id);
             }
 
         }

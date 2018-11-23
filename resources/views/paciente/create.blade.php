@@ -46,13 +46,13 @@
 						</div>
 						<div class="form-group" {{ $errors->has('Ncpf') ? 'has-error' : ''}}>
 							<label for="Icpf">CPF:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" value="{{ old('Ncpf') }}" >
+							<input type="text" id="Icpf" name="Ncpf" class="form-control" placeholder="000.000.000-00" value="{{ old('Ncpf') }}" >
 							{!! $errors->first('Ncpf', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 
 						<div class="form-group" {{ $errors->has('Ncpf') ? 'has-error' : ''}}>
 							<label for="Iemail">E-mail</label>
-							<input type="email" id="Iemail" name="Nemail" class="form-control" value="{{ old('Nemail') }}">
+							<input type="email" id="Iemail" name="Nemail" class="form-control" placeholder="exemplo@yahoo.com" value="{{ old('Nemail') }}">
 							{!! $errors->first('Nemail', '<p class="help-block alert alert-danger">:message</p>') !!}
 						</div>
 						<hr>
@@ -62,17 +62,17 @@
 							<div class="form-group">
 								<div {{ $errors->has('NtelR') ? 'has-error' : ''}}>
 									<label for="ItelR">Residencial:</label>
-									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="type here..." value="{{ old('NtelR') }}">
+									<input type="text" id="ItelR" name="NtelR" class="form-control" placeholder="(00)0000-0000" value="{{ old('NtelR') }}">
 									{!! $errors->first('NtelR', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
 								<div {{ $errors->has('NtelE') ? 'has-error' : ''}}>
 									<label for="ItelE">Empresarial:</label>
-									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="type here..." value="{{ old('NtelE') }}">
+									<input type="text" id="ItelE" name="NtelE" class="form-control bfh-phone" placeholder="(00)0000-0000" value="{{ old('NtelE') }}">
 									{!! $errors->first('NtelE', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
 								<div {{ $errors->has('NtelC') ? 'has-error' : ''}}>
 									<label for="ItelC">Celular:</label>
-									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="type here..." value="{{ old('NtelC') }}">
+									<input type="text" id="ItelC" name="NtelC" class="form-control" placeholder="(00)90000-0000" value="{{ old('NtelC') }}">
 									{!! $errors->first('NtelC', '<p class="help-block alert alert-danger">:message</p>') !!}
 								</div>
 							</div>

@@ -37,3 +37,6 @@ label {
 div {
   margin: 0 0 1rem 0;
 }
+tbody#planos-list tr td{
+	text-align: center;
+}

@@ -50,9 +50,9 @@
 					<thead class="">
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Plano</th>
-							<th scope="col">Status</th>
-							<th scope="col">Ação</th>
+							<th class="text-center" scope="col">Plano</th>
+							<th class="text-center" scope="col">Status</th>
+							<th class="text-center" scope="col">Ação</th>
 						</tr>
 					</thead>
 					<tbody id="planos-list">
@@ -94,7 +94,9 @@
 					<tfooter>
 						<tr>
 							<th scope="col">ID</th>
-							<th scope="col">Plano</th>
+							<th class="text-center" scope="col">Plano</th>
+                            <th class="text-center" scope="col">Status</th>
+                            <th class="text-center" scope="col">Ação</th>
 						</tr>
 					</tfooter>
   				</table>
@@ -138,22 +140,31 @@
                 datatype: 'json',
                 data: $("#form-edit-plano").serialize(),
                 success: function(data)
-                { console.log(data);
+                {
+                    if(data.status = 1){
+                        var status = 'ATIVO';
+                    }else{
+                        status = 'SUSPENSO';
+                    }
                     var tr = $('<tr/>');
                     tr.append($("<td/>",{
                         text : data.idplano
                     })).append($("<td/>",{
                         text : data.nome
                     })).append($("<td/>",{
-                        text : data.status
+                        text : status
                     })).append($("<td/>",{
-                        html: "<button type='button' class='btn btn-info' data-toggle='modal' data-target='#editPlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"' id='tableEditModal'>Editar</button>" + "<button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deletePlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"'>Deletar</button>"
+                        html: "<button type='button' class='btn btn-info text-center' data-toggle='modal' data-target='#editPlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"' id='tableEditModal'>Editar</button>" + " <button type='button' class='btn btn-danger text-center' data-toggle='modal' data-target='#deletePlanoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.status+"'>Deletar</button>"
                     }))
-                    $('#planos-list tr#plano'+data.id).replaceWith(tr);
-                    }
+                    $('tr#plano'+data.idplano).replaceWith(tr);
+                    //console.log('tr#plano'+data.idplano);
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                }
 
-                })
-                    console.log(data);
+                });
+                    //console.log(data);
                     //location.reload();
             });
     //<<<END <<UPDATE MODAL>>
@@ -163,6 +174,7 @@
             var id = $(this).data('id');
             var nome = $(this).data('nome');
             var status = $(this).data('status');
+            $('#deletePlanoModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p style="font-size:18px" id="id"></p><p style="font-size:18px" id="nome"></p><p style="font-size:18px" id="status"></p></div>');
             $.post('{{ action('PlanoController@showPlano') }}', {id:id}, function(data){
                 $('#deletePlanoModal').find('#Iid').val(data.idplano);
                 $('#deletePlanoModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.idplano);
@@ -175,7 +187,7 @@
                 //------------------------------------------------------------------
                 $('.modal-body').show();
                 $('.modal-title').text('Deletar Plano');
-                               console.log(data);
+                
                 });
         });
     //<<<END <<SHOW MODAL DELETE>>
@@ -189,15 +201,18 @@
                 data : $("#form-delete-plano").serialize(),
                 success: function(data)
                 {
-                    $('#planos-list tr#plano'+data.idplano).remove();
+                    console.log(data);
+                    $('#deletePlanoModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p class="help-block alert alert-success text-center">Registro deletado com <strong>SUCESSO!</strong></p></div>');
+                    $('tr#plano'+data).remove();
                     $('#deletePlanoModal').closest();
                 },
                 errors: function(data)
                 {
                     console.log("falhou");
+                    $('#deletePacienteModal').find('#modalReplace').replaceWith('<p class="help-block alert alert-info text-center"><strong>OPS!</strong> Algo de errado aconteceu. O registro não foi deletado. Contate o <strong>SUPPORT</strong></p>');
                 }
             })
-            location.reload();
+            //location.reload();
         });
     //<<<END <<DELETE PLANO NODEL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}

@@ -18,15 +18,11 @@
             </div>
           </div>
         </form>
-        <div>
+        <div class="modal-body" id="modalReplace">
           <p style="font-size:18px" id="id"></p>
-        </div>
-        <div>
           <p style="font-size:18px" id="nome"></p>
-        </div>
-        <div>
           <p style="font-size:18px" id="status"></p>
-        </div> 
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
