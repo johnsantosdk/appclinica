@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Especialidade;
+use App\Medicos_Especialidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class EspecialidadeController extends Controller
 {
@@ -14,7 +17,7 @@ class EspecialidadeController extends Controller
      */
     public function index()
     {
-        //
+        return view('especialidade.index');
     }
 
     /**
@@ -24,7 +27,7 @@ class EspecialidadeController extends Controller
      */
     public function create()
     {
-        //
+        return view('especialidade.create');
     }
 
     /**
@@ -35,7 +38,24 @@ class EspecialidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(isset($request)){
+            $especialidade = Especialidade::create([
+                'nome' => $request->input('Nnome'),
+            ]);
+
+            //Find the especialidade
+            $idesp = Especialidade::find($request->input('Nesp'));
+
+            Session::flash('flash_message', [
+                'msg' => "Especialidade cadastrada,
+                  com SUCESSO!",
+                'class'  => "alert-success"
+            ]);
+
+            return redirect()->route('especialidade.create');
+        }
+
+        return redirect()->route('especialidade.create')->withInput(); 
     }
 
     /**

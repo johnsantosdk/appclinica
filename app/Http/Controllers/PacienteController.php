@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Plano;
+use App\Paciente;
+use App\Convenio;
+use App\Telefone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Paciente;
-use App\Plano;
-use App\Convenio;
-use App\Telefone;
-use App\Http\Requests\MultiploFormPacienteRequest;
 use App\Http\Requests\UpdatePacienteRequest;
+use App\Http\Requests\MultiploFormPacienteRequest;
 
 class PacienteController extends Controller
 {

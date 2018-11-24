@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Medico;
+use App\Especialidade;
+use App\Medicos_Especialidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class MedicoController extends Controller
 {
@@ -14,7 +18,7 @@ class MedicoController extends Controller
      */
     public function index()
     {
-        //
+        return view('medico.index');
     }
 
     /**
@@ -24,7 +28,10 @@ class MedicoController extends Controller
      */
     public function create()
     {
-        //
+        //$especialidades = Especialidade::select('idespecialidade, nome')->get();
+        $especialidades = DB::select(DB::raw("SELECT idespecialidade, nome, cbo FROM especialidades ORDER BY cbo ASC"));
+        
+        return view('medico.create', compact('especialidades'));
     }
 
     /**
@@ -35,9 +42,46 @@ class MedicoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (isset($request)) {
+            $medico = Medico::create([
+                'nome'  => $request->input('Nnome'),
+                'sexo'  => $request->input('Nsexo'),
+                'cpf'   => $request->input('Ncpf'),
+                'crm'   => $request->input('Ncrm'),
+            ]);
+
+            //Find the especialidade
+            $esp = Especialidade::find($request->input('Nesp'));
+            //Insere
+            $medico_esp = Medicos_Especialidade::create([
+                'medicoid' => $medico->idmedico,
+                'especialidadeid' => $esp->idespecialidade,
+            ]);
+
+            Session::flash('flash_message', [
+                'msg' => "Médico cadastrado  com SUCESSO!",
+                'class'  => "alert-success"
+            ]);
+
+            return redirect()->route('medico.create');
+        }
+
+        return redirect()->route('medico.create')->withInput(); 
     }
 
+    public function find()
+    {
+        return view('medico.find');
+    }
+
+    public function list(Request $request)
+    {
+        //$medicos = Medico::select('idmedico, nome, crm')->get();
+        //$medicos = DB::table('medicos')->select('idmedico, nome, crm')->get();
+        $medicos =  DB::select(DB::raw("SELECT idmedico, nome, crm FROM medicos"));
+
+        return view('medico.find', compact('medicos'));
+    }
     /**
      * Display the specified resource.
      *

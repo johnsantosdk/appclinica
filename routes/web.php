@@ -51,6 +51,7 @@ Route::group(['prefix' => 'medico', 'as' => 'medico.'], function() {
 	Route::post('/destroyMedico',		['as' => 'destroyMedico',	'uses' => 'MedicoController@destroyMedico']);//rota de teste para ajax
 	Route::post('/infoMedico',			['as' => 'infoMedico',		'uses' => 'MedicoController@infoMedico']);//rota de teste para ajax
 	Route::post('/store',			 	['as' => 'store',			'uses' => 'MedicoController@store']);
+	Route::match(['get','post'],'/list',['as' => 'list',			'uses' => 'MedicoController@list']);
 	Route::get('/show/{id}',			['as' => 'show',			'uses' => 'MedicoController@show']);
 	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'MedicoController@edit']);
 	Route::put('/update/{id}',		 	['as' => 'update',			'uses' => 'MedicoController@update']);
@@ -108,6 +109,23 @@ Route::group(['prefix' => 'consulta', 'as' => 'consulta.'], function() {
 	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'ConsultaController@edit']);
 	Route::put('/update/{id}',		 	['as' => 'update',			'uses' => 'ConsultaController@update']);
 	Route::get('/destroy/{id}',			['as' => 'destroy',			'uses' => 'ConsultaController@destroy']);
+});
+
+//Rotas para Consulta
+Route::group(['prefix' => 'especialidade', 'as' => 'especialidade.'], function() {
+	//URL = especialidade/index
+	Route::get('/',					 			['as' => 'index',					'uses' => 'EspecialidadeController@index']);
+	Route::get('/create',			 			['as' => 'create',					'uses' => 'EspecialidadeController@create']);
+	Route::post('/addEspecialidade',			['as' => 'addEspecialidade',		'uses' => 'EspecialidadeController@addEspecialidade']);//rota de teste para ajax
+	Route::post('/editEspecialidade{id?}',		['as' => 'editEspecialidade',		'uses' => 'EspecialidadeController@editEspecialidade']);//rota de teste para ajax
+	Route::post('/updateEspecialidade',			['as' => 'updateEspecialidade',		'uses' => 'EspecialidadeController@updateEspecialidade']);//rota de teste para ajax
+	Route::post('/destroyEspecialidade',		['as' => 'destroyEspecialidade',	'uses' => 'EspecialidadeController@destroyEspecialidade']);//rota de teste para ajax
+	Route::post('/infoEspecialidade',			['as' => 'infoEspecialidade',		'uses' => 'EspecialidadeController@infoEspecialidade']);//rota de teste para ajax
+	Route::post('/store',			 			['as' => 'store',					'uses' => 'EspecialidadeController@store']);
+	Route::get('/show/{id}',					['as' => 'show',					'uses' => 'EspecialidadeController@show']);
+	Route::get('/edit/{id}',		 			['as' => 'edit',					'uses' => 'EspecialidadeController@edit']);
+	Route::put('/update/{id}',		 			['as' => 'update',					'uses' => 'EspecialidadeController@update']);
+	Route::get('/destroy/{id}',					['as' => 'destroy',					'uses' => 'EspecialidadeController@destroy']);
 });
 
 //Rotas para Calendario
