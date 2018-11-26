@@ -43,9 +43,6 @@ class EspecialidadeController extends Controller
                 'nome' => $request->input('Nnome'),
             ]);
 
-            //Find the especialidade
-            $idesp = Especialidade::find($request->input('Nesp'));
-
             Session::flash('flash_message', [
                 'msg' => "Especialidade cadastrada,
                   com SUCESSO!",

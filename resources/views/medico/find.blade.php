@@ -12,12 +12,16 @@
 			<form action="{{ route('medico.list') }}" method="post">
 				{{ csrf_field() }}
 				<div class="row">
-					<div class="col">
+					<div class="col-sm-6">
 						<div class="form-group">
 							<label for="Iesp">Especialidade</label>
-							<select class="form-control" name="" id="">
-								<option value="">Ortpedia/Traumatologia</option>
-								<option value="">Clínico Geral</option>
+							<select class="form-control" name="Nesp" id="Iesp">
+								<option value=""></option>
+								@if(isset($especialidades))
+									@foreach($especialidades as $especialidade)
+										<option value="{{ $especialidade->idespecialidade }}">{{ $especialidade->cbo }} - {{ $especialidade->nome }}</option>
+									@endforeach
+								@endif
 							</select>
 						</div>
 					</div>
@@ -29,8 +33,8 @@
 					</div>
 					<div class="col">
 						<div class="form-group">
-							<label for="Icpf">CRM:</label>
-							<input type="text" id="Icpf" name="Ncpf" class="form-control" placeholder="">
+							<label for="Icrm">CRM:</label>
+							<input type="number" id="Icrm" name="Ncrm" class="form-control" placeholder="">
 						</div>
 					</div>
 				</div>
@@ -54,6 +58,7 @@
 								<th scope="col">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CRM</th>
+								<th scope="col" class="text-center">CBO</th>
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</thead>
@@ -63,6 +68,7 @@
 									<th scope="row">{{ $medico->idmedico }}</th>
 									<td class="">{{ $medico->nome }}</td>
 									<td class="text-center">{{ $medico->crm }}</td>
+									<td class="text-center">{{ $medico->especialidade == null ? 'Não cadastrado': $medico->especialidade}}</td>
 									<td class="text-center">
 
 										<button type="button" 
@@ -95,6 +101,7 @@
 								<th scope="col" class="">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CRM</th>
+								<th scope="col" class="text-center">CBO</th>
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</tfooter>

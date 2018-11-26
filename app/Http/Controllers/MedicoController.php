@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Medico;
 use App\Especialidade;
-use App\Medicos_Especialidade;
+use App\Medicoespecialidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -50,14 +50,17 @@ class MedicoController extends Controller
                 'crm'   => $request->input('Ncrm'),
             ]);
 
-            //Find the especialidade
-            $esp = Especialidade::find($request->input('Nesp'));
-            //Insere
-            $medico_esp = Medicos_Especialidade::create([
-                'medicoid' => $medico->idmedico,
-                'especialidadeid' => $esp->idespecialidade,
-            ]);
+            $idesp = $request->input('Nesp');
 
+            if(isset($idesp)){
+                //Find the especialidade
+                $esp = Especialidade::find($idesp);
+                //Insere
+                $medico_esp = Medicoespecialidade::create([
+                    'medicoid' => $medico->idmedico,
+                    'especialidadeid' => $esp->idespecialidade,
+                ]);
+            }
             Session::flash('flash_message', [
                 'msg' => "Médico cadastrado  com SUCESSO!",
                 'class'  => "alert-success"
@@ -71,16 +74,123 @@ class MedicoController extends Controller
 
     public function find()
     {
-        return view('medico.find');
+        $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+
+        return view('medico.find', compact('especialidades'));
     }
 
     public function list(Request $request)
     {
-        //$medicos = Medico::select('idmedico, nome, crm')->get();
-        //$medicos = DB::table('medicos')->select('idmedico, nome, crm')->get();
-        $medicos =  DB::select(DB::raw("SELECT idmedico, nome, crm FROM medicos"));
+        if(isset($request)){
+            $idesp = $request->input('Nesp');
+            $nome = $request->input('Nnome');
+            $crm = $request->input('Ncrm');
+            $query = "SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid";
+            if(isset($idesp, $nome, $crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE me.especialidadeid = '$idesp' AND m.nome LIKE '%$nome%' AND m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($idesp, $nome)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE me.especialidadeid = '$idesp' AND m.nome LIKE '%$nome%'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($idesp, $crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE me.especialidadeid = '$idesp' AND m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($nome, $crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE  m.nome LIKE '%$nome%' AND m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }   
+            if(isset($idesp)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE me.especialidadeid = '$idesp'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }         
+            if(isset($nome)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE m.nome LIKE '%$nome%'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                               FROM medicos m 
+                                               LEFT JOIN medicoespecialidades me 
+                                               ON m.idmedico = me.medicoid 
+                                               LEFT JOIN especialidades e 
+                                               ON e.idespecialidade = me.especialidadeid 
+                                               WHERE m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            else{
+            $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                                                   FROM medicos m 
+                                                   LEFT JOIN medicoespecialidades me 
+                                                   ON m.idmedico = me.medicoid 
+                                                   LEFT JOIN especialidades e 
+                                                   ON e.idespecialidade = me.especialidadeid
+                                                 "));
 
-        return view('medico.find', compact('medicos'));
+            $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+            
+            return view('medico.find', compact('medicos', 'especialidades'));
+            }
+        }
+
+
     }
     /**
      * Display the specified resource.

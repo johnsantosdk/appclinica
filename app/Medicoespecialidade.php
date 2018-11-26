@@ -4,17 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Medicos_Especialidade extends Model
+class Medicoespecialidade extends Model
 {
     protected $fillable = [
     	'medicoid',
     	'especialidadeid',
     ];
 
-    protected $primaryKey = [
-    	'medicoid',
-    	'especialidadeid',
-    ];
+    //protected $primaryKey = 'medicoid';
+    //protected $primaryKey = 'especialidadeid';
 
     public function medico(){
 

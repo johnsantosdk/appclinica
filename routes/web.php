@@ -52,6 +52,7 @@ Route::group(['prefix' => 'medico', 'as' => 'medico.'], function() {
 	Route::post('/infoMedico',			['as' => 'infoMedico',		'uses' => 'MedicoController@infoMedico']);//rota de teste para ajax
 	Route::post('/store',			 	['as' => 'store',			'uses' => 'MedicoController@store']);
 	Route::match(['get','post'],'/list',['as' => 'list',			'uses' => 'MedicoController@list']);
+	Route::match(['get','post'],'/find',['as' => 'find',			'uses' => 'MedicoController@find']);
 	Route::get('/show/{id}',			['as' => 'show',			'uses' => 'MedicoController@show']);
 	Route::get('/edit/{id}',		 	['as' => 'edit',			'uses' => 'MedicoController@edit']);
 	Route::put('/update/{id}',		 	['as' => 'update',			'uses' => 'MedicoController@update']);
