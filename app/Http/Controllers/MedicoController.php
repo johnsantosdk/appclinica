@@ -85,12 +85,7 @@ class MedicoController extends Controller
             $idesp = $request->input('Nesp');
             $nome = $request->input('Nnome');
             $crm = $request->input('Ncrm');
-            $query = "SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
-                                               FROM medicos m 
-                                               LEFT JOIN medicoespecialidades me 
-                                               ON m.idmedico = me.medicoid 
-                                               LEFT JOIN especialidades e 
-                                               ON e.idespecialidade = me.especialidadeid";
+
             if(isset($idesp, $nome, $crm)){
                 $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
                                                FROM medicos m 

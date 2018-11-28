@@ -27,7 +27,9 @@ class EspecialidadeController extends Controller
      */
     public function create()
     {
-        return view('especialidade.create');
+        $especialidades = Especialidade::paginate(10);
+
+        return view('especialidade.create', compact('especialidades'));
     }
 
     /**
@@ -41,6 +43,7 @@ class EspecialidadeController extends Controller
         if(isset($request)){
             $especialidade = Especialidade::create([
                 'nome' => $request->input('Nnome'),
+                'cbos' => $request->input('Ncbo'),
             ]);
 
             Session::flash('flash_message', [
