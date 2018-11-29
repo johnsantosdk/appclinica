@@ -62,7 +62,7 @@
 		                                    data-target="#editEspecialidadeModal"
 		                                    data-id="{{$especialidade->idespecialidade}}"
 		                                    data-nome="{{$especialidade->cbo}}"
-											data-status="{{$especialidade->nome}}"
+											data-cbo="{{$especialidade->nome}}"
 		                                    id="tableEditButton">
 									Editar
 									</button>
@@ -70,10 +70,10 @@
 									<button type="button" 
 											class="btn btn-danger"
 											data-toggle="modal"
-		                                    data-target="#deleteEspecialidadeoModal"
+		                                    data-target="#deleteEspecialidadeModal"
 		                                    data-id="{{$especialidade->idespecialidade}}"
 		                                    data-nome="{{$especialidade->nome}}"
-											data-status="{{$especialidade->status}}"
+											data-cbo="{{$especialidade->cbo}}"
 		                                    id="tableDeleteButton">
 									Deletar
 									</button>
@@ -101,4 +101,104 @@
 		</div>
 	</div>
 </div>
+{{-- includes de modals --}}
+{{-- Modal delete --}}
+@include('especialidade.modals.modal_delete_especialidade')
+{{-- Modal edit --}}
+@include('especialidade.modals.modal_edit_especialidade')
+@endsection
+
+@section('customer-javaScript')
+{{-- <script> --}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}}
+    //>>>BEGIN <<SHOW EDIT MODAL>>
+        $(document).on('click','#tableEditButton', function(){
+            var id = $(this).data('id');
+	
+            $.post('{{ route('especialidade.show') }}', {id:id}, function(data){
+            console.log(data);
+                $('#editEspecialidadeModal').find('#Iid').val(data.idespecialidade);
+                $('#editEspecialidadeModal').find('#Inome').val(data.nome);
+                $('#editEspecialidadeModal').find('#Icbo').val(data.cbo);
+                    
+                $('#form-edit-especialidade').show();
+                $('.modal-title').text('Editar');
+                console.log(data);
+            });
+        });
+    //<<<END <<SHOW EDIT MODAL>>
+
+    //>>>BEGIN <<UPDATE MODAL>>
+        $("#updateButtonModal").click(function(){
+            $.ajax({
+                type : 'get',
+                url  : '{{ route('especialidade.update') }}',
+                datatype: 'json',
+                data: $("#form-edit-especialidade").serialize(),
+                success: function(data)
+                {
+                    var tr = $('<tr/>');
+                    tr.append($("<td/>",{
+                        text : data.idespecialidade
+                    })).append($("<td/>",{
+                        text : data.cbo
+                    })).append($("<td/>",{
+                        text : data.nome
+                    })).append($("<td/>",{
+                        html: "<button type='button' class='btn btn-info text-center' data-toggle='modal' data-target='#editEspecialidadeModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-cbo='"+data.cbo+"' id='tableEditModal'>Editar</button>" + " <button type='button' class='btn btn-danger text-center' data-toggle='modal' data-target='#deleteEspecialidadeModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-cbo='"+data.cbo+"'>Deletar</button>"
+                    }))
+                    $('tr#especialidade'+data.idespecialidade).replaceWith(tr);
+                    $('#modalClose').trigger('click');
+                    console.log('tr#especialidade'+data.idespecialidade);
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                }
+
+                });
+            });
+    //<<<END <<UPDATE MODAL>>
+
+    //>>>BEGIN <<SHOW MODAL DELETE>>
+        $(document).on('click', '#tableDeleteButton', function(){
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+            var status = $(this).data('cbo');
+           $('#deleteEspecialidadeModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p style="font-size:18px" id="id"></p><p style="font-size:18px" id="nome"></p><p style="font-size:18px" id="cbo"></p></div>');
+            $.post('{{ route('especialidade.showDestroy') }}', {id:id}, function(data){
+                $('#deleteEspecialidadeModal').find('#Iid').val(data.idespecialidade);
+                $('#deleteEspecialidadeModal').find('p#id').html('<strong style="font-size:18px">ID:</strong> '+data.idespecialidade);
+                $('#deleteEspecialidadeModal').find('p#nome').html('<strong style="font-size:18px">Name:</strong> '+data.nome);
+                $('#deleteEspecialidadeModal').find('p#cbo').html('<strong style="font-size:18px">CBO:</strong> '+data.cbo);
+                //------------------------------------------------------------------
+                $('.modal-body').show();
+                $('.modal-title').text('Deletar');
+                });
+        });
+    //<<<END <<SHOW MODAL DELETE>>
+
+    //>>>BEGIN <<DELETE MODEL>>
+        $("#deleteButtonModal").click(function(){
+            
+            $.ajax({
+                type : 'POST',
+                url  : '{{ route('especialidade.destroy') }}',
+                datatype: 'json',
+                data : $("#form-delete-especialidade").serialize(),
+                success: function(data)
+                {
+                    console.log(data);
+                    $('#deleteEspecialidadeModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p class="help-block alert alert-success text-center">Registro deletado com <strong>SUCESSO!</strong></p></div>');
+                    $('tr#especialidade'+data).remove();
+                    $('#deleteEspecialidadeModal').closest();
+                },
+                errors: function(data)
+                {
+                    console.log("falhou");
+                    $('#deleteEspecialidadeModal').find('#modalReplace').replaceWith('<p class="help-block alert alert-info text-center"><strong>OPS!</strong> Algo de errado aconteceu. O registro não foi deletado. Contate o <strong>SUPPORT</strong></p>');
+                }
+            })
+            //location.reload();
+        });
+    //<<<END <<DELETE MODEL>>
+{{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

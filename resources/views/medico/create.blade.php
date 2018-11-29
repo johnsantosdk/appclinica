@@ -68,6 +68,7 @@
 										@endforeach
 									@endif	
 								</select>
+								{!! $errors->first('Nesp', '<p class="help-block alert alert-danger">:message</p>') !!}
 							</div>
 						</fieldset>
 					<!-- ID do usuário que está fazendo o cadastro-->
@@ -80,7 +81,5 @@
 		</div>
 	</div>
 </div>
-
 </div>
-
 @endsection

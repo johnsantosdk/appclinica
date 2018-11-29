@@ -6,6 +6,7 @@ use App\Medico;
 use App\Especialidade;
 use App\Medicoespecialidade;
 use Illuminate\Http\Request;
+use App\Http\Requests\MedicoRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -40,7 +41,7 @@ class MedicoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MedicoRequest $request)
     {
         if (isset($request)) {
             $medico = Medico::create([
@@ -222,12 +223,23 @@ class MedicoController extends Controller
     }
 
     /**
+     * Show the specified resource from storage.
+     *
+     * @param  \App\Medico  $medico
+     * @return \Illuminate\Http\Response
+     */
+    public function showDestroy(Request $request)
+    {
+        //
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Medico  $medico
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Medico $medico)
+    public function destroy(Request $request)
     {
         //
     }

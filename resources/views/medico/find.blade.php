@@ -118,4 +118,141 @@
 	@endif
 	--}}
 </div>
+{{-- includes de modals --}}
+{{-- Modal edit --}}
+@include('medico.modals.modal_edit_medico')
+{{-- Modal delete--}}
+@include('medico.modals.modal_delete_medico') 
+@endsection
+
+@section('customer-javaScript')
+
+{{-- <script> <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
+
+	//>>>BEGIN <<REQUEST FROM DATABASE>>
+	//<<<END REQUEST FROM DATABASE
+	//>>>BEGIN <<EDIT MODAL>>
+        $(document).on('click','#tableEditButton', function(){
+            var id = $(this).data('id');
+			$('#medico-success').hide(1000);
+            $.post('{{ route('medico.edit') }}', {id:id}, function(data){
+                    //MASKARAS
+				    //$('#editMedicoModal').find('#Icpf').mask('000.000.000-00');
+				    //Mascara para telefone fixo
+				    //$('#editMedicoModal').find('#ItelR').mask('(00)0000-0000');
+				    //$('#editMedicoModal').find('#ItelE').mask('(00)0000-0000');
+				    //Máscara para telefone celular
+				    //$('#editMedicoModal').find('#ItelC').mask('(00)00000-0000');
+               console.log(data)
+                //LIMPA O FORMULÁRIO ANTES DE INSERIR AS INFORMAÇÕES
+                $(':input','#form-edit-medico')
+  				.not(':button, :submit, :reset, :hidden')
+  				.val('')
+  				.removeAttr('selected');
+  				//INSERÇÃO DOS DADOS NO DEVIDOS CAMPOS/INPUTS
+                $('#editMedicoModal').find('#IidPaci').val(data.idmedico);
+                $('#editMedicoModal').find('#Inome').val(data.nome);
+                $('#editMedicoModal').find('#Inasc').val(data.nascimento);
+                //
+                if(data[0].sexo == 'femenino' || data.sexo == 'FEMENINO'){
+                	$('#editMedicoModal').find('#Isexo').val("femenino");
+                }if(data[0].sexo == 'masculino' || data.sexo == 'MASCULINO'){
+					$('#editMedicoModal').find('#Isexo').val("masculino");
+            	}
+            	//
+                $('#editMedicoModal').find('#Icpf').val(data.cpf).mask('000.000.000-00');
+				$('#editMedicoModal').find('#Icrm').val(data.crm);
+
+				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
+					//for (var i = 0; i < data.length; i++) {
+					    //if((data[i].tipo != null) && (data[i].numero != null)) {
+					        //if(data[i].tipo == 'RES'){
+					           // $('#editPacienteModal').find('#ItelR').val(data[i].numero).mask('(00)0000-0000');
+					        //}if(data[i].tipo == 'EMP'){
+					            //$('#editPacienteModal').find('#ItelE').val(data[i].numero).mask('(00)0000-0000');
+					       // }if(data[i].tipo == 'CEL'){
+					            //$('#editPacienteModal').find('#ItelC').val(data[i].numero).mask('(00)00000-0000');
+					        //}
+					    //}
+					//}
+				//
+                $('#editMedicModal').find('#Iesp').val(data.especialidadeid);   
+                $('#form-edit-medico').show();
+                $('.modal-title').text('Editar Cadastro de Médico');
+            });
+        });
+    //<<<END <<EDIT MODAL>>
+    //>>>BEGIN <<UPDATE MODAL>>
+        $('#buttonSubmitFormMedico').click(function(){
+            var formData = $('#form-edit-medico').serialize();
+            $.ajax({
+                type : 'POST',
+                url  : '{{ route('medico.update') }}',
+                datatype: 'json',
+                data: formData,
+                success: function(data)
+                { 
+                    //console.log(data);
+             		$('#editMedicoModal').show().scrollTop(0);
+                    $('#medico-success').show("slow");
+                    
+                },
+                error: function(xhr)
+                {
+					//console.log(xhr);
+                     //1 - Procurar o campo que tem erro de validação
+                     //2 - Inseri o texto de error logo abaixo do campo
+                     $.each(xhr.responseJSON.errors, function(key,value) {
+                        $('#'+key+'-error').append('<p class="help-block alert alert-danger">'+value+'</p>');
+                    });
+
+            	}
+            });
+            $('p.help-block').remove();
+        });
+    //<<<END <<UPDATE MODAL>>
+    //>>>BEGIN <<SHOW MODAL DELETE>>
+        $(document).on('click', '#tableDeleteButton', function(){
+            var id = $(this).data('id');
+            $('#deleteMedicoModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p id="deleteModalId"></p><p id="deleteModalNome"></p><p id="deleteModalNasc"></p><p id="deleteModalCpf"></p><p id="deleteModalCrm"></p></div>');
+			console.log('id = '+id+' antes de exluir');
+            $.post('{{ route('medico.showDestroy') }}', {id:id}, function(data){
+                $('#deleteMedicoModal').find('input#Iid').val(data.idpaciente);
+                $('#deleteMedicoModal').find('p#deleteModalId').html('<strong style="font-size:18px">ID:</strong> '+data.idmedico);
+                $('#deleteMedicoModal').find('p#deleteModalNome').html('<strong style="font-size:18px">Nome:</strong> '+data.nome);
+                $('#deleteMedicoModal').find('p#deleteModalNasc').html('<strong style="font-size:18px">Data Nascimento:</strong> '+data.nascimento);
+                $('#deleteMedicoModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CPF:</strong> '+data.cpf);
+				$('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CRM:</strong> '+data.crm);
+                
+                //------------------------------------------------------------------
+                $('.modal-body').show();
+                $('.modal-title').text('Deletar Cadasto');
+                   console.log(data);
+                });
+        });
+    //<<<END <<SHOW MODAL DELETE>>
+    //>>>BEGIN <<DELETE PLANO NODEL>>
+        $("#deleteButtonModalMedico").click(function(){
+            $.ajax({
+                type : 'POST',
+                url  : '{{ route('medico.destroy') }}',
+                datatype: 'json',
+                data : $("#form-delete-medico").serialize(),
+                success: function(data)
+                {
+                	console.log('Dados vindo do controller'+ data);
+                	$('#deleteMedicoModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p class="help-block alert alert-success text-center">Registro deletado com <strong>SUCESSO!</strong></p></div>');
+                    $('tr#medico'+data).remove();
+                    //$('#closeModal').trigger('click');
+                },
+                errors: function(xhr)
+                {
+                    console.log("FAIL");
+                    $('#deleteMedicoModal').find('#modalReplace').replaceWith('<p class="help-block alert alert-info text-center"><strong>OPS!</strong> Algo de errado aconteceu. O registro não foi deletado. Contate o <strong>SUPPORT</strong></p>');
+                }
+            })
+            //location.reload();
+        });
+    //<<<END <<DELETE PLANO NODEL>>
+{{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

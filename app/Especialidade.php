@@ -10,6 +10,7 @@ class Especialidade extends Model
     protected $fillable = [
     	'idespecialidade',
     	'nome',
+    	'cbo',
     ];
 
     protected $primaryKey = 'idespecialidade';

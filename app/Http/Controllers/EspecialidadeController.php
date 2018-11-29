@@ -43,7 +43,7 @@ class EspecialidadeController extends Controller
         if(isset($request)){
             $especialidade = Especialidade::create([
                 'nome' => $request->input('Nnome'),
-                'cbos' => $request->input('Ncbo'),
+                'cbo' => $request->input('Ncbo'),
             ]);
 
             Session::flash('flash_message', [
@@ -64,9 +64,17 @@ class EspecialidadeController extends Controller
      * @param  \App\Especialidade  $especialidade
      * @return \Illuminate\Http\Response
      */
-    public function show(Especialidade $especialidade)
+    public function show(Request $request)
     {
-        //
+        //return response()->json($request->id);
+        if($request->ajax()){
+
+            $especialidade = Especialidade::find($request->id);
+
+            return response()->json($especialidade);
+        }
+
+        //return response()->json(500);
     }
 
     /**
@@ -87,9 +95,26 @@ class EspecialidadeController extends Controller
      * @param  \App\Especialidade  $especialidade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Especialidade $especialidade)
+    public function update(Request $request)
     {
-        //
+        if($request->ajax()){
+
+            $id = $request->input('Nid');
+            $nome = $request->input('Nnome');
+            $cbo = $request->input('Ncbo');
+
+            $especialidade = Especialidade::find($id);
+
+            if(isset($nome) && ($nome != $especialidade->nome)){
+                $especialidade->nome = $nome;
+            }if(isset($cbo) && ($cbo != $especialidade->cbo)){
+                $especialidade->cbo = $cbo;
+            }
+
+            $especialidade->save();
+
+            return response()->json($especialidade);
+        }
     }
 
     /**
@@ -98,8 +123,31 @@ class EspecialidadeController extends Controller
      * @param  \App\Especialidade  $especialidade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Especialidade $especialidade)
+    public function showDestroy(Request $request)
     {
-        //
+        if($request->ajax()){
+
+            $especialidade = Especialidade::find($request->id);
+
+            return response()->json($especialidade);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Especialidade  $especialidade
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        if($request->ajax()){
+            $id = $request->input('Nid');
+
+            $especialidade = Especialidade::find($id);
+            $especialidade->delete();
+
+            return response()->json($id);
+        }
     }
 }
