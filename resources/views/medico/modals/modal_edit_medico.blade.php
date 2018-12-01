@@ -45,9 +45,9 @@
 						</div>
 						<hr>  
 						<legend>Área de atuação</legend>
-						<div class="form-group" id="Nmedicoid-error">
-							<label for="Imedicoid">Especialidade:</label>
-							<select id="Imedicoid" name="Nmedicoid" class="form-control">
+						<div class="form-group" id="Nespid-error">
+							<label for="Iespid">Especialidade:</label>
+							<select id="Iespid" name="Nespid" class="form-control">
 								{{ $i = 0 }}
 								<option value=""></option>
 								@if(isset($especialidades))
@@ -61,6 +61,7 @@
 					<!-- ID do usuário que está fazendo o cadastro-->
 					<div class="form-group" >
 						<input type="number" id="Iidmedico" name="Nidmedico" value="" hidden>
+						<input type="number" id="IoldIdesp" name="NoldIdesp" value="" hidden>
 						<input type="number" id="Iidatendente" name="Nidatendente" value="1" hidden>
 					</div>
 				</fieldset>

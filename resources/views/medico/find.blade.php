@@ -76,6 +76,7 @@
 												data-toggle="modal"
 			                                    data-target="#editMedicoModal"
 			                                    data-id="{{$medico->idmedico}}"
+			                                    data-idesp="{{ $medico->idesp}}"
 			                                    data-nome="{{$medico->nome}}"
 												data-cpf="{{$medico->crm}}"
 			                                    id="tableEditButton">
@@ -134,49 +135,36 @@
 	//>>>BEGIN <<EDIT MODAL>>
         $(document).on('click','#tableEditButton', function(){
             var id = $(this).data('id');
+            var id2 = $(this).data('idesp'); 
 			$('#medico-success').hide(1000);
-            $.post('{{ route('medico.edit') }}', {id:id}, function(data){
-                    //MASKARAS
-				    //$('#editMedicoModal').find('#Icpf').mask('000.000.000-00');
-				    //Mascara para telefone fixo
-				    //$('#editMedicoModal').find('#ItelR').mask('(00)0000-0000');
-				    //$('#editMedicoModal').find('#ItelE').mask('(00)0000-0000');
-				    //Máscara para telefone celular
-				    //$('#editMedicoModal').find('#ItelC').mask('(00)00000-0000');
-               console.log(data)
+			//console.log($(this).data('id'));
+            $.post('{{ route('medico.show') }}', {id:id, id2:id2}, function(data){
+                console.log(data);
+                //MASKARAS
+				$('#editMedicoModal').find('#Icpf').mask('000.000.000-00');
+               
                 //LIMPA O FORMULÁRIO ANTES DE INSERIR AS INFORMAÇÕES
                 $(':input','#form-edit-medico')
   				.not(':button, :submit, :reset, :hidden')
   				.val('')
   				.removeAttr('selected');
-  				//INSERÇÃO DOS DADOS NO DEVIDOS CAMPOS/INPUTS
-                $('#editMedicoModal').find('#IidPaci').val(data.idmedico);
+  				//INSERÇÃO DOS DADOS NOs DEVIDOS CAMPOS/INPUTS
+                $('#editMedicoModal').find('#Iidmedico').val(data.idmedico);
                 $('#editMedicoModal').find('#Inome').val(data.nome);
                 $('#editMedicoModal').find('#Inasc').val(data.nascimento);
                 //
-                if(data[0].sexo == 'femenino' || data.sexo == 'FEMENINO'){
+                if(data.sexo == 'femenino' || data.sexo == 'FEMENINO'){
                 	$('#editMedicoModal').find('#Isexo').val("femenino");
-                }if(data[0].sexo == 'masculino' || data.sexo == 'MASCULINO'){
+                }if(data.sexo == 'masculino' || data.sexo == 'MASCULINO'){
 					$('#editMedicoModal').find('#Isexo').val("masculino");
             	}
             	//
                 $('#editMedicoModal').find('#Icpf').val(data.cpf).mask('000.000.000-00');
 				$('#editMedicoModal').find('#Icrm').val(data.crm);
-
-				//TRATAMENTO PARA INSERIR OS DADOS DE CONTATOS CORRETAMENTE
-					//for (var i = 0; i < data.length; i++) {
-					    //if((data[i].tipo != null) && (data[i].numero != null)) {
-					        //if(data[i].tipo == 'RES'){
-					           // $('#editPacienteModal').find('#ItelR').val(data[i].numero).mask('(00)0000-0000');
-					        //}if(data[i].tipo == 'EMP'){
-					            //$('#editPacienteModal').find('#ItelE').val(data[i].numero).mask('(00)0000-0000');
-					       // }if(data[i].tipo == 'CEL'){
-					            //$('#editPacienteModal').find('#ItelC').val(data[i].numero).mask('(00)00000-0000');
-					        //}
-					    //}
-					//}
 				//
-                $('#editMedicModal').find('#Iesp').val(data.especialidadeid);   
+				$('#editMedicoModal').find('#Iespid').prop('selectIndex',0); 
+                $('#editMedicoModal').find('#Iespid').val(data.idesp);   
+                $('#editMedicoModal').find('#IoldIdesp').val(data.idesp);   
                 $('#form-edit-medico').show();
                 $('.modal-title').text('Editar Cadastro de Médico');
             });
@@ -192,7 +180,7 @@
                 data: formData,
                 success: function(data)
                 { 
-                    //console.log(data);
+                    console.log(data);
              		$('#editMedicoModal').show().scrollTop(0);
                     $('#medico-success').show("slow");
                     

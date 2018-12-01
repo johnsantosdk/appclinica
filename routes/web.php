@@ -53,7 +53,7 @@ Route::group(['prefix' => 'medico', 'as' => 'medico.'], function() {
 	Route::post('/store',			 	['as' => 'store',			'uses' => 'MedicoController@store']);
 	Route::match(['get','post'],'/list',['as' => 'list',			'uses' => 'MedicoController@list']);
 	Route::match(['get','post'],'/find',['as' => 'find',			'uses' => 'MedicoController@find']);
-	Route::get('/show',					['as' => 'show',			'uses' => 'MedicoController@show']);
+	Route::post('/show',					['as' => 'show',			'uses' => 'MedicoController@show']);
 	Route::get('/edit',				 	['as' => 'edit',			'uses' => 'MedicoController@edit']);
 	Route::post('/update',			 	['as' => 'update',			'uses' => 'MedicoController@update']);
 	Route::get('/showDestroy',			['as' => 'showDestroy',		'uses' => 'MedicoController@showDestroy']);

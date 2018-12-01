@@ -88,7 +88,7 @@ class MedicoController extends Controller
             $crm = $request->input('Ncrm');
 
             if(isset($idesp, $nome, $crm)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp'
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -100,7 +100,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }
             if(isset($idesp, $nome)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -112,7 +112,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }
             if(isset($idesp, $crm)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -124,7 +124,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }
             if(isset($nome, $crm)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -136,7 +136,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }   
             if(isset($idesp)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -148,7 +148,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }         
             if(isset($nome)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -160,7 +160,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }
             if(isset($crm)){
-                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                FROM medicos m 
                                                LEFT JOIN medicoespecialidades me 
                                                ON m.idmedico = me.medicoid 
@@ -172,7 +172,7 @@ class MedicoController extends Controller
                 return view('medico.find', compact('medicos', 'especialidades'));
             }
             else{
-            $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade' 
+            $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm, e.nome as 'especialidade', e.idespecialidade as 'idesp' 
                                                    FROM medicos m 
                                                    LEFT JOIN medicoespecialidades me 
                                                    ON m.idmedico = me.medicoid 
@@ -194,9 +194,16 @@ class MedicoController extends Controller
      * @param  \App\Medico  $medico
      * @return \Illuminate\Http\Response
      */
-    public function show(Medico $medico)
+    public function show(Request $request)
     {
-        //
+        // return response()->json($request);
+        if($request->ajax()){
+          $medico = Medico::find($request->id);
+          $especialidade = Especialidade::find($request->id2);
+          $medico['idesp'] = $especialidade->idespecialidade; 
+
+          return response()->json($medico);
+        }
     }
 
     /**
@@ -217,9 +224,36 @@ class MedicoController extends Controller
      * @param  \App\Medico  $medico
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Medico $medico)
+    public function update(Request $request)
     {
-        //
+        if($request->ajax()){
+
+          $medico = Medico::find($request->Nidmedico);
+
+          if(isset($request->Nnome) && ($request->Nnome != $medico->nome)){
+            $medico->nome = $request->Nnome;
+          }
+          if(isset($request->Nnasc) && ($request->Nnasc != $medico->nascimento)){
+            $medico->nascimento = $request->Nnasc;
+          }
+          if(isset($request->Nsexo) && ($request->Nsexo != $medico->sexo)){
+            $medico->sexo = $request->Nsexo;
+          }
+          if(isset($request->Ncpf) && ($request->Ncpf != $medico->cpf)){
+            $medico->cpf = $request->Ncpf;
+          }
+          if(isset($request->Ncrm) && ($request->Ncrm != $medico->crm)){
+            $medico->crm = $request->Ncrm;
+          }
+          //UPDATE
+          $medico->save();
+          if(isset($request->Nespid) && ($request->Nespid != $request->NoldIdesp)){
+            
+            $medEsp = DB::select(DB::raw("UPDATE medicoespecialidades SET especialidadeid = '$request->Nespid' WHERE medicoid = '$request->Nidmedico' && especialidadeid = '$request->NoldIdesp' "));
+          }
+          
+          return response()->json($request);
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Paciente;
 use Illuminate\Http\File;
 use App\Especialidade;
+use App\Medicoespecialidade;
 
 class TestController extends Controller
 {
@@ -32,9 +33,20 @@ class TestController extends Controller
             
       }
 
+      $obj1 = (object) [
+        'firstName' => 'John',
+        'lastName'  => 'Santos',
+      ];
 
+      $obj2 = (object) [
+        'phone1'  => '(98)98888-5555',
+        'phone2'  => '(98)98888-7777',
+      ];
 
+      // $objMerged = (object) array_merge((array) $obj1, (array) $obj2);
 
-      return response()->json($medico->especialidade);
+      // $medEsp = Medicoespecialidade::find([1,51]);
+
+      return response()->json();
     }
 }
