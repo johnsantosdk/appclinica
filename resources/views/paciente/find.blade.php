@@ -156,7 +156,7 @@
 				    $('#editPacienteModal').find('#ItelE').mask('(00)0000-0000');
 				    //Máscara para telefone celular
 				    $('#editPacienteModal').find('#ItelC').mask('(00)00000-0000');
-               //console.log(data)
+               console.log(data)
                 //LIMPA O FORMULÁRIO ANTES DE INSERIR AS INFORMAÇÕES
                 $(':input','#form-edit-paciente')
   				.not(':button, :submit, :reset, :hidden')

@@ -12,7 +12,7 @@
 			<form action="{{ route('medico.list') }}" method="post">
 				{{ csrf_field() }}
 				<div class="row">
-					<div class="col-sm-6">
+					{{-- <div class="col-sm-6">
 						<div class="form-group">
 							<label for="Iesp">Especialidade</label>
 							<select class="form-control" name="Nesp" id="Iesp">
@@ -24,7 +24,7 @@
 								@endif
 							</select>
 						</div>
-					</div>
+					</div> --}}
 					<div class="col">
 						<div class="form-group">
 							<label for="Inome">Nome:</label>
@@ -58,7 +58,7 @@
 								<th scope="col">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CRM</th>
-								<th scope="col" class="text-center">CBO</th>
+								{{-- <th scope="col" class="text-center">CBO</th> --}}
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</thead>
@@ -66,21 +66,33 @@
 							@foreach ($medicos as $medico)
 								<tr id="medico{{ $medico->idmedico }}">{{-- id de cada registro --}}
 									<th scope="row">{{ $medico->idmedico }}</th>
-									<td class="">{{ $medico->nome }}</td>
+									<td class="text-center">{{ $medico->nome }}</td>
 									<td class="text-center">{{ $medico->crm }}</td>
-									<td class="text-center">{{ $medico->especialidade == null ? 'Não cadastrado': $medico->especialidade}}</td>
+									{{-- <td class="text-center">{{ $medico->especialidade == null ? 'Não cadastrado': $medico->especialidade}}</td> --}}
 									<td class="text-center">
 
 										<button type="button" 
 												class="btn btn-info"
 												data-toggle="modal"
+			                                    data-target="#infoMedicoModal"
+			                                    data-id="{{$medico->idmedico}}"
+			                                    {{-- data-idesp="{{ $medico->idesp}}" --}}
+			                                    data-nome="{{$medico->nome}}"
+												data-cpf="{{$medico->crm}}"
+			                                    id="tableInfoButton">
+										Detalhes
+										</button>
+
+										<button type="button" 
+												class="btn btn-primary"
+												data-toggle="modal"
 			                                    data-target="#editMedicoModal"
 			                                    data-id="{{$medico->idmedico}}"
-			                                    data-idesp="{{ $medico->idesp}}"
+			                                    {{-- data-idesp="{{ $medico->idesp}}" --}}
 			                                    data-nome="{{$medico->nome}}"
 												data-cpf="{{$medico->crm}}"
 			                                    id="tableEditButton">
-										Editar
+										Editar 
 										</button>
 										
 										<button type="button" 
@@ -102,7 +114,7 @@
 								<th scope="col" class="">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CRM</th>
-								<th scope="col" class="text-center">CBO</th>
+								{{-- <th scope="col" class="text-center">CBO</th> --}}
 								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</tfooter>
@@ -124,6 +136,8 @@
 @include('medico.modals.modal_edit_medico')
 {{-- Modal delete--}}
 @include('medico.modals.modal_delete_medico') 
+{{-- Modal info--}}
+@include('medico.modals.modal_info_medico')
 @endsection
 
 @section('customer-javaScript')
@@ -183,6 +197,19 @@
                     console.log(data);
              		$('#editMedicoModal').show().scrollTop(0);
                     $('#medico-success').show("slow");
+                    //
+                    var tr = $('<tr/>');
+                    tr.append($("<td/>",{
+                        text : data.idmedico
+                    })).append($("<td/>",{
+                        text : data.nome
+                    })).append($("<td/>",{
+                        text : data.crm
+                    })).append($("<td/>",{
+                        html: "<button type='button' class='btn btn-info text-center' data-toggle='modal' data-target='#infoMedicoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.crm+"'>Detalhes</button>" + "<button type='button' class='btn btn-info text-center' data-toggle='modal' data-target='#editMedicoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.crm+"' id='tableEditModal'>Editar</button>" + " <button type='button' class='btn btn-danger text-center' data-toggle='modal' data-target='#deleteMedicoModal' data-id='"+data.id+"' data-nome='"+data.nome+"' data-status='"+data.crm+"'>Deletar</button>"
+                    }))
+                    $('tr#medico'+data.idmedico).replaceWith(tr);
+                    //console.log('tr#medico'+data.idmedico);
                     
                 },
                 error: function(xhr)
@@ -205,12 +232,12 @@
             $('#deleteMedicoModal').find('#modalReplace').replaceWith('<div class="modal-body" id="modalReplace"><p id="deleteModalId"></p><p id="deleteModalNome"></p><p id="deleteModalNasc"></p><p id="deleteModalCpf"></p><p id="deleteModalCrm"></p></div>');
 			console.log('id = '+id+' antes de exluir');
             $.post('{{ route('medico.showDestroy') }}', {id:id}, function(data){
-                $('#deleteMedicoModal').find('input#Iid').val(data.idpaciente);
+                $('#deleteMedicoModal').find('input#Iid').val(data.idmedico);
                 $('#deleteMedicoModal').find('p#deleteModalId').html('<strong style="font-size:18px">ID:</strong> '+data.idmedico);
                 $('#deleteMedicoModal').find('p#deleteModalNome').html('<strong style="font-size:18px">Nome:</strong> '+data.nome);
                 $('#deleteMedicoModal').find('p#deleteModalNasc').html('<strong style="font-size:18px">Data Nascimento:</strong> '+data.nascimento);
                 $('#deleteMedicoModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CPF:</strong> '+data.cpf);
-				$('#deletePacienteModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CRM:</strong> '+data.crm);
+				$('#deleteMeidcoModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CRM:</strong> '+data.crm);
                 
                 //------------------------------------------------------------------
                 $('.modal-body').show();
@@ -219,7 +246,7 @@
                 });
         });
     //<<<END <<SHOW MODAL DELETE>>
-    //>>>BEGIN <<DELETE PLANO NODEL>>
+    //>>>BEGIN <<DELETE MODAL>>
         $("#deleteButtonModalMedico").click(function(){
             $.ajax({
                 type : 'POST',
@@ -242,5 +269,22 @@
             //location.reload();
         });
     //<<<END <<DELETE PLANO NODEL>>
+
+    //<<<BEGIN MODAL INFO>>
+    	$(document).on('click','#tableInfoButton', function(e){
+    		e.preventDefault();
+			var id = $(this).data('id');
+			$.post('{{ route('medico.info') }}', {id:id}, function(data){
+				console.log(data[0]);
+				$.each(data, function (i, item) {
+					$("#infoMedicoModal").find("#Icbo").append($('<option>', {
+						value: item.idespecialidade,
+						text: item.cbo+" - "+item.nome
+					}));
+				});
+
+			});
+    	});
+    //>><<END MODAL INFO>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

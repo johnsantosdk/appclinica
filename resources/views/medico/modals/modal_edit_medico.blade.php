@@ -4,7 +4,7 @@
     <div class="modal-content" id="modal-content">
       <div class="modal-header modal-edit-css">
         <h5 class="modal-title" id="editMedicoLabel">Editar Cadastro de Médico</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -68,8 +68,8 @@
 			</form>			
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" id="buttonSubmitFormMedico">Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="submit" class="btn btn-primary" id="buttonSubmitFormMedico">Salvar</button>
         {{--<input type="submit" class="btn btn-primary" value="Salvar">--}}
       </div>
     </div>

@@ -4,7 +4,7 @@
     <div class="modal-content" id="modal-content">
       <div class="modal-header modal-edit-css">
         <h5 class="modal-title" id="editPacienteLabel">Editar Cadastro de Paciente</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

@@ -45,10 +45,11 @@ class MedicoController extends Controller
     {
         if (isset($request)) {
             $medico = Medico::create([
-                'nome'  => $request->input('Nnome'),
-                'sexo'  => $request->input('Nsexo'),
-                'cpf'   => $request->input('Ncpf'),
-                'crm'   => $request->input('Ncrm'),
+                'nome'        => $request->input('Nnome'),
+                'nascimento'  => $request->input('Nnasc'),
+                'sexo'        => $request->input('Nsexo'),
+                'cpf'         => $request->input('Ncpf'),
+                'crm'          => $request->input('Ncrm'),
             ]);
 
             $idesp = $request->input('Nesp');
@@ -81,6 +82,49 @@ class MedicoController extends Controller
     }
 
     public function list(Request $request)
+    {
+        if(isset($request)){
+            $nome = $request->input('Nnome');
+            $crm = $request->input('Ncrm');
+
+            if(isset($nome, $crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm
+                                               FROM medicos m 
+                                               WHERE m.nome LIKE '%$nome%' AND m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($nome)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm 
+                                               FROM medicos m  
+                                               WHERE m.nome LIKE '%$nome%'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+            if(isset($crm)){
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm 
+                                               FROM medicos m  
+                                               WHERE m.crm = '$crm'
+                                             "));
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }            
+            else{
+                $medicos = DB::select(DB::raw("SELECT m.idmedico, m.nome, m.crm
+                                               FROM medicos m 
+                                              "));
+
+                $especialidades = DB::select(DB::raw("SELECT idespecialidade, cbo, nome  FROM especialidades ORDER BY cbo ASC"));
+                
+                return view('medico.find', compact('medicos', 'especialidades'));
+            }
+        }
+
+
+    }
+ /*       public function list(Request $request)
     {
         if(isset($request)){
             $idesp = $request->input('Nesp');
@@ -187,7 +231,7 @@ class MedicoController extends Controller
         }
 
 
-    }
+    }*/
     /**
      * Display the specified resource.
      *
@@ -199,8 +243,12 @@ class MedicoController extends Controller
         // return response()->json($request);
         if($request->ajax()){
           $medico = Medico::find($request->id);
+
           $especialidade = Especialidade::find($request->id2);
-          $medico['idesp'] = $especialidade->idespecialidade; 
+
+          if(isset($especialidade)){
+            $medico['idesp'] = $especialidade->idespecialidade; 
+          }
 
           return response()->json($medico);
         }
@@ -212,9 +260,13 @@ class MedicoController extends Controller
      * @param  \App\Medico  $medico
      * @return \Illuminate\Http\Response
      */
-    public function edit(Medico $medico)
+    public function info(Request $request)
     {
-        //
+        if($request->ajax()){
+            $especialidades = Especialidade::all();
+
+            return response()->json($especialidades);
+        }
     }
 
     /**
@@ -250,6 +302,9 @@ class MedicoController extends Controller
           if(isset($request->Nespid) && ($request->Nespid != $request->NoldIdesp)){
             
             $medEsp = DB::select(DB::raw("UPDATE medicoespecialidades SET especialidadeid = '$request->Nespid' WHERE medicoid = '$request->Nidmedico' && especialidadeid = '$request->NoldIdesp' "));
+          }if(isset($request->NoldIdesp) && $request->NoldIdesp == null){
+            //CREATE
+            $medEsp = DB::select(DB::raw("INSERT INTO medicoespecialidades(medicoid, especialidadeid) VALUES('$request->Nidmedico', '$request->Nespid')"));
           }
           
           return response()->json($request);
@@ -264,7 +319,13 @@ class MedicoController extends Controller
      */
     public function showDestroy(Request $request)
     {
-        //
+        if($request->ajax()){
+
+          $medico = Medico::find($request->id);
+
+          return response()->json($medico);
+
+        }
     }
 
     /**
@@ -275,6 +336,12 @@ class MedicoController extends Controller
      */
     public function destroy(Request $request)
     {
-        //
+        if($request->ajax()){
+          $medico = Medico::find($request->Nid);
+          $medEsp = DB::select(DB::raw("DELETE FROM medicoespecialidades WHERE medicoid = '$request->Nid'"));
+          $medico->delete();
+
+          return response()->json($request->Nid);
+        }
     }
 }
