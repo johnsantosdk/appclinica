@@ -237,7 +237,7 @@
                 $('#deleteMedicoModal').find('p#deleteModalNome').html('<strong style="font-size:18px">Nome:</strong> '+data.nome);
                 $('#deleteMedicoModal').find('p#deleteModalNasc').html('<strong style="font-size:18px">Data Nascimento:</strong> '+data.nascimento);
                 $('#deleteMedicoModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CPF:</strong> '+data.cpf);
-				$('#deleteMeidcoModal').find('p#deleteModalCpf').html('<strong style="font-size:18px">CRM:</strong> '+data.crm);
+				$('#deleteMeidcoModal').find('p#deleteModalCrm').html('<strong style="font-size:18px">CRM:</strong> '+data.crm);
                 
                 //------------------------------------------------------------------
                 $('.modal-body').show();
@@ -270,8 +270,41 @@
         });
     //<<<END <<DELETE PLANO NODEL>>
 
-    //<<<BEGIN MODAL INFO>>
-    	$(document).on('click','#tableInfoButton', function(e){
+	//<<<SHOW MODAL INFO>>
+		$(document).on('click', '#tableInfoButton', function(event){
+			event.preventDefault();
+            var id = $(this).data('id');
+            $("#infoMedicoModal").find("#infoModalListEsp");
+            $.post('{{ route('medico.info') }}', {id:id}, function(data){
+                $('#infoMedicoModal').find('p#infoModalId').html('<strong>ID</strong>: '+data.idmedico);
+                $('#infoMedicoModal').find('p#infoModalNome').html('<strong>Nome</strong>: '+data.nome);
+                $('#infoMedicoModal').find('p#infoModalSexo').html('<strong>Sexo</strong>: '+data.sexo);
+                $('#infoMedicoModal').find('p#infoModalNasc').html('<strong>Nasc.</strong>: '+data.nascimento);
+                $('#infoMedicoModal').find('p#infoModalCpf').html('<strong>CPF</strong>: '+data.cpf);
+				$('#infoMedicoModal').find('p#infoModalCrm').html('<strong>CRM</strong>: '+data.crm);
+                let esps = data.especialidades;
+                $.each(esps, function (i, item) {
+					$("#infoMedicoModal").find("#infoModalListEsp").append("<li class='list-group-item'>"+item.cbo+" - "+item.nome+"</li>");
+            	});
+                //------------------------------------------------------------------
+                $('.modal-body').show();
+                if(data.sexo == 'masculino' || data.sexo == 'Masculino'){
+					$('.modal-title').text('Detalhes do Cadastro do Médico');
+            	}else{
+					$('.modal-title').text('Detalhes da Cadastro da Médica');
+            	}
+                
+                });
+        });
+
+        $(document).on('modal.fade.show', function (e) {
+        	console.log("ação");
+      	});
+
+	//>><<END MODAL INFO
+
+    //<<<BEGIN TEST MODAL>>
+    	{{-- $(document).on('click','#tableInfoButton', function(e){
     		e.preventDefault();
 			var id = $(this).data('id');
 			$.post('{{ route('medico.info') }}', {id:id}, function(data){
@@ -284,7 +317,7 @@
 				});
 
 			});
-    	});
-    //>><<END MODAL INFO>>
+    	}); --}}
+    //>><<END MODAL>>
 {{-- </script> --}}{{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

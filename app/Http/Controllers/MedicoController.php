@@ -263,9 +263,19 @@ class MedicoController extends Controller
     public function info(Request $request)
     {
         if($request->ajax()){
-            $especialidades = Especialidade::all();
+            $medico = Medico::find($request->id);
 
-            return response()->json($especialidades);
+            $esps = DB::select(DB::raw("SELECT e.cbo, e.nome 
+                                        FROM medicos m 
+                                        LEFT JOIN medicoespecialidades me 
+                                        ON m.idmedico = me.medicoid 
+                                        LEFT JOIN especialidades e 
+                                        ON e.idespecialidade = me.especialidadeid
+                                        WHERE me.medicoid = '$medico->idmedico'
+                                      "));
+            $medico['especialidades'] = $esps;
+
+            return response()->json($medico);
         }
     }
 

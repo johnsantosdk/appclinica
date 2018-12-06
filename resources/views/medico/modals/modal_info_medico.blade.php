@@ -3,27 +3,31 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header modal-info-css">
-        <h5 class="modal-title" id="infoMedicoLabel">Detalhes de Cadastro de Paciente</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="infoMedicoLabel">Detalhes do Cadastro de Paciente</h5>
+        <button type="button" class="btn btn-danger close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-              <p id="infoModalNome"><strong>Nome</strong>: </p>
-              <p id="infoModalCpf"><strong>CPF</strong>: </p>
-              <p id="infoModalNasc"><strong>Data Nascimento</strong>: </p>
-              <p id="infoModalCrm"><strong>CRM</strong>: </p>
+        <p id="infoModalNome"></p>
+        <p id="infoModalSexo"></p>
+        <p id="infoModalNasc"></p>
+        <p id="infoModalCpf"></p>
+        <p id="infoModalCrm"></p>
+        <h3>Lista das áreas em atuação</h3>
+        <ul class="list-group" id="infoModalListEsp">  
+        </ul>
       </div>
-      <form action="">
-        <div class="form-group">
+      {{-- <form action="">
+        <div class="form-group" style="padding:15px">
           <label for="Icbo">CBO:</label>
           <select name="Ncbo" id="Icbo" class="form-control">
           </select> 
         </div>
-      </form>
+      </form> --}}
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" id="deleteButtonModal">Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        {{-- <button type="submit" class="btn btn-primary" id="deleteButtonModal">Update</button> --}}
       </div>
     </div>
   </div>
