@@ -14,7 +14,7 @@
         <p id="infoModalNasc"></p>
         <p id="infoModalCpf"></p>
         <p id="infoModalCrm"></p>
-        <h3>Lista das áreas em atuação</h3>
+        <h6>Lista das áreas em atuação</h6>
         <ul class="list-group" id="infoModalListEsp">  
         </ul>
       </div>

@@ -274,7 +274,8 @@
 		$(document).on('click', '#tableInfoButton', function(event){
 			event.preventDefault();
             var id = $(this).data('id');
-            $("#infoMedicoModal").find("#infoModalListEsp");
+            //Remove os li(s) que eventualmente foram adicionados anteriormente
+            $("#infoMedicoModal").find('.list-group-item').remove();
             $.post('{{ route('medico.info') }}', {id:id}, function(data){
                 $('#infoMedicoModal').find('p#infoModalId').html('<strong>ID</strong>: '+data.idmedico);
                 $('#infoMedicoModal').find('p#infoModalNome').html('<strong>Nome</strong>: '+data.nome);
@@ -287,7 +288,7 @@
 					$("#infoMedicoModal").find("#infoModalListEsp").append("<li class='list-group-item'>"+item.cbo+" - "+item.nome+"</li>");
             	});
                 //------------------------------------------------------------------
-                $('.modal-body').show();
+                //$('.modal-body').show();
                 if(data.sexo == 'masculino' || data.sexo == 'Masculino'){
 					$('.modal-title').text('Detalhes do Cadastro do Médico');
             	}else{
@@ -295,11 +296,9 @@
             	}
                 
                 });
+
         });
 
-        $(document).on('modal.fade.show', function (e) {
-        	console.log("ação");
-      	});
 
 	//>><<END MODAL INFO
 

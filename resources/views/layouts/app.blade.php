@@ -102,7 +102,16 @@ $(document).ready( function($){
     $('#ItelR').mask('(00)0000-0000');
     $('#ItelE').mask('(00)0000-0000');
     //Máscara para telefone celular
-    $('#ItelC').mask('(00)00000-0000');    
+    $('#ItelC').mask('(00)00000-0000'); 
+
+    $('[data-load-remote]').on('click',function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var remote = $this.data('load-remote');
+        if(remote) {
+            $($this.data('remote-target')).load(remote);
+        }
+    });
 });
     
 //TELEPHONE MASK
