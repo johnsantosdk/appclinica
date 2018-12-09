@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Consulta;
 use Illuminate\Http\Request;
+use App\Medicoespecialidade;
+use App\Especialidade;
 use App\Paciente;
+use App\Plano;
+use App\Agenda;
 use Illuminate\Support\Facades\DB;
 class ConsultaController extends Controller
 {
@@ -27,7 +31,38 @@ class ConsultaController extends Controller
     public function create()
     {
         
-        return view('consulta.create');
+        $especialidades = Especialidade::all();
+        //return $especialidades;
+        return view('consulta.create', compact('especialidades'));
+    }
+
+    public function ajaxRequestMedico(Request $request)
+    {
+        if($request->ajax()){
+
+            $medico = DB::select(DB::raw("SELECT m.idmedico, m.nome 
+                                          FROM medicos m 
+                                          LEFT JOIN medicoespecialidades me 
+                                          ON m.idmedico = me.medicoid 
+                                          LEFT JOIN especialidades e 
+                                          ON e.idespecialidade = me.especialidadeid
+                                          WHERE me.especialidadeid = '$request->id';
+                                        "));
+
+            return response()->json($medico);
+        }
+    }
+
+    public function ajaxFiltroDateTime(Request $request)
+    {
+        if($request->ajax()){
+
+            $nameOfDay = date('D', strtotime($request->date));
+
+            $agenda = DB::select(DB::raw(""));
+
+            return response()->json($nameOfDay);
+        }
     }
 
     /**

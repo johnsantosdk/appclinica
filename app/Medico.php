@@ -32,4 +32,7 @@ class Medico extends Model
 
     	return $this->hasMany('App\Especialidade');
     }
+    public function agendas(){
+        return $this->hasMany('App\Agenda', 'medicoid');
+    }
 }

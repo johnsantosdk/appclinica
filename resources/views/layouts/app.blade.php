@@ -112,6 +112,7 @@ $(document).ready( function($){
             $($this.data('remote-target')).load(remote);
         }
     });
+
 });
     
 //TELEPHONE MASK
