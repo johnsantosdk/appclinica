@@ -201,7 +201,8 @@ $(document).on('change', 'select#Ihor', function(){
 		data: {id:id, date: date, time: time},
 	})
 	.done(function(data) {
-		console.log("success: "+data);
+		console.log(data.day);
+		console.log(data);
 	})
 	.fail(function(xhr) {
 		console.log("error");

@@ -8,7 +8,7 @@ class Consulta extends Model
 {
     //
 
-    protected $fillable [
+    protected $fillable = [
         'idconsulta',
         'data_consulta',
         'horario',

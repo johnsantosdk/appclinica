@@ -10,6 +10,7 @@ use App\Paciente;
 use App\Plano;
 use App\Agenda;
 use Illuminate\Support\Facades\DB;
+
 class ConsultaController extends Controller
 {
     /**
@@ -57,11 +58,82 @@ class ConsultaController extends Controller
     {
         if($request->ajax()){
 
-            $nameOfDay = date('D', strtotime($request->date));
+            $nameOfDay = strtolower(date('l', strtotime($request->date)));
 
-            $agenda = DB::select(DB::raw(""));
+        switch ($nameOfDay) {
+            case 'sunday':
+              $boolean = DB::select(DB::raw("SELECT sunday FROM agendas WHERE medicoid = '$request->id'"));
+              if(isset($boolean)){}
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->sunday,
+                ];
+              break;
+            case 'monday':
+              $boolean = DB::select(DB::raw("SELECT monday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->monday,
+                ];
+              break;
 
-            return response()->json($nameOfDay);
+            case 'tuesday':
+              $boolean = DB::select(DB::raw("SELECT tuesday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->tuesday,
+                ];
+              break;
+
+            case 'wednesday':
+              $boolean = DB::select(DB::raw("SELECT wednesday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->wednesday,
+                ];
+              break;
+
+            case 'thursday':
+              $boolean = DB::select(DB::raw("SELECT thursday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->thursday,
+                ];
+              break;
+
+            case 'friday':
+              $boolean = DB::select(DB::raw("SELECT friday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->friday,
+                ];
+              break;
+
+            case 'saturday':
+              $boolean = DB::select(DB::raw("SELECT saturday FROM agendas WHERE medicoid = '$request->id'"));
+              foreach($boolean as $bool){}
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => $bool->saturday,
+                ];
+              break;
+
+            default:
+                $obj = (object) [
+                    'day' => $nameOfDay,
+                    'boolean' => '404',
+                ];
+              break;
+        }
+
+
+            return response()->json($obj);
         }
     }
 
