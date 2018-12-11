@@ -35,14 +35,14 @@
 					<label for="Ihor">Horário:</label>
 					<select id="Ihor" name="Nhor" class="form-control">
 						<option value=""></option>
-						<option value="07:00:00">Manhã</option>
-						<option value="13:00:00">Tarde</option>
+						<option value="08:00:00">Manhã</option>
+						<option value="14:00:00">Tarde</option>
 					</select>
 					{{-- <input type="time" id="Ihor" name="Nhor" class="form-control"> --}}
 				</div>
 				{{-- <button class="btn btn-primary" id="btn-list-agendados">Disponibilidade</button> --}}
 			</form>
-			<form action="{{ route('paciente.listPaciente') }}" method="post">
+			<form action="{{--  --}}" method="post">
 				{{ csrf_field() }}
 				<div class="row">
 					<div class="col">
@@ -76,65 +76,24 @@
 	  				<strong>Sem resultas!</strong> Nenhum resultado encontrado para os dados informados acima.
 				</div>
 			@endif
-			@if(isset($pacientes) && (count($pacientes) > 0))
-				<div class="table-responsive">
+				<div class="table-responsive" hidden="true">
 	  				<table class="table" id="tableListPaciente">
-	  					<div><p><strong>Total</strong>: {{ count($pacientes) }} cadastro(s)</p></div> 
+	  					<div><p><strong>Total</strong>: N cadastro(s)</p></div> 
 						<thead class="">
 							<tr>
 								<th scope="col">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
 								<th scope="col" class="text-center">Data Nascimento</th>
-								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</thead>
 						<tbody id="pacientes-list">
-							@foreach ($pacientes as $paciente)
-								<tr id="paciente{{ $paciente->idpaciente }}">{{-- id de cada registro --}}
-									<th scope="row">{{ $paciente->idpaciente }}</th>
-									<td class="">{{ $paciente->nome }}</td>
-									<td class="text-center">{{ $paciente->cpf }}</td>
-									<td class="text-center">{{ $paciente->nascimento }}</td>
-									<td class="text-center">
-										<button type="button" 
-												class="btn btn-success"
-												data-toggle="modal"
-			                                    data-target="#agendaPacienteModal"
-			                                    data-id="{{$paciente->idpaciente}}"
-			                                    data-nome="{{$paciente->nome}}"
-												data-cpf="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->nascimento }}"
-			                                    id="tableAgendaButton">
-										Agendar Consulta
-										</button>
-
-										<button type="button" 
-												class="btn btn-info"
-												data-toggle="modal"
-			                                    data-target="#editPacienteModal"
-			                                    data-id="{{$paciente->idpaciente}}"
-			                                    data-nome="{{$paciente->nome}}"
-												data-cpf="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->nascimento }}"
-			                                    id="tableEditButton">
-										Editar
-										</button>
-										
-										<button type="button" 
-												class="btn btn-danger"
-												data-toggle="modal"
-			                                    data-target="#deletePacienteModal"
-			                                    data-id="{{$paciente->idpaciente}}"
-			                                    data-nome="{{$paciente->nome}}"
-												data-status="{{$paciente->cpf}}"
-												data-nasc="{{ $paciente->nascimento }}"
-			                                    id="tableDeleteButton">
-										Deletar
-										</button>
-									</td>
+								<tr id="paciente{{-- $paciente->idpaciente --}}">{{-- id de cada registro --}}
+									<th scope="row"></th>
+									<td class="text-center"></td>
+									<td class="text-center"></td>
+									<td class="text-center"></td>	
 								</tr>
-							@endforeach
 						</tbody>
 						<tfooter>
 							<tr>
@@ -142,12 +101,10 @@
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
 								<th scope="col" class="text-center">Data Nascimento</th>
-								<th scope="col" class="text-center">Ação</th>
 							</tr>
 						</tfooter>
 	  				</table>
 				</div>
-			@endif
 		</div>
 		<div class="col-sm-6">
 			<h2>AGENDADOS</h2>
@@ -201,7 +158,6 @@ $(document).on('change', 'select#Ihor', function(){
 		data: {id:id, date: date, time: time},
 	})
 	.done(function(data) {
-		console.log(data.day);
 		console.log(data);
 	})
 	.fail(function(xhr) {
@@ -212,7 +168,11 @@ $(document).on('change', 'select#Ihor', function(){
 	});
 	
 	console.log(date);
-});	
+});
+
+$(document).on('change', 'select#Imed', function(){
+	$('select#Ihor').val($('#Ihor option[selected]').val());
+});
 
 {{-- </script>--}} {{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection

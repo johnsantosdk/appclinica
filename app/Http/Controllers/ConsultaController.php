@@ -66,61 +66,88 @@ class ConsultaController extends Controller
               if(isset($boolean)){}
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->sunday,
+                    'start' => $bool->sunday_start_time,
+                    'end' => $bool->sunday_end_time,
                 ];
+                $start = strtotime($bool->sunday_start_time);
+                $end   = strtotime($bool->sunday_end_time);
+                $time  = strtotime($request->time);
+                // if($bool->sunday == 1 && $time >= $start && $time <= $end )
+        
               break;
             case 'monday':
-              $boolean = DB::select(DB::raw("SELECT monday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT monday, monday_start_time, monday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->monday,
+                    'start' => $bool->monday_start_time,
+                    'end' => $bool->monday_end_time,
                 ];
               break;
 
             case 'tuesday':
-              $boolean = DB::select(DB::raw("SELECT tuesday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT tuesday, tuesday_start_time, tuesday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->tuesday,
+                    'start' => $bool->tuesday_start_time,
+                    'end' => $bool->tuesday_end_time,
                 ];
               break;
 
             case 'wednesday':
-              $boolean = DB::select(DB::raw("SELECT wednesday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT wednesday, wednesday_start_time, wednesday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
+                
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->wednesday,
+                    'start' => $bool->wednesday_start_time,
+                    'end' => $bool->wednesday_end_time,
                 ];
               break;
 
             case 'thursday':
-              $boolean = DB::select(DB::raw("SELECT thursday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT thursday, thursday_start_time, thursday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->thursday,
+                    'start' => $bool->thursday_start_time,
+                    'end' => $bool->thursday_end_time,
                 ];
               break;
 
             case 'friday':
-              $boolean = DB::select(DB::raw("SELECT friday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT friday, friday_start_time, friday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->friday,
+                    'start' => $bool->friday_start_time,
+                    'end' => $bool->friday_end_time,
                 ];
               break;
 
             case 'saturday':
-              $boolean = DB::select(DB::raw("SELECT saturday FROM agendas WHERE medicoid = '$request->id'"));
+              $boolean = DB::select(DB::raw("SELECT saturday, friday_start_time, friday_end_time FROM agendas WHERE medicoid = '$request->id'"));
               foreach($boolean as $bool){}
                 $obj = (object) [
-                    'day' => $nameOfDay,
+                    'date' => $request->date,
+                    'nameOfDay' => $nameOfDay,
                     'boolean' => $bool->saturday,
+                    'start' => $bool->saturday_start_time,
+                    'end' => $bool->saturday_end_time,
                 ];
               break;
 

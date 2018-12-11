@@ -47,6 +47,9 @@ class TestController extends Controller
 
       // $medEsp = Medicoespecialidade::find([1,51]);
 
-      return response()->json();
+      return response()->json(array(
+        'objeto1' => $obj1,
+        'objeto2' => $obj2,
+      ));
     }
 }
