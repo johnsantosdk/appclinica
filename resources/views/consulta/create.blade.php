@@ -35,8 +35,8 @@
 					<label for="Ihor">Horário:</label>
 					<select id="Ihor" name="Nhor" class="form-control">
 						<option value=""></option>
-						<option value="08:00:00">Manhã</option>
-						<option value="14:00:00">Tarde</option>
+						<option value="1">Manhã</option>
+						<option value="2">Tarde</option>
 					</select>
 					{{-- <input type="time" id="Ihor" name="Nhor" class="form-control"> --}}
 				</div>
@@ -76,19 +76,19 @@
 	  				<strong>Sem resultas!</strong> Nenhum resultado encontrado para os dados informados acima.
 				</div>
 			@endif
-				<div class="table-responsive" hidden="true">
-	  				<table class="table" id="tableListPaciente">
+				{{-- <div class="table-responsive">
+	  				<table class="table" id="tableListPac" hidden="true">
 	  					<div><p><strong>Total</strong>: N cadastro(s)</p></div> 
 						<thead class="">
 							<tr>
 								<th scope="col">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
-								<th scope="col" class="text-center">Data Nascimento</th>
+								<th scope="col" class="text-center">Convênio</th>
 							</tr>
 						</thead>
 						<tbody id="pacientes-list">
-								<tr id="paciente{{-- $paciente->idpaciente --}}">{{-- id de cada registro --}}
+								<tr id="paciente">
 									<th scope="row"></th>
 									<td class="text-center"></td>
 									<td class="text-center"></td>
@@ -100,16 +100,39 @@
 								<th scope="col" class="">ID</th>
 								<th scope="col" class="text-center">Nome</th>
 								<th scope="col" class="text-center">CPF</th>
-								<th scope="col" class="text-center">Data Nascimento</th>
+								<th scope="col" class="text-center">Convênio</th>
 							</tr>
 						</tfooter>
 	  				</table>
-				</div>
+				</div> --}}
 		</div>
 		<div class="col-sm-6">
 			<h2>AGENDADOS</h2>
 			<div class="">
 				<p id="filtro-list"></p>
+				<div class="table-responsive">
+	  				<table class="table" id="tableListConsultas">
+						<thead class="">
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col" class="text-center">Nome</th>
+								<th scope="col" class="text-center">CPF</th>
+								<th scope="col" class="text-center">Convênio</th>
+							</tr>
+						</thead>
+						<tbody id="pacientes-list">
+
+						</tbody>
+						<tfooter>
+							<tr>
+								<th scope="col" class="">ID</th>
+								<th scope="col" class="text-center">Nome</th>
+								<th scope="col" class="text-center">CPF</th>
+								<th scope="col" class="text-center">Convênio</th>
+							</tr>
+						</tfooter>
+	  				</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -147,18 +170,39 @@ $(document).on('change', 'select#Iesp', function(){
 });
 
 $(document).on('change', 'select#Ihor', function(){
+	
+	//
 	let id = 	$('select#Imed').children("option:selected").val();
 	let date   = 	$('input#Idata').val();
-	let time   = 	$('select#Ihor').children("option:selected").val();
-	console.log('Médico: '+id+' Data: '+date+' Hora: '+time);
+	let turno   = 	$('select#Ihor').children("option:selected").val();
+	//
+	let esp = 	$('select#Iesp').children("option:selected").text();
+	let medico = 	$('select#Imed').children("option:selected").text();
+	let manhaOUtarde = turno == 1 ? 'Manhã':'Tarde';
+
+	console.log('Médico: '+id+' Data: '+date+' Hora: '+turno);
 	$.ajax({
 		type: 'POST',
 		url: '{{ route('consulta.filtro') }}',
 		dataType: 'json',
-		data: {id:id, date: date, time: time},
+		data: {id:id, date: date, turno: turno},
 	})
 	.done(function(data) {
-		console.log(data);
+		console.log(data.consultas);
+		$('#filtro-list').find('p').remove();
+		$("tbody#pacientes-list").find('tr').remove();
+		let consulta_qtd = data.consultas.length;
+		//
+		$('#filtro-list').append("<p> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>").css({"background":"rgba(102, 255, 102, 0.5)", "color":"rgb(51, 153, 255)", "font-size":"14pt"});
+		$('#filtro-list').append("<p>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+		//
+		if(consulta_qtd > 0){
+			{{-- $("#tableListConsultas").hidden('false'); --}}
+			$.each(data.consultas, function (i, item) {
+				$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+			});
+		}
+
 	})
 	.fail(function(xhr) {
 		console.log("error");
