@@ -519,7 +519,7 @@ class ConsultaController extends Controller
                                     'consultas' => $consultas,
                                 ));
                             }
-                        }if($bool->suturday == 0){
+                        }if($bool->saturday == 0){
                             //Não atende neste dia
                         }
 

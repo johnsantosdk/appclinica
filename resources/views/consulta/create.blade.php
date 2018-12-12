@@ -42,7 +42,7 @@
 				</div>
 				{{-- <button class="btn btn-primary" id="btn-list-agendados">Disponibilidade</button> --}}
 			</form>
-			<form action="{{--  --}}" method="post">
+			<form action="{{--  --}}" method="post" ajax="true">
 				{{ csrf_field() }}
 				<div class="row">
 					<div class="col">
@@ -123,14 +123,6 @@
 						<tbody id="pacientes-list">
 
 						</tbody>
-						<tfooter>
-							<tr>
-								<th scope="col" class="">ID</th>
-								<th scope="col" class="text-center">Nome</th>
-								<th scope="col" class="text-center">CPF</th>
-								<th scope="col" class="text-center">Convênio</th>
-							</tr>
-						</tfooter>
 	  				</table>
 				</div>
 			</div>
@@ -188,20 +180,27 @@ $(document).on('change', 'select#Ihor', function(){
 		data: {id:id, date: date, turno: turno},
 	})
 	.done(function(data) {
-		console.log(data.consultas);
+		console.log(data);
 		$('#filtro-list').find('p').remove();
 		$("tbody#pacientes-list").find('tr').remove();
-		let consulta_qtd = data.consultas.length;
 		//
-		$('#filtro-list').append("<p> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>").css({"background":"rgba(102, 255, 102, 0.5)", "color":"rgb(51, 153, 255)", "font-size":"14pt"});
-		$('#filtro-list').append("<p>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
-		//
-		if(consulta_qtd > 0){
-			{{-- $("#tableListConsultas").hidden('false'); --}}
-			$.each(data.consultas, function (i, item) {
-				$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
-			});
+		if(data.object.boolean == 1){
+			let consulta_qtd = data.consultas.length;
+			//
+			$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+			$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+			//
+			if(consulta_qtd > 0){
+				{{-- $("#tableListConsultas").hidden('false'); --}}
+				$.each(data.consultas, function (i, item) {
+					$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+				});
+			}
+		}if(data.object.boolean == 0){
+			$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+			$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta para esse médico nesta data.</p>");
 		}
+
 
 	})
 	.fail(function(xhr) {
