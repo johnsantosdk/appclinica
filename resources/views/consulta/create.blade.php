@@ -9,7 +9,7 @@
 	<div class='row'>
 		<div class="col-sm-6">
 			<h2>AGENDAR</h2>
-			<form action="" id="form-ajax-request-consulta">
+			<form action="" method="post" id="form-ajax-request-consulta">
 				<div class="form-group">
 					<label for="Iesp">Especialidade:</label>
 					<select id="Iesp" name="Nesp" class="form-control">
@@ -42,7 +42,7 @@
 				</div>
 				{{-- <button class="btn btn-primary" id="btn-list-agendados">Disponibilidade</button> --}}
 			</form>
-			<form action="{{--  --}}" method="post" ajax="true">
+			<form  method="post" ajax="true" id="form-search-paciente">
 				{{ csrf_field() }}
 				<div class="row">
 					<div class="col">
@@ -136,9 +136,16 @@
 {{-- <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
 //Filtra os médicos ao escolher a especialidade
 $(document).on('change', 'select#Iesp', function(){
+	$('select#Ihor').val($('#Ihor option[selected]').val());
+	//
+	$('#filtro-list').find('p').remove();
+	//
+	$("tbody#pacientes-list").find('tr').remove();
+	//
 	let id = $(this).children("option:selected").val();
 	$("#form-ajax-request-consulta").find("#Imed").empty();
-	console.log("value before: "+id);
+	//console.log("value before: "+id);
+	//
 	$.ajax({
 		type: 'POST',
 		url: '{{ route('consulta.medico') }}',
@@ -162,7 +169,6 @@ $(document).on('change', 'select#Iesp', function(){
 });
 
 $(document).on('change', 'select#Ihor', function(){
-	
 	//
 	let id = 	$('select#Imed').children("option:selected").val();
 	let date   = 	$('input#Idata').val();
@@ -172,7 +178,8 @@ $(document).on('change', 'select#Ihor', function(){
 	let medico = 	$('select#Imed').children("option:selected").text();
 	let manhaOUtarde = turno == 1 ? 'Manhã':'Tarde';
 
-	console.log('Médico: '+id+' Data: '+date+' Hora: '+turno);
+	//console.log('Médico: '+id+' Data: '+date+' Turno: '+turno);
+
 	$.ajax({
 		type: 'POST',
 		url: '{{ route('consulta.filtro') }}',
@@ -180,42 +187,78 @@ $(document).on('change', 'select#Ihor', function(){
 		data: {id:id, date: date, turno: turno},
 	})
 	.done(function(data) {
-		console.log(data);
+		let dataAgendado = new Date(date);
+		//console.log(data);
 		$('#filtro-list').find('p').remove();
 		$("tbody#pacientes-list").find('tr').remove();
 		//
+		let consulta_qtd = typeof data.consultas === 'undefined' ? 0 : data.consultas.length;
+		//
+		if(typeof data.object !== 'undefined'){
+
 		if(data.object.boolean == 1){
-			let consulta_qtd = data.consultas.length;
-			//
-			$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-			$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
-			//
-			if(consulta_qtd > 0){
-				{{-- $("#tableListConsultas").hidden('false'); --}}
-				$.each(data.consultas, function (i, item) {
-					$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
-				});
+			//console.log('turno: '+turno);
+			//Manhã
+			if(turno == 1){
+				if(data.object.morning == 1){
+					$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+					$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+					//
+					if(consulta_qtd > 0){
+						$.each(data.consultas, function (i, item) {
+							$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+						});
+					}
+				}
+				if(data.object.morning == 0){
+					$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+					$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da manhã para esse médico</p>");
+				}
+				
+			}
+			//Tarde
+			if(turno == 2){
+				if(data.object.afternoon == 1){
+					$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+					$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+					//
+					if(consulta_qtd > 0){
+						$.each(data.consultas, function (i, item) {
+							$("#tableListConsultas").find("tbody#pacientes-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+						});
+					}
+				}
+				if(data.object.afternoon == 0){
+					$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+					$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da manhã para esse médico</p>");
+				}
 			}
 		}if(data.object.boolean == 0){
 			$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 			$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta para esse médico nesta data.</p>");
 		}
-
-
+	}else{
+		$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+		$('#filtro-list').append("<p class='alert alert-danger'> Indisponível.</p>");
+	}
 	})
 	.fail(function(xhr) {
-		console.log("error");
+		console.log("request error 500");
 	})
 	.always(function() {
 		console.log("complete");
 	});
-	
-	console.log(date);
 });
 
 $(document).on('change', 'select#Imed', function(){
 	$('select#Ihor').val($('#Ihor option[selected]').val());
 });
+
+$(document).on('change', 'input#Idata', function(){
+	$('select#Ihor').val($('#Ihor option[selected]').val());
+});
+
+
 
 {{-- </script>--}} {{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection
