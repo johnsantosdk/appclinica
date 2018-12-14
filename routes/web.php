@@ -104,6 +104,7 @@ Route::group(['prefix' => 'consulta', 'as' => 'consulta.'], function() {
 	Route::get('/create',			 	['as' => 'create',			'uses' => 'ConsultaController@create']);
 	Route::post('/medico',			 	['as' => 'medico',			'uses' => 'ConsultaController@ajaxRequestMedico']);
 	Route::post('/filtro',			 	['as' => 'filtro',			'uses' => 'ConsultaController@ajaxFiltroDateTime']);
+	Route::post('/findPaciente',	 	['as' => 'findPaciente',	'uses' => 'ConsultaController@findPaciente']);
 	Route::post('/addConsulta',			['as' => 'addConsulta',		'uses' => 'ConsultaController@addConsulta']);//rota de teste para ajax
 	Route::post('/editConsulta{id?}',	['as' => 'editConsulta',	'uses' => 'ConsultaController@editConsulta']);//rota de teste para ajax
 	Route::post('/updateConsulta',		['as' => 'updateConsulta',	'uses' => 'ConsultaController@updateConsulta']);//rota de teste para ajax

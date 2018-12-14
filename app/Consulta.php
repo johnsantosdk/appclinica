@@ -12,6 +12,8 @@ class Consulta extends Model
         'idconsulta',
         'data_consulta',
         'horario',
+        'manha',
+        'tarde',
         'pacienteid',
         'medicoid',
     ];

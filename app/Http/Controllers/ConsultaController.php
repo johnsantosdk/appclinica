@@ -543,6 +543,74 @@ class ConsultaController extends Controller
         }
     }
 
+    public function findPaciente(Request $request)
+    {
+        if($request->input('Nnome')){
+            $string = $request->input('Nnome');
+            $pacientes = DB::table('pacientes')
+                           ->leftJoin('convenios', 'pacientes.idpaciente', '=', 'convenios.pacienteid')
+                           ->leftJoin('planos', 'convenios.planoid', '=', 'planos.idplano')
+                           ->select('pacientes.idpaciente', 'pacientes.nome', 'pacientes.nascimento', 'pacientes.cpf', 'planos.nome AS convenio')
+                           ->where('pacientes.nome', 'like', '%'.$string.'%')
+                           ->orderBy('pacientes.nome', 'asc')
+                           ->get();
+
+            // return view('paciente.find', compact('pacientes', 'planos'));
+            //$pacientes = (object) array('pacientes' => $paci);
+            return response()->json($pacientes);
+        }
+        if($request->input('Ncpf')){
+            $cpf = $request->input('Ncpf');
+            $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
+                           ->where('cpf', $cpf)
+                           ->get();
+
+            // return view('paciente.find', compact('pacientes', 'planos'));
+            return response()->json($pacientes);
+        }
+        if($request->input('Nnasc')){
+            $date = $request->input('Nnasc');
+            $pacientes = DB::table('pacientes')
+                           ->select('idpaciente', 'nome', 'nascimento', 'cpf')
+                           ->where('nascimento', $date)
+                           ->get();
+
+            // return view('paciente.find', compact('pacientes', 'planos'));
+            return response()->json($pacientes);
+        }else{
+            // $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
+            //                      ->paginate(5);
+
+            // return view('paciente.find', compact('pacientes', 'planos'));
+            $pacientes = (object) [
+                'index' => 'no result',
+                'error' => '404',
+            ];
+            return response()->json($pacientes);
+        } 
+
+        return response()->json($request);
+    }
+
+    public function addConsulta(Request $request)
+    {
+        if($request->ajax()){
+            $manha = $request->input('Nhor') == 1 ? 1 : 0;
+            $tarde = $request->input('Nhor') == 2 ? 1 : 0;
+            $consulta = Consulta::create([
+                'data_consulta'   => $request->input('Ndata'),
+                'horario'         => '00:00:00',
+                'manha'           => $manha,
+                'tarde'           => $tarde,
+                'pacienteid'      => $request->input('Npaciente'),
+                'medicoid'        => $request->input('Nmed'),
+            ]);
+            //código de append tr
+        }
+
+        return response()->json($consulta);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
