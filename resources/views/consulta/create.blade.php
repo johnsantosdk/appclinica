@@ -133,6 +133,9 @@
 
 @section('customer-javaScript')
 {{-- <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
+$('#tableListPac').hide();
+$('#tableListConsultas').hide();
+
 //Filtra os médicos ao escolher a especialidade
 $(document).on('change', 'select#Iesp', function(){
 	$('select#Ihor').val($('#Ihor option[selected]').val());
@@ -194,12 +197,13 @@ $(document).on('change', 'select#Ihor', function(){
 		let consulta_qtd = typeof data.consultas === 'undefined' ? 0 : data.consultas.length;
 		//
 		if(typeof data.object !== 'undefined'){
-
+		
 		if(data.object.boolean == 1){
 			//console.log('turno: '+turno);
 			//Manhã
 			if(turno == 1){
 				if(data.object.morning == 1){
+					$('#tableListConsultas').show();
 					$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 					$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
 					//
@@ -218,6 +222,7 @@ $(document).on('change', 'select#Ihor', function(){
 			//Tarde
 			if(turno == 2){
 				if(data.object.afternoon == 1){
+					$('#tableListConsultas').show();
 					$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 					$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
 					//
@@ -270,6 +275,7 @@ $(document).on('click', '#send-data', function(){
 		data: dataForm,
 	})
 	.done(function(data) {
+		$('#tableListPac').show();
 		console.log("success:");
 		console.log(data);
 		let paciente_qtd = typeof data.length === 'undefined' ? 0 : data.length;

@@ -60,6 +60,8 @@ class ConsultaController extends Controller
 
             $nameOfDay = strtolower(date('l', strtotime($request->date)));
 
+            // return Consulta::getConsultas($request->id, $request->date, $nameOfDay);
+
             switch ($nameOfDay) {
                 case 'sunday':
                   $boolean = DB::select(DB::raw("SELECT sunday, sunday_start_time, sunday_end_time, sunday_morning, sunday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
@@ -595,8 +597,12 @@ class ConsultaController extends Controller
     public function addConsulta(Request $request)
     {
         if($request->ajax()){
-            $manha = $request->input('Nhor') == 1 ? 1 : 0;
-            $tarde = $request->input('Nhor') == 2 ? 1 : 0;
+            $manha          = $request->input('Nhor') == 1 ? 1 : 0;
+            $tarde          = $request->input('Nhor') == 2 ? 1 : 0;
+            $data           = $request->input('Ndata');
+            $idmedico       = $request->input('Nmed');
+            $idpaciente     = $request->input('Npaciente');
+
             $consulta = Consulta::create([
                 'data_consulta'   => $request->input('Ndata'),
                 'horario'         => '00:00:00',
@@ -605,10 +611,46 @@ class ConsultaController extends Controller
                 'pacienteid'      => $request->input('Npaciente'),
                 'medicoid'        => $request->input('Nmed'),
             ]);
-            //código de append tr
+            
+            if(isset($data,$idmedico, $idpaciente) && $manha == 1){
+                $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+                                                 FROM pacientes p
+                                                 LEFT JOIN convenios cv
+                                                 ON cv.pacienteid = p.idpaciente
+                                                 LEFT JOIN  planos pl
+                                                 ON cv.planoid = pl.idplano
+                                                 LEFT JOIN  consultas cs
+                                                 ON cs.pacienteid = p.idpaciente
+                                                 LEFT JOIN  medicos m
+                                                 ON cs.medicoid = m.idmedico
+                                                 WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
+                                                "));
+                // foreach ($pacientes as $paciente) {}
+                return response()->json($pacientes);               
+            }if(isset($data,$idmedico, $idpaciente) && $tarde == 1){
+                $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+                                                 FROM pacientes p
+                                                 LEFT JOIN convenios cv
+                                                 ON cv.pacienteid = p.idpaciente
+                                                 LEFT JOIN  planos pl
+                                                 ON cv.planoid = pl.idplano
+                                                 LEFT JOIN  consultas cs
+                                                 ON cs.pacienteid = p.idpaciente
+                                                 LEFT JOIN  medicos m
+                                                 ON cs.medicoid = m.idmedico
+                                                 WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
+                                                "));
+                // foreach ($pacientes as $paciente) {}
+                return response()->json($pacientes);  
+            }else{
+                $paciente = (object) [
+                    'error' => '404',
+                ];
+                return response()->json($paciente);
+            }
+
         }
 
-        return response()->json($consulta);
     }
 
     /**
