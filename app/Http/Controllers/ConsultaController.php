@@ -611,8 +611,8 @@ class ConsultaController extends Controller
                 'pacienteid'      => $request->input('Npaciente'),
                 'medicoid'        => $request->input('Nmed'),
             ]);
-            
-            if(isset($data,$idmedico, $idpaciente) && $manha == 1){
+            //Bug nesta parte do código. Provávelmente n if do isset ou na claúsura WHERE do SQL
+            if(isset($data, $idmedico, $idpaciente) && $manha == 1){
                 $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
                                                  FROM pacientes p
                                                  LEFT JOIN convenios cv
@@ -626,8 +626,9 @@ class ConsultaController extends Controller
                                                  WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
                                                 "));
                 // foreach ($pacientes as $paciente) {}
-                return response()->json($pacientes);               
-            }if(isset($data,$idmedico, $idpaciente) && $tarde == 1){
+                return response()->json($pacientes);
+                //Bug nesta parte do código. Provávelmente n if do isset ou na claúsura WHERE do SQL
+            }if(isset($data, $idmedico, $idpaciente) && $tarde == 1){
                 $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
                                                  FROM pacientes p
                                                  LEFT JOIN convenios cv
@@ -660,8 +661,8 @@ class ConsultaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-
+    {   
+    
 
 
         return redirect('consulta.create');
