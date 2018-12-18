@@ -313,8 +313,9 @@ $(document).on('click', '#submitAgendaConsulta', function(){
 	})
 	.done(function(data) {
 		console.log("success");
-		console.log(data);
-		$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+		console.log(data.paciente);
+		$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+data.paciente.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+data.paciente.idpaciente+"</th><td class='text-center'>"+data.paciente.nome+"</td><td class='text-center'>"+data.paciente.cpf+"</td><td class='text-center'>"+data.paciente.convenio+"</td></tr>");
+		$("#tableListConsultas").find("tr#paciente"+data.paciente.idpaciente).css({'background-color':'rgba(110, 218, 103, 0.8)'});
 	})
 	.fail(function() {
 		console.log("error");

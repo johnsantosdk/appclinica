@@ -625,8 +625,12 @@ class ConsultaController extends Controller
                                                  ON cs.medicoid = m.idmedico
                                                  WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
                                                 "));
-                // foreach ($pacientes as $paciente) {}
-                return response()->json($pacientes);               
+                foreach ($pacientes as $paciente) {}
+
+                return response()->json(array(
+                    'paciente' => $paciente,
+                )); 
+
             }if(isset($data,$idmedico, $idpaciente) && $tarde == 1){
                 $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
                                                  FROM pacientes p
@@ -638,10 +642,14 @@ class ConsultaController extends Controller
                                                  ON cs.pacienteid = p.idpaciente
                                                  LEFT JOIN  medicos m
                                                  ON cs.medicoid = m.idmedico
-                                                 WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
+                                                 WHERE cs.data_consulta = '$data' && cs.tarde = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
                                                 "));
-                // foreach ($pacientes as $paciente) {}
-                return response()->json($pacientes);  
+                foreach ($pacientes as $paciente) {}
+
+                return response()->json(array(
+                    'paciente' => $paciente,
+                ));  
+
             }else{
                 $paciente = (object) [
                     'error' => '404',
