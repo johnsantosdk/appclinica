@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consulta;
 use Illuminate\Http\Request;
+use App\Http\Requests\ConsultaRequest;
 use App\Medicoespecialidade;
 use App\Especialidade;
 use App\Paciente;
@@ -563,9 +564,11 @@ class ConsultaController extends Controller
         }
         if($request->input('Ncpf')){
             $cpf = $request->input('Ncpf');
-            $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
-                           ->where('cpf', $cpf)
-                           ->get();
+            $pacientes = Paciente::leftJoin('convenios', 'pacientes.idpaciente', '=', 'convenios.pacienteid')
+                                 ->leftJoin('planos', 'convenios.planoid', '=', 'planos.idplano')
+                                 ->select('pacientes.idpaciente', 'pacientes.nome', 'pacientes.nascimento', 'pacientes.cpf', 'planos.nome AS convenio')
+                                 ->where('cpf', $cpf)
+                                 ->get();
 
             // return view('paciente.find', compact('pacientes', 'planos'));
             return response()->json($pacientes);
@@ -573,7 +576,9 @@ class ConsultaController extends Controller
         if($request->input('Nnasc')){
             $date = $request->input('Nnasc');
             $pacientes = DB::table('pacientes')
-                           ->select('idpaciente', 'nome', 'nascimento', 'cpf')
+                           ->leftJoin('convenios', 'pacientes.idpaciente', '=', 'convenios.pacienteid')
+                           ->leftJoin('planos', 'convenios.planoid', '=', 'planos.idplano')
+                           ->select('pacientes.idpaciente', 'pacientes.nome', 'pacientes.nascimento', 'pacientes.cpf', 'planos.nome AS convenio')
                            ->where('nascimento', $date)
                            ->get();
 
@@ -594,70 +599,79 @@ class ConsultaController extends Controller
         return response()->json($request);
     }
 
-    public function addConsulta(Request $request)
+    public function addConsulta(ConsultaRequest $request)
     {
-        if($request->ajax()){
-            $manha          = $request->input('Nhor') == 1 ? 1 : 0;
-            $tarde          = $request->input('Nhor') == 2 ? 1 : 0;
-            $data           = $request->input('Ndata');
-            $idmedico       = $request->input('Nmed');
-            $idpaciente     = $request->input('Npaciente');
+        $manha          = $request->input('Nhor') == 1 ? 1 : 0;
+        $tarde          = $request->input('Nhor') == 2 ? 1 : 0;
+        $data           = $request->input('Ndata');
+        $idmedico       = $request->input('Nmed');
+        $idpaciente     = $request->input('Npaciente');
 
-            $consulta = Consulta::create([
-                'data_consulta'   => $request->input('Ndata'),
-                'horario'         => '00:00:00',
-                'manha'           => $manha,
-                'tarde'           => $tarde,
-                'pacienteid'      => $request->input('Npaciente'),
-                'medicoid'        => $request->input('Nmed'),
-            ]);
-            
-            if(isset($data,$idmedico, $idpaciente) && $manha == 1){
-                $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                 FROM pacientes p
-                                                 LEFT JOIN convenios cv
-                                                 ON cv.pacienteid = p.idpaciente
-                                                 LEFT JOIN  planos pl
-                                                 ON cv.planoid = pl.idplano
-                                                 LEFT JOIN  consultas cs
-                                                 ON cs.pacienteid = p.idpaciente
-                                                 LEFT JOIN  medicos m
-                                                 ON cs.medicoid = m.idmedico
-                                                 WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
-                                                "));
-                foreach ($pacientes as $paciente) {}
-
-                return response()->json(array(
-                    'paciente' => $paciente,
-                )); 
-
-            }if(isset($data,$idmedico, $idpaciente) && $tarde == 1){
-                $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                 FROM pacientes p
-                                                 LEFT JOIN convenios cv
-                                                 ON cv.pacienteid = p.idpaciente
-                                                 LEFT JOIN  planos pl
-                                                 ON cv.planoid = pl.idplano
-                                                 LEFT JOIN  consultas cs
-                                                 ON cs.pacienteid = p.idpaciente
-                                                 LEFT JOIN  medicos m
-                                                 ON cs.medicoid = m.idmedico
-                                                 WHERE cs.data_consulta = '$data' && cs.tarde = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
-                                                "));
-                foreach ($pacientes as $paciente) {}
-
-                return response()->json(array(
-                    'paciente' => $paciente,
-                ));  
-
-            }else{
-                $paciente = (object) [
-                    'error' => '404',
-                ];
-                return response()->json($paciente);
-            }
-
+        $boolean = Consulta::getPaciente($data, $idmedico, $idpaciente);
+        if(isset($boolean)){
+            return response()->json(array(
+                'result' => 'alredy exist',
+                'paciente' => $boolean,
+            ));
         }
+
+            if($request->ajax()){
+
+                $consulta = Consulta::create([
+                    'data_consulta'   => $request->input('Ndata'),
+                    'horario'         => '00:00:00',
+                    'manha'           => $manha,
+                    'tarde'           => $tarde,
+                    'pacienteid'      => $request->input('Npaciente'),
+                    'medicoid'        => $request->input('Nmed'),
+                ]);
+                
+                if(isset($data,$idmedico, $idpaciente) && $manha == 1){
+                    $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+                                                     FROM pacientes p
+                                                     LEFT JOIN convenios cv
+                                                     ON cv.pacienteid = p.idpaciente
+                                                     LEFT JOIN  planos pl
+                                                     ON cv.planoid = pl.idplano
+                                                     LEFT JOIN  consultas cs
+                                                     ON cs.pacienteid = p.idpaciente
+                                                     LEFT JOIN  medicos m
+                                                     ON cs.medicoid = m.idmedico
+                                                     WHERE cs.data_consulta = '$data' && cs.manha = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
+                                                    "));
+                    foreach ($pacientes as $paciente) {}
+
+                    return response()->json(array(
+                        'paciente' => $paciente,
+                    )); 
+
+                }if(isset($data,$idmedico, $idpaciente) && $tarde == 1){
+                    $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+                                                     FROM pacientes p
+                                                     LEFT JOIN convenios cv
+                                                     ON cv.pacienteid = p.idpaciente
+                                                     LEFT JOIN  planos pl
+                                                     ON cv.planoid = pl.idplano
+                                                     LEFT JOIN  consultas cs
+                                                     ON cs.pacienteid = p.idpaciente
+                                                     LEFT JOIN  medicos m
+                                                     ON cs.medicoid = m.idmedico
+                                                     WHERE cs.data_consulta = '$data' && cs.tarde = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'
+                                                    "));
+                    foreach ($pacientes as $paciente) {}
+
+                    return response()->json(array(
+                        'paciente' => $paciente,
+                    ));  
+
+                }else{
+                    $paciente = (object) [
+                        'error' => '404',
+                    ];
+                    return response()->json($paciente);
+                }
+
+            }
 
     }
 

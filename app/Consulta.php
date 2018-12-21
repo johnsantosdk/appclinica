@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Consulta extends Model
 {
@@ -40,7 +41,7 @@ class Consulta extends Model
     	return $this->belongsTo('App\Medico');
     }
 
-    // public static function getConsultas($idmedico, $data, $nameOfday)
+// public static function getConsultas($idmedico, $data, $nameOfday)
     // {
     //     switch ($nameOfDay) {
     //                     case 'sunday':
@@ -522,5 +523,39 @@ class Consulta extends Model
 
     //                       break;
     //     }        
-    // }
+// }
+
+    public static function getPaciente($data, $idmedico, $idpaciente)
+    {
+        // $paciente = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+        //                                 FROM pacientes p
+        //                                 LEFT JOIN convenios cv
+        //                                 ON cv.pacienteid = p.idpaciente
+        //                                 LEFT JOIN  planos pl
+        //                                 ON cv.planoid = pl.idplano
+        //                                 LEFT JOIN  consultas cs
+        //                                 ON cs.pacienteid = p.idpaciente
+        //                                 LEFT JOIN  medicos m
+        //                                 ON cs.medicoid = m.idmedico
+        //                                 WHERE cs.data_consulta = '$data' && cs.tarde = 1 && cs.medicoid = '$idmedico' && cs.pacienteid = '$idpaciente'");
+        
+        $paciente = DB::table('pacientes')
+                      ->leftJoin('convenios', 'pacientes.idpaciente', '=', 'convenios.pacienteid')
+                      ->leftJoin('planos', 'convenios.planoid', '=', 'planos.idplano')
+                      ->leftJoin('consultas', 'consultas.pacienteid', '=', 'pacientes.idpaciente')
+                      ->leftJoin('medicos', 'consultas.medicoid', '=', 'medicos.idmedico')
+                      ->select('pacientes.idpaciente, pacientes.nome, pacientes.cpf, planos.nome as convenio')
+                      ->where(['consultas.data_consulta', '=', $data],
+                              ['consultas.tarde', '=', 1],
+                              ['consultas.medicoid', '=', $idmedico],
+                              ['consultas.pacienteid', '=', $idpaciente]
+                              );
+        
+        // $paciente = (object) [
+        //   'nome'  => 'inexistente',
+        //   'error' => 'not found 404',
+        // ];
+
+        return $paciente;
+    }
 }

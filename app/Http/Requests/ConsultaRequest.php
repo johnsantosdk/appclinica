@@ -13,7 +13,7 @@ class ConsultaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,22 @@ class ConsultaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'Npaciente' =>  'required',
+            'Nesp'      =>  'required',
+            'Nmed'      =>  'required',
+            'Ndata'     =>  'required',
+            'Nhor'      =>  'required', 
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'Npaciente.required' =>  ' Selecione o paciente. ',
+            'Nesp.required'      =>  ' Selecione a especialidade. ',
+            'Nmed.required'      =>  ' Selecione o médico. ',
+            'Ndata.required'     =>  ' Informe a data para o agendamento. ',
+            'Nhor.required'      =>  ' Selecione o horário do agendamento ',
         ];
     }
 }
