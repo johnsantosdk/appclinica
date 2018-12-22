@@ -135,12 +135,15 @@
 		</div>
 	</div>
 </div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alert-paciente-agendado" id="button-trigger-modal" hidden="true">
+</button>
 <div id="urls" hidden="true">
 	<p id="consulta-medico">{{ route('consulta.medico') }}</p>
 	<p id="consulta-filtro">{{ route('consulta.filtro') }}</p>
 	<p id="consulta-findPaciente">{{ route('consulta.findPaciente') }}</p>
 	<p id="consulta-addConsulta">{{ route('consulta.addConsulta')}}</p>
 </div>
+@include('consulta.modals.modal_alert_consulta')
 @endsection
 
 @section('customer-javaScript')
@@ -159,7 +162,6 @@ $(document).on('change', 'select#Iesp', function(){
 	let url = $('#urls').find('p#consulta-medico').text();
 	let id = $(this).children("option:selected").val();
 	$("#form-ajax-request-consulta").find("#Imed").empty();
-	//console.log("value before: "+id);
 	//
 	$.ajax({
 		type: 'POST',
@@ -176,10 +178,10 @@ $(document).on('change', 'select#Iesp', function(){
 		});
 	})
 	.fail(function(xhr) {
-		console.log("error");
+		//console.log("error");
 	})
 	.always(function() {
-		console.log("complete");
+		//console.log("complete");
 	});	
 });
 
@@ -204,7 +206,7 @@ $(document).on('change', 'select#Ihor', function(){
 	})
 	.done(function(data) {
 		let dataAgendado = new Date(date);
-		//console.log(data);
+		//
 		$('#filtro-list').find('p').remove();
 		$("tbody#consultas-list").find('tr').remove();
 		$('#form-ajax-request-consulta').find('#button-disabled').replaceWith("<a href='#' class='btn btn-primary' id='submitAgendaConsulta'>Agendar</a>");
@@ -214,7 +216,6 @@ $(document).on('change', 'select#Ihor', function(){
 		if(typeof data.object !== 'undefined'){
 		
 		if(data.object.boolean == 1){
-			//console.log('turno: '+turno);
 			//Manhã
 			if(turno == 1){
 				if(data.object.morning == 1){
@@ -270,10 +271,10 @@ $(document).on('change', 'select#Ihor', function(){
 	}
 	})
 	.fail(function(xhr) {
-		console.log("request error 500");
+		//console.log("error ");
 	})
 	.always(function() {
-		console.log("complete");
+		//console.log("complete");
 	});
 });
 
@@ -290,7 +291,6 @@ $(document).on('click', '#send-data', function(){
 	//input#Inome, input#Icpf, input#Inasc
 	let dataForm = $('#form-search-paciente').serialize();
 	let url = $('#urls').find('p#consulta-findPaciente').text();
-	console.log(url);
 	$.ajax({
 		url: url,
 		type: 'POST',
@@ -299,8 +299,7 @@ $(document).on('click', '#send-data', function(){
 	})
 	.done(function(data) {
 		$('#tableListPac').show();
-		console.log("success:");
-		console.log(data);
+		//
 		let paciente_qtd = typeof data.length === 'undefined' ? 0 : data.length;
 		if(paciente_qtd > 0){
 			$.each(data, function (i, item) {
@@ -310,10 +309,10 @@ $(document).on('click', '#send-data', function(){
 
 	})
 	.fail(function(xhr) {
-		console.log("error");
+		//console.log("error");
 	})
 	.always(function() {
-		console.log("complete");
+		//console.log("complete");
 	});
 	
 });
@@ -327,7 +326,7 @@ $(document).ready(function(){
 $(document).on('click', '#submitAgendaConsulta', function(){
 	let dataForm = $('#form-ajax-request-consulta').serialize();
 	let url = $('#urls').find('p#consulta-addConsulta').text();
-	console.log(dataForm);
+	
 	$.ajax({
 		url: url,
 		type: 'POST',
@@ -336,11 +335,10 @@ $(document).on('click', '#submitAgendaConsulta', function(){
 	})
 	.done(function(data) {
 		$('#form-ajax-request-consulta').find('p.help-block').remove();
-		console.log("success");
-		console.log(data);
+		//
 		if(typeof data.paciente === 'undefined'){
-			//Cadastro realizado
-			window.alert("Paciente já está agendado");
+			//Cadastro já existente
+			$('#button-trigger-modal').trigger('click');
 		}else{
 			$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+data.paciente.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+data.paciente.idpaciente+"</th><td class='text-center'>"+data.paciente.nome+"</td><td class='text-center'>"+data.paciente.cpf+"</td><td class='text-center'>"+data.paciente.convenio+"</td></tr>");
 			$("#tableListConsultas").find("tr#paciente"+data.paciente.idpaciente).css({'background-color':'rgba(110, 218, 103, 0.8)'});
@@ -353,17 +351,15 @@ $(document).on('click', '#submitAgendaConsulta', function(){
 	})
 	.fail(function(xhr) {
 		$('#form-ajax-request-consulta').find('p.help-block').remove();
-		console.log("error");
-		console.log(xhr);
-		//console.log(xhr);
+		
         //1 - Procurar o campo que tem erro de validação
-        //2 - Inseri o texto de error logo abaixo do campo
+        //2 - Inseri o texto de error logo abaixo do campo(input)
         $.each(xhr.responseJSON.errors, function(key,value) {
             $('#'+key+'-error').append('<p class="help-block alert alert-danger">'+value+'</p>');
         });
 	})
 	.always(function() {
-		console.log("complete");
+		//console.log("complete");
 	});
 	
 });
