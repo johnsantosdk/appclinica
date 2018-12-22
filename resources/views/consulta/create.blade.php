@@ -33,7 +33,7 @@
 						</div>
 
 					</div>
-					<a id="send-data" href="#" class="btn btn-primary">Pesquisar paciente</a>
+					<a id="send-data" href="#" class="btn btn-primary float-right">Pesquisar paciente</a>
 				</form>
 			</div>
 
@@ -106,7 +106,8 @@
 						{{-- <input type="time" id="Ihor" name="Nhor" class="form-control"> --}}
 					</div>
 					{{-- <button class="btn btn-primary" id="btn-list-agendados">Disponibilidade</button> --}}
-					<a href="#" class="btn btn-primary" id="submitAgendaConsulta" >Agendar</a>
+					<a href="#" class="btn btn-primary" id="submitAgendaConsulta">Agendar</a>
+
 				</form>
 			</div>
 		</div>
@@ -206,6 +207,7 @@ $(document).on('change', 'select#Ihor', function(){
 		//console.log(data);
 		$('#filtro-list').find('p').remove();
 		$("tbody#consultas-list").find('tr').remove();
+		$('#form-ajax-request-consulta').find('#button-disabled').replaceWith("<a href='#' class='btn btn-primary' id='submitAgendaConsulta'>Agendar</a>");
 		//
 		let consulta_qtd = typeof data.consultas === 'undefined' ? 0 : data.consultas.length;
 		//
@@ -229,6 +231,8 @@ $(document).on('change', 'select#Ihor', function(){
 				if(data.object.morning == 0){
 					$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 					$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da manhã para esse médico</p>");
+					//
+					$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 				}
 				
 			}
@@ -248,15 +252,21 @@ $(document).on('change', 'select#Ihor', function(){
 				if(data.object.afternoon == 0){
 					$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 					$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da tarde para esse médico</p>");
+					//
+					$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 				}
 			}
 		}if(data.object.boolean == 0){
 			$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 			$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta para esse médico nesta data.</p>");
+			//
+			$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 		}
 	}else{
 		$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
 		$('#filtro-list').append("<p class='alert alert-danger'> Indisponível.</p>");
+		//
+		$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 	}
 	})
 	.fail(function(xhr) {
@@ -325,14 +335,21 @@ $(document).on('click', '#submitAgendaConsulta', function(){
 		data: dataForm,
 	})
 	.done(function(data) {
-		console.log("success");
-		console.log(data.paciente);
-		$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+data.paciente.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+data.paciente.idpaciente+"</th><td class='text-center'>"+data.paciente.nome+"</td><td class='text-center'>"+data.paciente.cpf+"</td><td class='text-center'>"+data.paciente.convenio+"</td></tr>");
-		$("#tableListConsultas").find("tr#paciente"+data.paciente.idpaciente).css({'background-color':'rgba(110, 218, 103, 0.8)'});
-		//Remove todos os tr(s) da tabela de pacientes
-		$("tbody#pacientes-list").find('tr').remove();
-		//Remove os help-block do formulário
 		$('#form-ajax-request-consulta').find('p.help-block').remove();
+		console.log("success");
+		console.log(data);
+		if(typeof data.paciente === 'undefined'){
+			//Cadastro realizado
+			window.alert("Paciente já está agendado");
+		}else{
+			$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+data.paciente.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+data.paciente.idpaciente+"</th><td class='text-center'>"+data.paciente.nome+"</td><td class='text-center'>"+data.paciente.cpf+"</td><td class='text-center'>"+data.paciente.convenio+"</td></tr>");
+			$("#tableListConsultas").find("tr#paciente"+data.paciente.idpaciente).css({'background-color':'rgba(110, 218, 103, 0.8)'});
+			//Remove todos os tr(s) da tabela de pacientes
+			$("tbody#pacientes-list").find('tr').remove();
+			//Remove os help-block do formulário
+			$('#form-ajax-request-consulta').find('p.help-block').remove();
+		}
+
 	})
 	.fail(function(xhr) {
 		$('#form-ajax-request-consulta').find('p.help-block').remove();
