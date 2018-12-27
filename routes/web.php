@@ -131,9 +131,10 @@ Route::group(['prefix' => 'especialidade', 'as' => 'especialidade.'], function()
 });
 
 //Rotas para Calendario
-Route::group(['prefix' => 'calendario', 'as' => 'calendario.'], function() {
-	//URL = calendario/index
-	Route::get('/',					 	['as' => 'index',			'uses' => 'CalendarioController@index']);
+Route::group(['prefix' => 'agenda', 'as' => 'agenda.'], function() {
+	//URL = agenda/index
+	Route::get('/',					 	['as' => 'index',			'uses' => 'AgendaController@index']);
+	Route::get('/create',				['as' => 'create',			'uses' => 'AgendaController@create']);
 });
 //Rotas para o ADMIN
 /*
