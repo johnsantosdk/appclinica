@@ -135,6 +135,7 @@ Route::group(['prefix' => 'agenda', 'as' => 'agenda.'], function() {
 	//URL = agenda/index
 	Route::get('/',					 	['as' => 'index',			'uses' => 'AgendaController@index']);
 	Route::get('/create',				['as' => 'create',			'uses' => 'AgendaController@create']);
+	Route::post('/getMedico',			['as' => 'getMedico',		'uses' => 'AgendaController@getMedico']);
 });
 //Rotas para o ADMIN
 /*

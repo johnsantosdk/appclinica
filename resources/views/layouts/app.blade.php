@@ -78,14 +78,11 @@
         </nav>
         <main class="py-4">
             <div id="includes">
-                {{--    @include('layouts._include._flash_message')--}}
+                
             </div>
             @yield('content')
         </main>
     </div>
- <script src="{{ asset('js/customer.js') }}" defer></script> 
-
-
 <script>
 $(document).ready( function($){
 //csrf_token
@@ -118,6 +115,6 @@ $(document).ready( function($){
 //TELEPHONE MASK
 //CPF MASK
 </script>
-
+ <script src="{{ asset('/js/customer.js') }}"></script> 
 </body>
 </html>

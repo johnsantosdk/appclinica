@@ -18,7 +18,7 @@
 		        </div>
     		@endif
 		<div class="col-sm-10">
-			<form action="">
+			<form action="" method="POST" id="form-agenda-medica">
 				<div class="form-group">
 					<label for="Iesp">Especialidade:</label>
 					<select name="Nesp" id="Iesp" class="form-control">
@@ -119,5 +119,43 @@
 		</div>
 	</div>
 </div>
+<div id="urls" hidden="true">
+	<p id="agenda-medico">{{ route('agenda.getMedico') }}</p>
+</div>
+@endsection
 
+@section('customer-javaScript')
+{{-- <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
+//Filtra os médicos ao escolher a especialidade
+$(document).on('change', 'select#Iesp', function(){
+	//
+	let url = $('#urls').find('p#agenda-medico').text();
+	let id = $(this).children("option:selected").val();
+	console.log(url);
+	console.log(id);
+	$("#form-agenda-medica").find("#Imed").empty();
+	//
+	$.ajax({
+		type: 'POST',
+		url: url,
+		dataType: 'json',
+		data: {id:id},
+	})
+	.done(function(data) {
+		$.each(data, function (i, item) {
+			$("#form-agenda-medica").find("#Imed").append($('<option>', {
+				value: item.idmedico,
+				text: item.nome
+			}));
+		});
+	})
+	.fail(function(xhr) {
+		//console.log("error");
+	})
+	.always(function() {
+		//console.log("complete");
+	});	
+});
+
+{{-- </script>--}} {{-- O SCRIPT SÓ IRÁ FUNCIONAR SE AS TAGS ESTIVEREM COMENTADAS --}}
 @endsection
