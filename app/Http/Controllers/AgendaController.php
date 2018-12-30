@@ -41,4 +41,23 @@ class AgendaController extends Controller
             return response()->json($medico);
         }
     }
+
+    public function getAgenda(Request $request)
+    {
+    	$medicoid = $request->input('Nmed');
+    	$especialidadeid = $request->input('Nesp');
+    	if($request->ajax()){
+
+    		if(isset($medicoid)){
+	    		$agenda = DB::select(DB::raw("SELECT
+											  *
+	    		  							  FROM agendas 
+	    									  WHERE medicoid = '$medicoid'"));
+    			
+    			return response()->json($agenda);
+    		}
+
+	    	return response()->json('fail');
+    	}
+    }
 }

@@ -55,4 +55,5 @@ class Consulta extends Model
 
         return $result;
     }
+
 }

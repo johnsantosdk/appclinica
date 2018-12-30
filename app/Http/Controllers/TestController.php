@@ -9,34 +9,25 @@ use App\Consulta;
 use Illuminate\Http\File;
 use App\Especialidade;
 use App\Medicoespecialidade;
+use App\Agenda;
 
 class TestController extends Controller
 {
     public function index()
     {
+        $str = 'first_name';
 
-      $turno  = 2;
-      $manha  = $turno == 1 ? 1 : 0;
-      $tarde  = $turno == 2 ? 1 : 0;
+        $obj = (object) [
+          'first_name' => 'Nani',
+          'last_name' => 'Mcbee',
+        ];
+        $colunm = 'paciente';
+        $paciente = DB::select(DB::raw("SELECT id{$colunm} FROM pacientes WHERE idpaciente = 31"));
 
-      $str = 'tarde';
-      $data = '2018-12-28';
-      $idmedico = 2;
-      $idpaciente = 31;
+        $result = Agenda::getAgendaTest('2018-12-28', 2, 2);
 
-              $paciente = DB::table('consultas')
-                            ->select('idconsulta')
-                            ->where([
-                                      ['data_consulta', '=', $data],
-                                      [$str,            '=', 1],
-                                      ['medicoid',      '=', $idmedico],
-                                      ['pacienteid',    '=', $idpaciente],
-                                    ])
-                            ->first();
-
-        $id = Consulta::getConsultaId($idmedico, $idpaciente, $data, 'tarde', 1);
-
-
-        return response()->json($id);  
+        // return response()->json($obj->{'first_'.$str});  
+        // return response()->json($obj->{$str});
+        // return response()->json($paciente);
     }
 }
