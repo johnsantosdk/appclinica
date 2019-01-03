@@ -15,19 +15,8 @@ class TestController extends Controller
 {
     public function index()
     {
-        $str = 'first_name';
-
-        $obj = (object) [
-          'first_name' => 'Nani',
-          'last_name' => 'Mcbee',
-        ];
-        $colunm = 'paciente';
-        $paciente = DB::select(DB::raw("SELECT id{$colunm} FROM pacientes WHERE idpaciente = 31"));
-
-        $result = Agenda::getAgendaTest('2018-12-28', 2, 2);
-
-        // return response()->json($obj->{'first_'.$str});  
-        // return response()->json($obj->{$str});
-        // return response()->json($paciente);
+        $consultas = Consulta::getConsultaMedico('2018-12-28', 'tarde', 2);
+        $cs = Agenda::getAgendaTest('2018-12-28', 'tarde', 2);
+        return response()->json($consultas);
     }
 }
