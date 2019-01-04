@@ -58,7 +58,7 @@ class Consulta extends Model
 
     public static function getConsultaMedico($date, $turno, $medicoid)
     {
-           // $consultas = DB::table('consultas')
+        // $consultas = DB::table('consultas')
            //                ->leftJoin('pacientes', 'pacientes.idpaciente', '=', 'consultas.pacienteid')
            //                ->leftJoin('convenios', 'convenios.pacienteid', '=', 'pacientes.idpaciente')
            //                ->leftJoin('planos',    'planos.idplano',       '=', 'convenios.planoid')
@@ -73,7 +73,7 @@ class Consulta extends Model
            //                      ['consultas.{$turno}',      '=', 1],
            //                      ['consultas.medicoid',      '=', $medicoid],
            //                        ])
-           //                ->get();
+        //                ->get();
 
             $consultas = DB::select(DB::raw("SELECT p.idpaciente,
                                                         p.nome,

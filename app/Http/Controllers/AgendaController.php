@@ -46,18 +46,30 @@ class AgendaController extends Controller
     {
     	$medicoid = $request->input('Nmed');
     	$especialidadeid = $request->input('Nesp');
+
     	if($request->ajax()){
 
     		if(isset($medicoid)){
-	    		$agenda = DB::select(DB::raw("SELECT
+	    		$results = DB::select(DB::raw("SELECT
 											  *
 	    		  							  FROM agendas 
-	    									  WHERE medicoid = '$medicoid'"));
-    			
-    			return response()->json($agenda);
-    		}
+	    									  WHERE medicoid = '$medicoid' &&
+                                                    especialidadeid = '$especialidadeid'"));
+    		    foreach ($results as $result) {}
+                if(isset($result)){
+                    return response()->json(array(
+                        'exist'  => 1,
+                        'agenda' => $result,
+                    ));
+                }else{
+                    return response()->json(array(
+                        'exist'  => 0,
+                        'agenda' => '404',
+                    ));
+                }
 
-	    	return response()->json('fail');
+            }
+
     	}
     }
 }

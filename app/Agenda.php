@@ -68,7 +68,7 @@ class Agenda extends Model
     	return $this->belongsTo('App\Medico');
     }
 
-    public static function getAgendaTest($date, $turno, $medicoid)
+    public static function getAgenda($date, $turno, $medicoid)
     {
     	//pega o nome do dia da semana para realizar o filtro
 		$nameOfDay = strtolower(date('l', strtotime($date)));
@@ -79,7 +79,7 @@ class Agenda extends Model
                   							  {$nameOfDay}_morning_end_time,  
                   							  {$nameOfDay}_afternoon,
                   							  {$nameOfDay}_afternoon_start_time, 
-                  							  {$nameOfDay}_afternoon_end_time,
+                  							  {$nameOfDay}_afternoon_end_time
                   						FROM agendas 
                   						WHERE medicoid = '$medicoid'"));
         if(isset($results)){
@@ -101,49 +101,6 @@ class Agenda extends Model
 
         if($result->{$nameOfDay} == 1){
             if($turno == 1){
-            //     //select da parte da manhã
-            //     $consultas = DB::select(DB::raw("SELECT p.idpaciente,
-            //                     						p.nome,
-            //                     						p.cpf,
-            //                     						pl.nome as 'convenio'
-            //                                      FROM pacientes p
-            //                                      LEFT JOIN convenios cv
-            //                                      ON cv.pacienteid = p.idpaciente
-            //                                      LEFT JOIN  planos pl
-            //                                      ON cv.planoid = pl.idplano
-            //                                      LEFT JOIN  consultas cs
-            //                                      ON cs.pacienteid = p.idpaciente
-            //                                      LEFT JOIN  medicos m
-            //                                      ON cs.medicoid = m.idmedico
-            //                                      WHERE cs.data_consulta = '$date' &&
-            //                                       	   cs.manha = 1 && 
-            //                                       	   cs.medicoid = '$medicoid'
-            //                                     "));
-
-            //     return response()->json(array(
-            //         'object' => $obj,
-            //         'consultas' => $consultas,
-            //     ));
-
-            // }if($turno == 2){
-            //     //select da parte da tarde
-            //     $consultas = DB::select(DB::raw("SELECT p.idpaciente,
-            //      										p.nome, 
-            //      										p.cpf, 
-            //      										pl.nome as 'convenio'
-            //                                      FROM pacientes p
-            //                                      LEFT JOIN convenios cv
-            //                                      ON cv.pacienteid = p.idpaciente
-            //                                      LEFT JOIN  planos pl
-            //                                      ON cv.planoid = pl.idplano
-            //                                      LEFT JOIN  consultas cs
-            //                                      ON cs.pacienteid = p.idpaciente
-            //                                      LEFT JOIN  medicos m
-            //                                      ON cs.medicoid = m.idmedico
-            //                                      WHERE cs.data_consulta = '$date' &&
-            //                                            cs.tarde = 1 && 
-            //                                            cs.medicoid = '$medicoid'
-            //                                     "));
 
                 $consultas = Consulta::getConsultaMedico($date, $turno, $medicoid);
 

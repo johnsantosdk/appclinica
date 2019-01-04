@@ -59,490 +59,492 @@ class ConsultaController extends Controller
     {
         if($request->ajax()){
 
-            $nameOfDay = strtolower(date('l', strtotime($request->date)));
+            return Agenda::getAgenda($request->date, $request->turno, $request->id);
 
-            // return Consulta::getConsultas($request->id, $request->date, $nameOfDay);
+            // $nameOfDay = strtolower(date('l', strtotime($request->date)));
 
-            switch ($nameOfDay) {
-                case 'sunday':
-                  $boolean = DB::select(DB::raw("SELECT sunday, sunday_start_time, sunday_end_time, sunday_morning, sunday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  if(isset($boolean)){}
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            // // return Consulta::getConsultas($request->id, $request->date, $nameOfDay);
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->sunday,
-                            'morning' => $bool->sunday_morning,
-                            'afternoon' => $bool->sunday_afternoon,
-                            'start' => $bool->sunday_start_time,
-                            'end' => $bool->sunday_end_time,
-                        ];
+            // switch ($nameOfDay) {
+            //     case 'sunday':
+            //       $boolean = DB::select(DB::raw("SELECT sunday, sunday_start_time, sunday_end_time, sunday_morning, sunday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       if(isset($boolean)){}
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->sunday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->sunday,
+            //                 'morning' => $bool->sunday_morning,
+            //                 'afternoon' => $bool->sunday_afternoon,
+            //                 'start' => $bool->sunday_start_time,
+            //                 'end' => $bool->sunday_end_time,
+            //             ];
 
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             if($bool->sunday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                            }
-                        }if($bool->sunday == 0){
-                            //Não atende neste dia
-                        }
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));                        
-                    }
+            //                 }
+            //             }if($bool->sunday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                    // if($bool->sunday == 1 && $time >= $start && $time <= $end )
-                        return response()->json('404');
-                  break;
-                case 'monday':
-                  $boolean = DB::select(DB::raw("SELECT monday, monday_start_time, monday_end_time, monday_morning, monday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));                        
+            //         }
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->monday,
-                            'morning' => $bool->monday_morning,
-                            'afternoon' => $bool->monday_afternoon,
-                            'start' => $bool->monday_start_time,
-                            'end' => $bool->monday_end_time,
-                        ];
+            //         // if($bool->sunday == 1 && $time >= $start && $time <= $end )
+            //             return response()->json('404');
+            //       break;
+            //     case 'monday':
+            //       $boolean = DB::select(DB::raw("SELECT monday, monday_start_time, monday_end_time, monday_morning, monday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->monday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->monday,
+            //                 'morning' => $bool->monday_morning,
+            //                 'afternoon' => $bool->monday_afternoon,
+            //                 'start' => $bool->monday_start_time,
+            //                 'end' => $bool->monday_end_time,
+            //             ];
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }
-                        }if($bool->monday == 0){
-                            //Não atende neste dia
-                        }
+            //             if($bool->monday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }
+            //             }if($bool->monday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                    }
-                        return response()->json('404');
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));
 
-                  break;
+            //         }
+            //             return response()->json('404');
 
-                case 'tuesday':
-                  $boolean = DB::select(DB::raw("SELECT tuesday, tuesday_start_time, tuesday_end_time, tuesday_morning, tuesday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //       break;
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->tuesday,
-                            'morning' => $bool->tuesday_morning,
-                            'afternoon' => $bool->tuesday_afternoon,
-                            'start' => $bool->tuesday_start_time,
-                            'end' => $bool->tuesday_end_time,
-                        ];
+            //     case 'tuesday':
+            //       $boolean = DB::select(DB::raw("SELECT tuesday, tuesday_start_time, tuesday_end_time, tuesday_morning, tuesday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->tuesday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->tuesday,
+            //                 'morning' => $bool->tuesday_morning,
+            //                 'afternoon' => $bool->tuesday_afternoon,
+            //                 'start' => $bool->tuesday_start_time,
+            //                 'end' => $bool->tuesday_end_time,
+            //             ];
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }
-                        }if($bool->tuesday == 0){
-                            //Não atende neste dia
-                        }
+            //             if($bool->tuesday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }
+            //             }if($bool->tuesday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                    }
-                        return response()->json('404');
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));
 
-                  break;
+            //         }
+            //             return response()->json('404');
 
-                case 'wednesday':
-                  $boolean = DB::select(DB::raw("SELECT wednesday, wednesday_start_time, wednesday_end_time, wednesday_morning, wednesday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //       break;
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->wednesday,
-                            'morning' => $bool->wednesday_morning,
-                            'afternoon' => $bool->wednesday_afternoon,
-                            'start' => $bool->wednesday_start_time,
-                            'end' => $bool->wednesday_end_time,
-                        ];
+            //     case 'wednesday':
+            //       $boolean = DB::select(DB::raw("SELECT wednesday, wednesday_start_time, wednesday_end_time, wednesday_morning, wednesday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->wednesday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->wednesday,
+            //                 'morning' => $bool->wednesday_morning,
+            //                 'afternoon' => $bool->wednesday_afternoon,
+            //                 'start' => $bool->wednesday_start_time,
+            //                 'end' => $bool->wednesday_end_time,
+            //             ];
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             if($bool->wednesday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                            }
-                        }if($bool->wednesday == 0){
-                            //Não atende neste dia
-                        }
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));
+            //                 }
+            //             }if($bool->wednesday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                    }
-                        return response()->json('404');
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));
 
-                  break;
+            //         }
+            //             return response()->json('404');
 
-                case 'thursday':
-                  $boolean = DB::select(DB::raw("SELECT thursday, thursday_start_time, thursday_end_time, thursday_morning, thursday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //       break;
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->thursday,
-                            'morning' => $bool->thursday_morning,
-                            'afternoon' => $bool->thursday_afternoon,
-                            'start' => $bool->thursday_start_time,
-                            'end' => $bool->thursday_end_time,
-                        ];
+            //     case 'thursday':
+            //       $boolean = DB::select(DB::raw("SELECT thursday, thursday_start_time, thursday_end_time, thursday_morning, thursday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->thursday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }
-                        }if($bool->thursday == 0){
-                            //Não atende neste dia
-                        }
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->thursday,
+            //                 'morning' => $bool->thursday_morning,
+            //                 'afternoon' => $bool->thursday_afternoon,
+            //                 'start' => $bool->thursday_start_time,
+            //                 'end' => $bool->thursday_end_time,
+            //             ];
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));
+            //             if($bool->thursday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }
+            //             }if($bool->thursday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                    }
-                        return response()->json('404');
-                  break;
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));
 
-                case 'friday':
-                  $boolean = DB::select(DB::raw("SELECT friday, friday_start_time, friday_end_time, friday_morning, friday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //         }
+            //             return response()->json('404');
+            //       break;
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->friday,
-                            'morning' => $bool->friday_morning,
-                            'afternoon' => $bool->friday_afternoon,
-                            'start' => $bool->friday_start_time,
-                            'end' => $bool->friday_end_time,
-                        ];
+            //     case 'friday':
+            //       $boolean = DB::select(DB::raw("SELECT friday, friday_start_time, friday_end_time, friday_morning, friday_afternoon FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        if($bool->friday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->friday,
+            //                 'morning' => $bool->friday_morning,
+            //                 'afternoon' => $bool->friday_afternoon,
+            //                 'start' => $bool->friday_start_time,
+            //                 'end' => $bool->friday_end_time,
+            //             ];
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }
-                        }if($bool->friday == 0){
-                            //Não atende neste dia
-                        }
+            //             if($bool->friday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }
+            //             }if($bool->friday == 0){
+            //                 //Não atende neste dia
+            //             }
+
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));
                         
-                    }
-                        return response()->json('404');
+            //         }
+            //             return response()->json('404');
 
-                  break;
+            //       break;
 
-                case 'saturday':
-                  $boolean = DB::select(DB::raw("SELECT saturday, saturday_start_time, saturday_end_time, saturday_morning, saturday_afternoon  FROM agendas WHERE medicoid = '$request->id'"));
-                  foreach($boolean as $bool){}
-                    if(isset($bool)){
+            //     case 'saturday':
+            //       $boolean = DB::select(DB::raw("SELECT saturday, saturday_start_time, saturday_end_time, saturday_morning, saturday_afternoon  FROM agendas WHERE medicoid = '$request->id'"));
+            //       foreach($boolean as $bool){}
+            //         if(isset($bool)){
 
-                        $obj = (object) [
-                            'date' => $request->date,
-                            'nameOfDay' => $nameOfDay,
-                            'boolean' => $bool->saturday,
-                            'morning' => $bool->saturday_morning,
-                            'afternoon' => $bool->saturday_afternoon,
-                            'start' => $bool->saturday_start_time,
-                            'end' => $bool->saturday_end_time,
-                        ];
+            //             $obj = (object) [
+            //                 'date' => $request->date,
+            //                 'nameOfDay' => $nameOfDay,
+            //                 'boolean' => $bool->saturday,
+            //                 'morning' => $bool->saturday_morning,
+            //                 'afternoon' => $bool->saturday_afternoon,
+            //                 'start' => $bool->saturday_start_time,
+            //                 'end' => $bool->saturday_end_time,
+            //             ];
 
-                        if($bool->saturday == 1){
-                            if($request->turno == 1){
-                                //select da parte da manhã
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
-                                                                "));
+            //             if($bool->saturday == 1){
+            //                 if($request->turno == 1){
+            //                     //select da parte da manhã
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.manha = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
 
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
 
-                            }if($request->turno == 2){
-                                //select da parte da tarde
-                                $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
-                                                                 FROM pacientes p
-                                                                 LEFT JOIN convenios cv
-                                                                 ON cv.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  planos pl
-                                                                 ON cv.planoid = pl.idplano
-                                                                 LEFT JOIN  consultas cs
-                                                                 ON cs.pacienteid = p.idpaciente
-                                                                 LEFT JOIN  medicos m
-                                                                 ON cs.medicoid = m.idmedico
-                                                                 WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
-                                                                "));
-                                return response()->json(array(
-                                    'object' => $obj,
-                                    'consultas' => $consultas,
-                                ));
-                            }
-                        }if($bool->saturday == 0){
-                            //Não atende neste dia
-                        }
+            //                 }if($request->turno == 2){
+            //                     //select da parte da tarde
+            //                     $consultas = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
+            //                                                      FROM pacientes p
+            //                                                      LEFT JOIN convenios cv
+            //                                                      ON cv.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  planos pl
+            //                                                      ON cv.planoid = pl.idplano
+            //                                                      LEFT JOIN  consultas cs
+            //                                                      ON cs.pacienteid = p.idpaciente
+            //                                                      LEFT JOIN  medicos m
+            //                                                      ON cs.medicoid = m.idmedico
+            //                                                      WHERE cs.data_consulta = '$request->date' && cs.tarde = 1 && cs.medicoid = '$request->id'
+            //                                                     "));
+            //                     return response()->json(array(
+            //                         'object' => $obj,
+            //                         'consultas' => $consultas,
+            //                     ));
+            //                 }
+            //             }if($bool->saturday == 0){
+            //                 //Não atende neste dia
+            //             }
 
-                        return response()->json(array(
-                            'object' => $obj,
-                        ));                       
-                    }
-                        return response()->json('404');
+            //             return response()->json(array(
+            //                 'object' => $obj,
+            //             ));                       
+            //         }
+            //             return response()->json('404');
 
-                  break;
+            //       break;
 
-                default:
+            //     default:
 
-                    $obj = (object) [
-                        'day' => $nameOfDay,
-                        'boolean' => '404',
-                    ];
+            //         $obj = (object) [
+            //             'day' => $nameOfDay,
+            //             'boolean' => '404',
+            //         ];
 
-                  break;
-            }
+            //       break;
+            // }
         }
     }
 
@@ -606,6 +608,7 @@ class ConsultaController extends Controller
         $turno          = $request->input('Nhor') == 1 ? 'manha' : 'tarde';
         $manha          = $request->input('Nhor') == 1 ? 1 : 0;
         $tarde          = $request->input('Nhor') == 2 ? 1 : 0;
+        $horario        = $request->input('Nhor') == 1 ? '08:00:00' : '14:00:00';
         $data           = $request->input('Ndata');
         $idmedico       = $request->input('Nmed');
         $idpaciente     = $request->input('Npaciente');
@@ -623,14 +626,14 @@ class ConsultaController extends Controller
                 }else{
                     $consulta = Consulta::create([
                         'data_consulta'   => $request->input('Ndata'),
-                        'horario'         => '00:00:00',
+                        'horario'         => $horario,
                         'manha'           => $manha,
                         'tarde'           => $tarde,
                         'pacienteid'      => $request->input('Npaciente'),
                         'medicoid'        => $request->input('Nmed'),
                     ]);
                     
-                    if(isset($data,$idmedico, $idpaciente) && $manha == 1){
+                    if(isset($data, $idmedico, $idpaciente) && $manha == 1){
                         $pacientes = DB::select(DB::raw("SELECT p.idpaciente, p.nome, p.cpf, pl.nome as 'convenio'
                                                          FROM pacientes p
                                                          LEFT JOIN convenios cv
