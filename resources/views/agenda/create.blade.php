@@ -142,72 +142,72 @@
 				    <tr>
 				      	<th scope="row">
 					      	<div class="col-sm-1">
-								<label for="IDomMTimeStart">Início:</label>
-								<input type="time" name="NDomMTimeStart" id="IDomMTimeStart">
+								<label for="I-dom-m-TimeStart">Início:</label>
+								<input type="time" name="N-dom-m-TimeStart" id="I-dom-m-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="IDomMTimeEnd">Fim:</label>
-								<input type="time" name="NDomMTimeEnd" id="IDomMTimeEnd">
-							</div>
-						</th>
-						<th>
-							<div class="col-sm-1">
-								<label for="ISegMTimeStart">Início:</label>
-								<input type="time" name="NSegMTimeStart" id="ISegMTimeStart">
-							</div>
-							<div class="col-sm-1">
-								<label for="ISegMTimeEnd">Fim:</label>
-								<input type="time" name="NSegMTimeEnd" id="ISegMTimeEnd">
+								<label for="I-dom-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-dom-m-TimeEnd" id="I-dom-m-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ITerMTimeStart">Início:</label>
-								<input type="time" name="NTerMTimeStart" id="ITerMTimeStart">
+								<label for="I-seg-m-TimeStart">Início:</label>
+								<input type="time" name="N-seg-m-TimeStart" id="I-seg-m-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ITerMTimeEnd">Fim:</label>
-								<input type="time" name="NTerMTimeEnd" id="ITerMTimeEnd">
-							</div>
-						</th>
-						<th>
-							<div class="col-sm-1">
-								<label for="IQuaMTimeStart">Início:</label>
-								<input type="time" name="NQuaMTimeStart" id="IQuaMTimeStart">
-							</div>
-							<div class="col-sm-1">
-								<label for="IQuaMTimeEnd">Fim:</label>
-								<input type="time" name="NQuaMTimeEnd" id="IQuaMTimeEnd">
+								<label for="I-seg-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-seg-m-TimeEnd" id="I-seg-m-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="IQuiMTimeStart">Início:</label>
-								<input type="time" name="NQuiMTimeStart" id="IQuiMTimeStart">
+								<label for="I-ter-m-TimeStart">Início:</label>
+								<input type="time" name="N-ter-m-TimeStart" id="I-ter-m-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="IQuiMTimeEnd">Fim:</label>
-								<input type="time" name="NQuiMTimeEnd" id="IQuiMTimeEnd">
+								<label for="I-ter-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-ter-m-TimeEnd" id="I-ter-m-TimeEnd">
+							</div>
+						</th>
+						<th>
+							<div class="col-sm-1">
+								<label for="I-qua-m-TimeStart">Início:</label>
+								<input type="time" name="N-qua-m-TimeStart" id="I-qua-m-TimeStart">
+							</div>
+							<div class="col-sm-1">
+								<label for="I-qua-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-qua-m-TimeEnd" id="I-qua-m-TimeEnd">
+							</div>
+						</th>
+						<th>
+							<div class="col-sm-1">
+								<label for="I-qui-m-TimeStart">Início:</label>
+								<input type="time" name="N-qui-m-TimeStart" id="I-qui-m-TimeStart">
+							</div>
+							<div class="col-sm-1">
+								<label for="I-qui-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-qui-m-TimeEnd" id="I-qui-m-TimeEnd">
 							</div>			
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ISexMTimeStart">Início:</label>
-								<input type="time" name="NSexMTimeStart" id="ISexMTimeStart">
+								<label for="I-sex-m-TimeStart">Início:</label>
+								<input type="time" name="N-sex-m-TimeStart" id="I-sex-m-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ISexMTimeEnd">Fim:</label>
-								<input type="time" name="NSexMTimeEnd" id="ISexMTimeEnd">
+								<label for="I-sex-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-sex-m-TimeEnd" id="I-sex-m-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ISabMTimeStart">Início:</label>
-								<input type="time" name="NSabMTimeStart" id="ISabMTimeStart">
+								<label for="I-sab-m-TimeStart">Início:</label>
+								<input type="time" name="N-sab-m-TimeStart" id="I-sab-m-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ISabMTimeEnd">Fim:</label>
-								<input type="time" name="NSabMTimeEnd" id="ISabMTimeEnd">
+								<label for="I-sab-m-TimeEnd">Fim:</label>
+								<input type="time" name="N-sab-m-TimeEnd" id="I-sab-m-TimeEnd">
 							</div>
 						</th>
 				    </tr>
@@ -223,72 +223,72 @@
 				    <tr>
 				    	<th scope="row">
 					      	<div class="col-sm-1">
-								<label for="IDomTTimeStart">Início:</label>
-								<input type="time" name="NDomTTimeStart" id="IDomTTimeStart">
+								<label for="I-dom-t-TimeStart">Início:</label>
+								<input type="time" name="N-dom-t-TimeStart" id="I-dom-t-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="IDomTTimeEnd">Fim:</label>
-								<input type="time" name="NDomTTimeEnd" id="IDomTTimeEnd">
-							</div>
-						</th>
-						<th>
-							<div class="col-sm-1">
-								<label for="ISegTTimeStart">Início:</label>
-								<input type="time" name="NSegTTimeStart" id="ISegTTimeStart">
-							</div>
-							<div class="col-sm-1">
-								<label for="ISegTTimeEnd">Fim:</label>
-								<input type="time" name="NSegTTimeEnd" id="ISegTTimeEnd">
+								<label for="I-dom-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-dom-t-TimeEnd" id="I-dom-t-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ITerTTimeStart">Início:</label>
-								<input type="time" name="NTerTTimeStart" id="ITerTTimeStart">
+								<label for="I-seg-t-TimeStart">Início:</label>
+								<input type="time" name="N-seg-t-TimeStart" id="I-seg-t-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ITerTTimeEnd">Fim:</label>
-								<input type="time" name="NTerTTimeEnd" id="ITerTTimeEnd">
-							</div>
-						</th>
-						<th>
-							<div class="col-sm-1">
-								<label for="IQuaTTimeStart">Início:</label>
-								<input type="time" name="NQuaTTimeStart" id="IQuaTTimeStart">
-							</div>
-							<div class="col-sm-1">
-								<label for="IQuaTTimeEnd">Fim:</label>
-								<input type="time" name="NQuaTTimeEnd" id="IQuaTTimeEnd">
+								<label for="I-seg-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-seg-t-TimeEnd" id="I-seg-t-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="IQuiTTimeStart">Início:</label>
-								<input type="time" name="NQuiTTimeStart" id="IQuiTTimeStart">
+								<label for="I-ter-t-TimeStart">Início:</label>
+								<input type="time" name="N-ter-t-TimeStart" id="I-ter-t-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="IQuiTTimeEnd">Fim:</label>
-								<input type="time" name="NQuiTTimeEnd" id="IQuiTTimeEnd">
+								<label for="I-ter-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-ter-t-TimeEnd" id="I-ter-t-TimeEnd">
+							</div>
+						</th>
+						<th>
+							<div class="col-sm-1">
+								<label for="I-qua-t-TimeStart">Início:</label>
+								<input type="time" name="N-qua-t-TimeStart" id="I-qua-t-TimeStart">
+							</div>
+							<div class="col-sm-1">
+								<label for="I-qua-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-qua-t-TimeEnd" id="I-qua-t-TimeEnd">
+							</div>
+						</th>
+						<th>
+							<div class="col-sm-1">
+								<label for="I-qui-t-TimeStart">Início:</label>
+								<input type="time" name="N-qui-t-TimeStart" id="I-qui-t-TimeStart">
+							</div>
+							<div class="col-sm-1">
+								<label for="I-qui-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-qui-t-TimeEnd" id="I-qui-t-TimeEnd">
 							</div>			
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ISexTTimeStart">Início:</label>
-								<input type="time" name="NSexTTimeStart" id="ISexTTimeStart">
+								<label for="I-sex-t-TimeStart">Início:</label>
+								<input type="time" name="N-sex-t-TimeStart" id="I-sex-t-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ISexTTimeEnd">Fim:</label>
-								<input type="time" name="NSexTTimeEnd" id="ISexTTimeEnd">
+								<label for="I-sex-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-sex-t-TimeEnd" id="I-sex-t-TimeEnd">
 							</div>
 						</th>
 						<th>
 							<div class="col-sm-1">
-								<label for="ISabTTimeStart">Início:</label>
-								<input type="time" name="NSabTTimeStart" id="ISabTTimeStart">
+								<label for="I-sab-t-TimeStart">Início:</label>
+								<input type="time" name="N-sab-t-TimeStart" id="I-sab-t-TimeStart">
 							</div>
 							<div class="col-sm-1">
-								<label for="ISabTTimeEnd">Fim:</label>
-								<input type="time" name="NSabTTimeEnd" id="ISabTTimeEnd">
+								<label for="I-sab-t-TimeEnd">Fim:</label>
+								<input type="time" name="N-sab-t-TimeEnd" id="I-sab-t-TimeEnd">
 							</div>
 						</th>
 				    </tr>
@@ -350,6 +350,8 @@ $(document).on('change', 'select#Imed', function(){
 	})
 	.done(function(data) {
 		console.log(data);
+		$('#form-agenda-medica').find('#I-qua-m-TimeStart').val(data.agenda.wednesday_morning_start_time);
+
 	})
 	.fail(function(xhr) {
 		console.log("error");

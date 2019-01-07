@@ -59,7 +59,7 @@ class ConsultaController extends Controller
     {
         if($request->ajax()){
 
-            return Agenda::getAgenda($request->date, $request->turno, $request->id);
+            return Agenda::getFiltroAgenda($request->date, $request->turno, $request->id);
 
             // $nameOfDay = strtolower(date('l', strtotime($request->date)));
 
