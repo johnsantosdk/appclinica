@@ -72,7 +72,7 @@ class Agenda extends Model
     {
     	//pega o nome do dia da semana para realizar o filtro
 		$nameOfDay = strtolower(date('l', strtotime($date)));
-		//Swicth para cada dia da semana
+		//
         $results = DB::select(DB::raw("SELECT {$nameOfDay},
                   							  {$nameOfDay}_morning, 
                   							  {$nameOfDay}_morning_start_time, 
@@ -80,45 +80,9 @@ class Agenda extends Model
                   							  {$nameOfDay}_afternoon,
                   							  {$nameOfDay}_afternoon_start_time, 
                   							  {$nameOfDay}_afternoon_end_time
-                  						FROM agendas 
-                  						WHERE medicoid = '$medicoid'"));
-        if(isset($results)){
-            foreach($results as $result){}
-        }
-        if(isset($result)){
-        //Se o $result não estiver vazio será criado um obj para armazenar o resulta da query
-            $obj = (object) [
-                'date' 				=> $date,
-                'nameOfDay' 		=> $nameOfDay,
-                'boolean' 			=> $result->{$nameOfDay},
-                'morning' 			=> $result->{$nameOfDay.'_morning'},
-                'morningStart' 		=> $result->{$nameOfDay.'_morning_start_time'},
-                'morningEnd' 		=> $result->{$nameOfDay.'_morning_end_time'},
-                'afternoon' 		=> $result->{$nameOfDay.'_afternoon'},
-                'afternoonStart' 	=> $result->{$nameOfDay.'_afternoon_start_time'},
-                'afternoonEnd' 		=> $result->{$nameOfDay.'_afternoon_end_time'},
-            ];
-
-        if($result->{$nameOfDay} == 1){
-            if($turno == 1){
-
-                $consultas = Consulta::getConsultaMedico($date, $turno, $medicoid);
-
-                return response()->json(array(
-                    'object' => $obj,
-                    'consultas' => $consultas,
-                ));
-
-            }
-            }if($result->{$nameOfDay} == 0){
-                //Não atende neste dia então retorna um obj com os detalhes
-                return response()->json(array(
-                    'object' => $obj,
-                ));
-            }                        
-        }
-        //Não encontrado
-        return response()->json('404');
+                  					   FROM agendas 
+                  					   WHERE medicoid = '$medicoid'"));
+        return $results;
     }
 
     public static function getAgendaMedico($medicoid, $especialidadeid)
