@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registro de Consulta')
+@section('title', '')
 
 @section('content')
 
@@ -8,32 +8,35 @@
 
 	<div class='row'>
 		<div class="col-sm-6">
-			<h2>AGENDAR</h2>
+			<h4 class="text-center" style="background-color: rgba(184,255,253,0.5);border-radius:5px;">Agendamento</h4>
 			<div class="" id="div-form-search">
 				<form  action="#" method="POST"  id="form-search-paciente">
 					{{ csrf_field() }}
-					<div class="row">
-						<div class="col">
-							<div class="form-group">
-								<label for="Inome">Nome:</label>
-								<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ old('Nnome') }}">
+					<fieldset>
+						<legend></legend>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<label for="Inome">Nome:</label>
+									<input type="text" id="Inome" name="Nnome" class="form-control" value="{{ old('Nnome') }}">
+								</div>
 							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-								<label for="Icpf">CPF:</label>
-								<input type="text" id="Icpf" name="Ncpf" class="form-control" placeholder="000.000.000-00">
+							<div class="col">
+								<div class="form-group">
+									<label for="Icpf">CPF:</label>
+									<input type="text" id="Icpf" name="Ncpf" class="form-control" placeholder="000.000.000-00">
+								</div>
 							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-								<label for="Inasc">Data Nascimento:</label>
-								<input type="date" id="Inasc" name="Nnasc" class="form-control">
+							<div class="col">
+								<div class="form-group">
+									<label for="Inasc">Data Nascimento:</label>
+									<input type="date" id="Inasc" name="Nnasc" class="form-control">
+								</div>
 							</div>
-						</div>
 
-					</div>
-					<a id="send-data" href="#" class="btn btn-primary float-right">Pesquisar paciente</a>
+						</div>
+						<a id="send-data" href="#" class="btn btn-primary float-right">Pesquisar paciente</a>
+					</fieldset>
 				</form>
 			</div>
 
@@ -113,7 +116,7 @@
 		</div>
 
 		<div class="col-sm-6">
-			<h2>AGENDADOS</h2>
+			<h4 class="text-center" style="background-color: rgba(184,255,253,0.5);border-radius:5px;">Agendados</h4>
 			<div class="">
 				<p id="filtro-list"></p>
 				<div class="table-responsive">

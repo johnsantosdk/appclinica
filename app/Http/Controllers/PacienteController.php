@@ -121,7 +121,7 @@ class PacienteController extends Controller
                            ->select('pacientes.idpaciente', 'pacientes.nome', 'pacientes.nascimento', 'pacientes.cpf')
                            ->where('nome', 'like', '%'.$string.'%')
                            ->orderBy('nome', 'asc')
-                           ->get();
+                           ->paginate(10);
 
             return view('paciente.find', compact('pacientes', 'planos'));
         }
@@ -143,7 +143,7 @@ class PacienteController extends Controller
             return view('paciente.find', compact('pacientes', 'planos'));
         }else{
             $pacientes = Paciente::select('idpaciente', 'nome', 'nascimento', 'cpf')
-                                 ->paginate(5);
+                                 ->paginate(10);
 
             return view('paciente.find', compact('pacientes', 'planos'));
         }  

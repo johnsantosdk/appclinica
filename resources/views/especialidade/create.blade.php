@@ -36,7 +36,7 @@
 						<input type="number" id="IidAten" name="NidAten" value="1" hidden>
 					</div>
 				</fieldset>
-				<button type="submit" class="btn btn-primary">Registrar</button>
+				<button type="submit" class="btn btn-primary float-right">Registrar</button><br>
 			</form>
 		@if(isset($especialidades))
 			<hr>{{--  <p>CBO(s) cadastrados: <strong>{{ count($especialidades) }}</strong> </p>--}}

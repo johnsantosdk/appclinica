@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cadastro de Agenda')
+@section('title', 'Cadastro/Alteração de Agenda Médica')
 
 @section('content')
 
@@ -215,6 +215,8 @@
 				    </tr>
 				  </tbody>
 				</table>
+				<a href="#" class="btn btn-primary" id="btn-submit-salvar-form-agenda" >Salvar</a>
+				<a href="#" class="btn btn-primary" id="btn-submit-cadastrar-form-agenda">Cadastar</a>
 			</form>
 		</div>
 	</div>
@@ -228,7 +230,11 @@
 @section('customer-javaScript')
 {{-- <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
 //Filtra os médicos ao escolher a especialidade
+$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').hide();
+$('#form-agenda-medica').find('#btn-submit-cadastrar-form-agenda').hide();
 $(document).on('change', 'select#Iesp', function(){
+	$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').hide();
+	$('#form-agenda-medica').find('#btn-submit-cadastrar-form-agenda').hide();
 	//
 	let url = $('#urls').find('p#agenda-medico').text();
 	let id = $(this).children("option:selected").val();
@@ -260,6 +266,8 @@ $(document).on('change', 'select#Iesp', function(){
 });
 
 $(document).on('change', 'select#Imed', function(){
+	$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').hide();
+	$('#form-agenda-medica').find('#btn-submit-cadastrar-form-agenda').hide();
 	//
 	let url = $('#urls').find('p#agenda-agenda').text();
 	let dataForm = $("#form-agenda-medica").serialize();
@@ -273,7 +281,8 @@ $(document).on('change', 'select#Imed', function(){
 		console.log(data);
 		$('#form-agenda-medica').find('input.clear-input').val('');
 		$('#form-agenda-medica').find('.costumer-bg-color').css({'background-color':'rgba(33,37,41,1)'});
-		if(data.agenda != 0){
+		if(data.exist == 1){
+			$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').show();
 			//DOMINGO
 			if(data.agenda.sunday == 1){
 				if(data.agenda.sunday_morning == 1){
@@ -356,7 +365,9 @@ $(document).on('change', 'select#Imed', function(){
 					$('#form-agenda-medica').find('#I-sab-m-TimeEnd').val(data.agenda.saturday_afternoon_end_time);
 				}
 			}
-		}if(data.agenda == 0){
+		}if(data.exist == 0){
+			$('#form-agenda-medica').find('#btn-submit-cadastrar-form-agenda').show();
+
 			console.log('Não há agenda cadastrada para este médico');
 		}
 	})

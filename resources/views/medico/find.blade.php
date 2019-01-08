@@ -40,7 +40,7 @@
 				</div>
 				<div class="">
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="searchSubmit"> Pesquisar</button>
+						<button type="submit" class="btn btn-primary float-right" id="searchSubmit"> Pesquisar</button>
 					</div>
 				</div>
 			</form>

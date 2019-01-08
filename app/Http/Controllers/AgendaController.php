@@ -53,7 +53,7 @@ class AgendaController extends Controller
 	    		
     		    $agenda = Agenda::getAgendaMedico($medicoid, $especialidadeid);
 
-                if(isset($agenda)){
+                if(isset($agenda) && is_object($agenda)){
 
                     return response()->json(array(
                         'exist'  => 1,

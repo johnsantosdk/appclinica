@@ -44,8 +44,8 @@
 							<input type="number" id="Icrm" name="Ncrm" class="form-control" value="" >
 						</div>
 						<hr>  
-						<legend>Área de atuação</legend>
-						<div class="form-group" id="Nespid-error">
+						<div class="form-group" id="Nespid-error" hidden="">
+							<legend>Área de atuação</legend>
 							<label for="Iespid">Especialidade:</label>
 							<select id="Iespid" name="Nespid" class="form-control">
 								{{ $i = 0 }}
