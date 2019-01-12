@@ -133,10 +133,11 @@ Route::group(['prefix' => 'especialidade', 'as' => 'especialidade.'], function()
 //Rotas para Calendario
 Route::group(['prefix' => 'agenda', 'as' => 'agenda.'], function() {
 	//URL = agenda/index
-	Route::get('/',					 	['as' => 'index',			'uses' => 'AgendaController@index']);
-	Route::get('/create',				['as' => 'create',			'uses' => 'AgendaController@create']);
-	Route::post('/getMedico',			['as' => 'getMedico',		'uses' => 'AgendaController@getMedico']);
-	Route::post('/getAgenda',			['as' => 'getAgenda',		'uses' => 'AgendaController@getAgenda']);
+	Route::get('/',					 	['as' => 'index',				'uses' => 'AgendaController@index']);
+	Route::get('/create',				['as' => 'create',				'uses' => 'AgendaController@create']);
+	Route::post('/getMedico',			['as' => 'getMedico',			'uses' => 'AgendaController@getMedico']);
+	Route::post('/getAgenda',			['as' => 'getAgenda',			'uses' => 'AgendaController@getAgenda']);
+	Route::post('/getAgendaFiltrada',	['as' => 'getAgendaFiltrada',	'uses' => 'AgendaController@getAgendaFiltrada']);
 });
 //Rotas para o ADMIN
 /*

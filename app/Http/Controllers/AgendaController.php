@@ -44,8 +44,8 @@ class AgendaController extends Controller
 
     public function getAgenda(Request $request)
     {
-    	$medicoid = $request->input('Nmed');
-    	$especialidadeid = $request->input('Nesp');
+    	$medicoid          = $request->input('Nmed') !== null ? $request->input('Nmed') : $request->medid;
+    	$especialidadeid   = $request->input('Nesp') !== null ? $request->input('Nesp') : $request->espid;
 
     	if($request->ajax()){
 
@@ -67,8 +67,49 @@ class AgendaController extends Controller
                     ));
                 }
 
+            }else{
+                return response()->json(array(
+                    'error' => '400 bad Request',
+                ));
             }
 
     	}
+    }
+
+    public function getAgendaFiltrada(Request $request)
+    {
+        $medicoid          = $request->input('Nmed') !== null ? $request->input('Nmed') : $request->medid;
+        $especialidadeid   = $request->input('Nesp') !== null ? $request->input('Nesp') : $request->espid;
+
+        if($request->ajax()){
+
+            if(isset($medicoid, $especialidadeid)){
+                
+                $agenda = Agenda::getAgendaMedico($medicoid, $especialidadeid);
+                //filtra a agenda
+                $agendaf = Agenda::filtraAgendaMedico($agenda);
+
+
+                if(isset($agendaf) && is_object($agendaf)){
+
+                    return response()->json(array(
+                        'exist'  => 1,
+                        'agenda' => $agendaf,
+                    ));
+
+                }else{
+                    return response()->json(array(
+                        'exist'  => 0,
+                        'agenda' => '404',
+                    ));
+                }
+
+            }else{
+                return response()->json(array(
+                    'error' => '400 bad Request',
+                ));
+            }
+
+        }
     }
 }

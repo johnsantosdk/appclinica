@@ -85,6 +85,37 @@ class Agenda extends Model
         return $results;
     }
 
+    public static function filtraAgendaMedico($agenda)
+    {
+        $week = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
+
+        $agendaf = (object) [];
+
+        for($i=0; $i < sizeof($week); $i++){
+          
+            if($agenda->{$week[$i]} == 1){
+                //Adiciona o dia da semana que seja = 1
+                $agendaf->{$week[$i]} = $agenda->{$week[$i]};
+
+                if($agenda->{$week[$i].'_morning'} == 1){
+                    //Add como atributos os horários
+                    $agendaf->{$week[$i].'_morning'}                = $agenda->{$week[$i].'_morning'};
+                    $agendaf->{$week[$i].'_morning_start_time'}     = $agenda->{$week[$i].'_morning_start_time'};
+                    $agendaf->{$week[$i].'_morning_end_time'}       = $agenda->{$week[$i].'_morning_end_time'};
+
+                }if($agenda->{$week[$i].'_afternoon'} == 1){
+                    //Add como atributos os horários
+                    $agendaf->{$week[$i].'_afternoon'}              = $agenda->{$week[$i].'_afternoon'};
+                    $agendaf->{$week[$i].'_afternoon_start_time'}   = $agenda->{$week[$i].'_afternoon_start_time'};
+                    $agendaf->{$week[$i].'_afternoon_end_time'}     = $agenda->{$week[$i].'_afternoon_end_time'};
+                } 
+            }
+        }
+
+        return $agendaf;
+
+    }
+
     public static function getAgendaMedico($medicoid, $especialidadeid)
     {
         if(isset($medicoid, $especialidadeid)){

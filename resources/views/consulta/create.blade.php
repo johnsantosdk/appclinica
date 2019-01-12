@@ -89,7 +89,7 @@
 							@endif
 						</select>
 					</div>
-					<div class="form-group" id="Nmed-error">
+					<div class="form-group medico-info" id="Nmed-error">
 						<label for="Imed">Médico:</label>
 						<select id="Imed" name="Nmed" class="form-control">
 							<option value=""></option>
@@ -145,6 +145,7 @@
 	<p id="consulta-filtro">{{ route('consulta.filtro') }}</p>
 	<p id="consulta-findPaciente">{{ route('consulta.findPaciente') }}</p>
 	<p id="consulta-addConsulta">{{ route('consulta.addConsulta')}}</p>
+	<p id="consulta-getAgenda">{{ route('agenda.getAgendaFiltrada')}}</p>
 </div>
 @include('consulta.modals.modal_alert_consulta')
 @endsection
@@ -156,15 +157,27 @@ $('#tableListConsultas').hide();
 
 //Filtra os médicos ao escolher a especialidade
 $(document).on('change', 'select#Iesp', function(){
-	$('select#Ihor').val($('#Ihor option[selected]').val());
+	$('select#Ihor')
+	.val($('#Ihor option[selected]')
+	.val());
 	//
-	$('#filtro-list').find('p').remove();
+	$('#filtro-list').
+	find('p')
+	.remove();
 	//
-	$("tbody#consultas-list").find('tr').remove();
+	$("tbody#consultas-list")
+	.find('tr')
+	.remove();
 	//
-	let url = $('#urls').find('p#consulta-medico').text();
-	let id = $(this).children("option:selected").val();
-	$("#form-ajax-request-consulta").find("#Imed").empty();
+	let url = $('#urls')
+			  .find('p#consulta-medico')
+			  .text();
+	let id = $(this)
+			 .children("option:selected")
+			 .val();
+	$("#form-ajax-request-consulta")
+	.find("#Imed")
+	.empty();
 	//
 	$.ajax({
 		type: 'POST',
@@ -173,8 +186,13 @@ $(document).on('change', 'select#Iesp', function(){
 		data: {id:id},
 	})
 	.done(function(data) {
+		$("#form-ajax-request-consulta")
+		.find("#Imed")
+		.append('<option value=""></option>');
 		$.each(data, function (i, item) {
-			$("#form-ajax-request-consulta").find("#Imed").append($('<option>', {
+			$("#form-ajax-request-consulta")
+			.find("#Imed")
+			.append($('<option>', {
 				value: item.idmedico,
 				text: item.nome
 			}));
@@ -190,13 +208,24 @@ $(document).on('change', 'select#Iesp', function(){
 
 $(document).on('change', 'select#Ihor', function(){
 	//
-	let id 		= $('select#Imed').children("option:selected").val();
-	let date 	= $('input#Idata').val();
-	let turno 	= $('select#Ihor').children("option:selected").val();
+	let id 		= $('select#Imed')
+				  .children("option:selected")
+				  .val();
+	let date 	= $('input#Idata')
+				  .val();
+	let turno 	= $('select#Ihor')
+				  .children("option:selected")
+				  .val();
 	//
-	let url 			= $('#urls').find('p#consulta-filtro').text();
-	let esp 			= $('select#Iesp').children("option:selected").text();
-	let medico 			= $('select#Imed').children("option:selected").text();
+	let url 			= $('#urls')
+						  .find('p#consulta-filtro')
+						  .text();
+	let esp 			= $('select#Iesp')
+						  .children("option:selected")
+						  .text();
+	let medico 			= $('select#Imed')
+						  .children("option:selected")
+						  .text();
 	let manhaOUtarde 	= turno == 1 ? 'Manhã':'Tarde';
 
 	console.log('Médico: '+id+' Data: '+date+' Turno: '+turno);
@@ -211,9 +240,17 @@ $(document).on('change', 'select#Ihor', function(){
 		console.log(data);
 		let dataAgendado = new Date(date);
 		//
-		$('#filtro-list').find('p').remove();
-		$("tbody#consultas-list").find('tr').remove();
-		$('#form-ajax-request-consulta').find('#button-disabled').replaceWith("<a href='#' class='btn btn-primary' id='submitAgendaConsulta'>Agendar</a>");
+		$('#filtro-list')
+		.find('p')
+		.remove();
+		//
+		$("tbody#consultas-list")
+		.find('tr')
+		.remove();
+		//
+		$('#form-ajax-request-consulta')
+		.find('#button-disabled')
+		.replaceWith("<a href='#' class='btn btn-primary' id='submitAgendaConsulta'>Agendar</a>");
 		//
 		let consulta_qtd = typeof data.consultas === 'undefined' ? 0 : data.consultas.length;
 		//
@@ -224,54 +261,77 @@ $(document).on('change', 'select#Ihor', function(){
 				if(turno == 1){
 					if(data.object.morning == 1){
 						$('#tableListConsultas').show();
-						$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-						$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
 						//
 						if(consulta_qtd > 0){
 							$.each(data.consultas, function (i, item) {
-								$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+								$("#tableListConsultas")
+								.find("tbody#consultas-list")
+								.append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
 							});
 						}
 					}
 					if(data.object.morning == 0){
-						$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-						$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da manhã para esse médico</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da manhã para esse médico</p>");
 						//
-						$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
+						$('#form-ajax-request-consulta')
+						.find('#submitAgendaConsulta')
+						.replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 					}
 					
 				}
 				//Tarde
 				if(turno == 2){
 					if(data.object.afternoon == 1){
-						$('#tableListConsultas').show();
-						$('#filtro-list').append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-						$('#filtro-list').append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
+						$('#tableListConsultas')
+						.show();
+						$('#filtro-list')
+						.append("<p class='alert alert-success'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-success'>Paciente(s) agendado(s): "+consulta_qtd+"</p>");
 						//
 						if(consulta_qtd > 0){
 							$.each(data.consultas, function (i, item) {
-								$("#tableListConsultas").find("tbody#consultas-list").append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
+								$("#tableListConsultas")
+								.find("tbody#consultas-list")
+								.append("<tr id='paciente"+item.idpaciente+"'>{{-- id de cada registro --}}<th scope='row'>"+item.idpaciente+"</th><td class='text-center'>"+item.nome+"</td><td class='text-center'>"+item.cpf+"</td><td class='text-center'>"+item.convenio+"</td></tr>");
 							});
 						}
 					}
 					if(data.object.afternoon == 0){
-						$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-						$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da tarde para esse médico</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+						$('#filtro-list')
+						.append("<p class='alert alert-danger'> Não é possível agendar consulta no turno da tarde para esse médico</p>");
 						//
-						$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
+						$('#form-ajax-request-consulta')
+						.find('#submitAgendaConsulta')
+						.replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 					}
 				}
 			}if(data.object.boolean == 0){
-				$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-				$('#filtro-list').append("<p class='alert alert-danger'> Não é possível agendar consulta para esse médico nesta data.</p>");
+				$('#filtro-list')
+				.append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+				$('#filtro-list')
+				.append("<p class='alert alert-danger'> Não é possível agendar consulta para esse médico nesta data.</p>");
 				//
 				$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 			}
 	}else{
-		$('#filtro-list').append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
-		$('#filtro-list').append("<p class='alert alert-danger'> Indisponível.</p>");
+		$('#filtro-list')
+		.append("<p class='alert alert-danger'> "+esp+" > "+medico+" > "+date+" > "+manhaOUtarde+"</p>");
+		$('#filtro-list')
+		.append("<p class='alert alert-danger'> Indisponível.</p>");
 		//
-		$('#form-ajax-request-consulta').find('#submitAgendaConsulta').replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
+		$('#form-ajax-request-consulta')
+		.find('#submitAgendaConsulta')
+		.replaceWith("<a href='#' class='btn btn-danger' id='button-disabled'>Indisponível</a>");
 	}
 	})
 	.fail(function(xhr) {
@@ -284,6 +344,30 @@ $(document).on('change', 'select#Ihor', function(){
 
 $(document).on('change', 'select#Imed', function(){
 	$('select#Ihor').val($('#Ihor option[selected]').val());
+	//
+	let url 	= $('#urls').find('p#consulta-getAgenda').text();
+	let idmed 	= $('select#Imed').children("option:selected").val();
+	let idesp 	= $('select#Iesp').children("option:selected").val();
+	console.log(idmed, idesp);
+	$.ajax({
+		url: url,
+		type: 'POST',
+		dataType: 'json',
+		data: {medid: idmed, espid: idesp},
+	})
+	.done(function(data) {
+		console.log(Object.keys({data.wednesday})[0]);
+		$('#form-ajax-request-consulta')
+		.find('.medico-info')
+		.append('<div class="alert alert-info">info</div>');
+	})
+	.fail(function(xhr) {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+	
 });
 
 $(document).on('change', 'input#Idata', function(){
