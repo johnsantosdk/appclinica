@@ -106,8 +106,8 @@
 						<label for="Ihor">Horário:</label>
 						<select id="Ihor" name="Nhor" class="form-control">
 							<option value=""></option>
-							<option value="1">Manhã</option>
-							<option value="2">Tarde</option>
+							<option value="1">Matutino</option>
+							<option value="2">Vespertino</option>
 						</select>
 						{{-- <input type="time" id="Ihor" name="Nhor" class="form-control"> --}}
 					</div>
@@ -155,8 +155,15 @@
 
 @section('customer-javaScript')
 {{-- <script>--}}{{-- RETIRE O COMENTÁRIO DA TAG <SCRIPT> PARA VISUALIZAR O CÓDIGO COLORIDO --}} 
-$('#tableListPac').hide();
-$('#tableListConsultas').hide();
+$('#tableListPac')
+.hide();
+//
+$('#tableListConsultas')
+.hide();
+//
+$('#form-ajax-request-consulta')
+.find('#medico-info')
+.hide();
 
 //Filtra os médicos ao escolher a especialidade
 $(document).on('change', 'select#Iesp', function(){
@@ -229,7 +236,7 @@ $(document).on('change', 'select#Ihor', function(){
 	let medico 			= $('select#Imed')
 						  .children("option:selected")
 						  .text();
-	let manhaOUtarde 	= turno == 1 ? 'Manhã':'Tarde';
+	let manhaOUtarde 	= turno == 1 ? 'Matutino':'Vespertino';
 
 	console.log('Médico: '+id+' Data: '+date+' Turno: '+turno);
 
@@ -359,31 +366,26 @@ $(document).on('change', 'select#Imed', function(){
 		data: {medid: idmed, espid: idesp},
 	})
 	.done(function(data) {
+		$('#form-ajax-request-consulta')
+		.find('#medico-info')
+		.show();
+		//
 		let day = data.agenda.dia;
-		console.log(day[0]); 
-
+		$('#form-ajax-request-consulta')
+		.find('#medico-info p')
+		.remove();
+		//
 		$.each(day, function(key, value) {
-			console.log("chave = "+key+" | dia da semana = "+value); 
+			$('#form-ajax-request-consulta')
+			.find('#medico-info')
+			.append("<p>"+value+"</p>");
 		});
-		console.log(day[0][0]);
-
-		for(let i = 0; i < day.length; i++){
-			for(let j = 0; j < day[i].length; j++){
-				$('#form-ajax-request-consulta')
-				.find('#medico-info')
-				.append("<p>"+day[i][j]+"</p>");
-				if(day[i][j]){
-
-				}
-			}
-		}
-
-
-		//console.log(Object.keys({data.wednesday})[0]);
 		
 	})
 	.fail(function(xhr) {
-		console.log("error");
+		$('#form-ajax-request-consulta')
+		.find('#medico-info')
+		.hide();
 	})
 	.always(function() {
 		console.log("complete");
