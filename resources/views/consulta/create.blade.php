@@ -89,11 +89,14 @@
 							@endif
 						</select>
 					</div>
-					<div class="form-group medico-info" id="Nmed-error">
+					<div class="form-group" id="Nmed-error">
 						<label for="Imed">Médico:</label>
 						<select id="Imed" name="Nmed" class="form-control">
 							<option value=""></option>
 						</select>
+						<div class="alert alert-info" id="medico-info">
+							
+						</div>
 					</div>
 					<div class="form-group" id="Ndata-error">
 						<label for="Idata">Data:</label>
@@ -356,11 +359,28 @@ $(document).on('change', 'select#Imed', function(){
 		data: {medid: idmed, espid: idesp},
 	})
 	.done(function(data) {
-		console.log(data);
+		let day = data.agenda.dia;
+		console.log(day[0]); 
+
+		$.each(day, function(key, value) {
+			console.log("chave = "+key+" | dia da semana = "+value); 
+		});
+		console.log(day[0][0]);
+
+		for(let i = 0; i < day.length; i++){
+			for(let j = 0; j < day[i].length; j++){
+				$('#form-ajax-request-consulta')
+				.find('#medico-info')
+				.append("<p>"+day[i][j]+"</p>");
+				if(day[i][j]){
+
+				}
+			}
+		}
+
+
 		//console.log(Object.keys({data.wednesday})[0]);
-		$('#form-ajax-request-consulta')
-		.find('.medico-info')
-		.append('<div class="alert alert-info">info</div>');
+		
 	})
 	.fail(function(xhr) {
 		console.log("error");

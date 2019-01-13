@@ -102,18 +102,20 @@ class Agenda extends Model
             if($agenda->{$week[$i]} == 1){    
                 if($agenda->{$week[$i].'_morning'} == 1){
                     //Inserção dos horários do turno matutino correspondente ao dia em questão
-                    array_push($semana[$i], ['matutino' => [$agenda->{$week[$i].'_morning_start_time'},
-                                                            $agenda->{$week[$i].'_morning_end_time'}
-                                                           ]
-                                            ]
-                                );
+                    // array_push($semana[$i], ['matutino' => [$agenda->{$week[$i].'_morning_start_time'},
+                    //                                         $agenda->{$week[$i].'_morning_end_time'}
+                    //                                        ]
+                    //                         ]
+                    //             );
+                    array_push($semana[$i], 'matutino', $agenda->{$week[$i].'_morning_start_time'}, $agenda->{$week[$i].'_morning_end_time'});
                 }if($agenda->{$week[$i].'_afternoon'} == 1){
                     //nserção dos horários do turno vespertino correspondente ao dia em questão
-                    array_push($semana[$i], ['vespertino' => [$agenda->{$week[$i].'_afternoon_start_time'},
-                                                              $agenda->{$week[$i].'_afternoon_end_time'}
-                                                             ]
-                                            ]
-                               );
+                    // array_push($semana[$i], ['vespertino' => [$agenda->{$week[$i].'_afternoon_start_time'},
+                    //                                           $agenda->{$week[$i].'_afternoon_end_time'}
+                    //                                          ]
+                    //                         ]
+                    //            );
+                    array_push($semana[$i], 'vespertino',$agenda->{$week[$i].'_afternoon_start_time'},$agenda->{$week[$i].'_afternoon_end_time'});
                 }
                 //Faz a inserção no laço se for verdaeira os parâmetros
                 array_push($agendaf->dia, $semana[$i]);
