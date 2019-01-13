@@ -356,7 +356,8 @@ $(document).on('change', 'select#Imed', function(){
 		data: {medid: idmed, espid: idesp},
 	})
 	.done(function(data) {
-		console.log(Object.keys({data.wednesday})[0]);
+		console.log(data);
+		//console.log(Object.keys({data.wednesday})[0]);
 		$('#form-ajax-request-consulta')
 		.find('.medico-info')
 		.append('<div class="alert alert-info">info</div>');
