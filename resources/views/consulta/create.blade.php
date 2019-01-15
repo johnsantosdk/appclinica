@@ -8,9 +8,9 @@
 
 	<div class='row'>
 		<div class="col-sm-6">
-			<h4 class="text-center" style="background-color: rgba(184,255,253,0.5);border-radius:5px;">Agendamento</h4>
+			<h4 class="bg-and-text-color-title text-center" {{-- style="background-color: rgba(184,255,253,0.5);border-radius:5px;" --}}>Agendamento</h4>
 			<div class="" id="div-form-search">
-				<form  action="#" method="POST"  id="form-search-paciente">
+				<form  action="#" method="POST"  id="form-search-paciente" class="bg-and-color-text-form">
 					{{ csrf_field() }}
 					<fieldset>
 						<legend></legend>
@@ -46,7 +46,7 @@
 				</div>
 			@endif
 			<div class="" id="div-form-consulta">
-				<form action="#" method="POST" id="form-ajax-request-consulta">
+				<form action="#" method="POST" id="form-ajax-request-consulta" class="bg-and-color-text-form">
 					{{ csrf_field() }}
 					<div class="table-responsive">
 		  				<table class="table" id="tableListPac" style='background-color: rgba(194, 223, 245,0.3); border-radius: 10px'>
@@ -119,7 +119,7 @@
 		</div>
 
 		<div class="col-sm-6">
-			<h4 class="text-center" style="background-color: rgba(184,255,253,0.5);border-radius:5px;">Agendados</h4>
+			<h4 class="bg-and-text-color-title text-center">Agendados</h4>
 			<div class="">
 				<p id="filtro-list"></p>
 				<div class="table-responsive">

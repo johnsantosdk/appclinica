@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registro de Convênios')
+@section('title', 'Cadastro de Convênios')
 
 @section('head')
 
@@ -15,7 +15,7 @@
 			<form action="{{ action('ConvenioController@store') }}" method="POST">
 				{{ csrf_field() }}
 				<fieldset>
-					<legend>Dados do Plano</legend>
+					<legend>Dados do Convênio</legend>
 					<div class="form-group">
 						<label for="Inome">Nome:</label>
 						<input type="text" id="Inome" name="Nnome" class="form-control">

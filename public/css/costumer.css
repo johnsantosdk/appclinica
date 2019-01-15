@@ -40,3 +40,16 @@ div {
 tbody#planos-list tr td{
 	text-align: center;
 }
+
+h1,h2,h3,h4,h5,h6 .bg-and-text-color-title{
+	background-color: rgba(52,58,64,0.8);
+	color: rgba(255,255,255,1);
+	border-radius: 10px;
+}
+
+.bg-and-color-text-form{
+	background-color: rgba(52,58,64,1);
+	color: rgba(255,255,255,1);
+	border-radius: 10px;
+	padding: 10px;
+}

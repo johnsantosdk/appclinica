@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registro de Planos')
+@section('title', 'Cadastro de Convênios')
 
 @section('head')
 
@@ -23,10 +23,10 @@
                 </div>
             @endif
 		<div class="col-sm-10">
-			<form action="{{ action('PlanoController@store') }}" method="GET" class="form-createPlano">
+			<form action="{{ action('PlanoController@store') }}" method="GET" class="form-createPlano bg-and-color-text-form">
 				{{ csrf_field() }}
 				<fieldset>
-					<legend>Plano</legend>
+					<legend>Dados do Convênio</legend>
 					<div class="form-group" {{ $errors->has('Nnome') ? 'has-error' : ''}}>
 						<label for="Inome">Nome:</label>
 						<input type="text" id="Inome" name="Nnome" class="form-control" style="text-transform:uppercase" value="{{ old('Nnome') }}" autofocus>
@@ -50,7 +50,7 @@
 					<thead class="">
 						<tr>
 							<th scope="col">ID</th>
-							<th class="text-center" scope="col">Plano</th>
+							<th class="text-center" scope="col">Nome do Convênio</th>
 							<th class="text-center" scope="col">Status</th>
 							<th class="text-center" scope="col">Ação</th>
 						</tr>
@@ -94,7 +94,7 @@
 					<tfooter>
 						<tr>
 							<th scope="col">ID</th>
-							<th class="text-center" scope="col">Plano</th>
+							<th class="text-center" scope="col">Nome do Convênio</th>
                             <th class="text-center" scope="col">Status</th>
                             <th class="text-center" scope="col">Ação</th>
 						</tr>

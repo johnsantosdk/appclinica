@@ -21,14 +21,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/costumer.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/costumer.css') }}" rel="stylesheet">
     <!--Extra links e scripts-->
      @yield('head')
 
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -40,7 +40,33 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('consulta.create') }}">Agendamento de Consulta</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Cadastrar
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="#">Usuário</a>
+                          <a class="dropdown-item" href="{{ route('paciente.create') }}">Paciente</a>
+                          <a class="dropdown-item" href="{{ route('medico.create') }}">Médico</a>
+                          <a class="dropdown-item" href="{{ route('especialidade.create') }}">Especialidade Médica</a>
+                          <a class="dropdown-item" href="{{ route('plano.create') }}">Convênio</a>
+                        </div>
+                      </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Procurar Cadastro
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="#">Usuário</a>
+                          <a class="dropdown-item" href="{{ route('paciente.findPaciente') }}">Paciente</a>
+                          <a class="dropdown-item" href="{{ route('medico.find') }}">Médico</a>
+                          <a class="dropdown-item" href="{{ route('especialidade.create') }}">Especialidade Médica</a>
+                          <a class="dropdown-item" href="{{ route('plano.create') }}">Convênio</a>
+                        </div>
+                      </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -63,7 +89,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Sair') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

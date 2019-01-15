@@ -9,7 +9,7 @@
 			<div id="alertDeletetPaciente">
 				
 			</div>
-			<form action="{{ route('medico.list') }}" method="post">
+			<form action="{{ route('medico.list') }}" method="post" class="bg-and-color-text-form">
 				{{ csrf_field() }}
 				<div class="row">
 					{{-- <div class="col-sm-6">
@@ -42,7 +42,7 @@
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary float-right" id="searchSubmit"> Pesquisar</button>
 					</div>
-				</div>
+				</div><br><br>
 			</form>
 			@if(isset($medicos) && count($medicos) == 0)
 				<div class="alert alert-info" id="testFade">
@@ -52,7 +52,7 @@
 			@if(isset($medicos) && (count($medicos) > 0))
 				<div class="table-responsive">
 	  				<table class="table" id="tableListMedicos">
-	  					<div><p><strong>Total</strong>: {{ count($medicos) }} cadastro(s)</p></div> 
+	  					<div><p><strong>Total</strong>: {{ count($medicos) }} cadastrado(s)</p></div> 
 						<thead class="">
 							<tr>
 								<th scope="col">ID</th>

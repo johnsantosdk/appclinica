@@ -19,7 +19,7 @@
 		        </div>
     		@endif
 		<div class="col-sm-10">
-			<form action="{{ route('paciente.store') }}" method="post">
+			<form action="{{ route('paciente.store') }}" method="post" class="bg-and-color-text-form">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Paciente</legend>

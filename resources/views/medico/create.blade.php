@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 
-@section('title', 'Cadastro')
+@section('title', 'Cadastro de Médico')
 
 @section('content')
 
@@ -20,7 +20,7 @@
 		        </div>
     		@endif
 		<div class="col-sm-10">
-			<form action="{{ route('medico.store') }}" method="post">
+			<form action="{{ route('medico.store') }}" method="post" class="bg-and-color-text-form">
 				{{ csrf_field() }}
 					<fieldset>
 						<legend>Dados do Médico</legend>
