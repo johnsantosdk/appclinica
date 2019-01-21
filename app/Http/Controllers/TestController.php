@@ -62,24 +62,12 @@ class TestController extends Controller
             if($agenda->{$week[$i]} == 1){    
                 if($agenda->{$week[$i].'_morning'} == 1){
                     //Inserção dos horários do turno matutino correspondente ao dia em questão
-                    // array_push($semana[$i], ['matutino' => [$agenda->{$week[$i].'_morning_start_time'},
-                    //                                         $agenda->{$week[$i].'_morning_end_time'}
-                    //                                        ]
-                    //                         ]
-                    //            );
-
                     $semana[$i]->matutino   = 'matutino';
                     $semana[$i]->m_inicio     = $agenda->{$week[$i].'_morning_start_time'};
                     $semana[$i]->m_fim        = $agenda->{$week[$i].'_morning_end_time'};
 
                 }if($agenda->{$week[$i].'_afternoon'} == 1){
                     //nserção dos horários do turno vespertino correspondente ao dia em questão
-                    // array_push($semana[$i], ['vespertino' => [$agenda->{$week[$i].'_afternoon_start_time'},
-                    //                                           $agenda->{$week[$i].'_afternoon_end_time'}
-                    //                                          ]
-                    //                         ]
-                    //            );
-
                     $semana[$i]->vespertino = 'vespertino';
                     $semana[$i]->v_inicio     = $agenda->{$week[$i].'_afternoon_start_time'};
                     $semana[$i]->v_fim        = $agenda->{$week[$i].'_afternoon_end_time'};
@@ -88,19 +76,6 @@ class TestController extends Controller
                 array_push($agendaf->dia, $semana[$i]);
             }
         }
-
-        $weekArrayOfObj = [
-
-            $domingo = (object)[
-
-            ],
-            $segunda = (object)[
-
-            ]
-
-        ];
-
-        $domingo->horario = "20:00";
 
         // return response()->json(print_r($weekArrayOfObj));
 

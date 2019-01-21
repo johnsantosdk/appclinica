@@ -54,15 +54,15 @@ class AgendaController extends Controller
     	if($request->ajax()){
 
     		if(isset($medicoid, $especialidadeid)){
-	    		
+	    		//Busca a agenda do médico no DB
     		    $agenda = Agenda::getAgendaMedico($medicoid, $especialidadeid);
+                //Filtra a agenda
                 $agendaf = Agenda::getAgenda($agenda);
 
                 if(isset($agenda) && is_object($agenda)){
 
                     return response()->json(array(
                         'exist'  => 1,
-                        'agenda' => $agenda,
                         'agendaf' => $agendaf,
                     ));
 

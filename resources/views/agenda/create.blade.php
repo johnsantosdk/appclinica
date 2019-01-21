@@ -31,7 +31,7 @@
 					</select>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" id="select-medico">
 					<label for="Imed">Médico:</label>
 					<select name="Nmed" id="Imed" class="form-control">
 						<option value=""></option>
@@ -286,21 +286,24 @@ $(document).on('change', 'select#Imed', function(){
 
 			console.log('Não há agenda cadastrada para este médico');
 --}}
-			
-		$.each(data.agendaf.dia, function (key, value) {
-			$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').show();
-			//matutino
-			if(value.m_inicio){
-				$('#form-agenda-medica').find("#"+value.name+"-mat").css({'background-color':'rgba(77,255,77,1)'});
-				$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeStart").val(value.m_inicio);
-				$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeEnd").val(value.m_fim);
-			}if(value.v_inicio){
-			//vespertino
-				$('#form-agenda-medica').find("#"+value.name+"-vesp").css({'background-color':'rgba(77,255,77,1)'});
-				$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeStart").val(value.v_inicio);
-				$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeEnd").val(value.v_fim);
-			}
-		});
+		if(data.exist == 1){	
+			$.each(data.agendaf.dia, function (key, value) {
+				$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').show();
+				//matutino
+				if(value.m_inicio){
+					$('#form-agenda-medica').find("#"+value.name+"-mat").css({'background-color':'rgba(77,255,77,1)'});
+					$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeStart").val(value.m_inicio);
+					$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeEnd").val(value.m_fim);
+				}if(value.v_inicio){
+				//vespertino
+					$('#form-agenda-medica').find("#"+value.name+"-vesp").css({'background-color':'rgba(77,255,77,1)'});
+					$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeStart").val(value.v_inicio);
+					$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeEnd").val(value.v_fim);
+				}
+			});
+		}if(data.exist == 0){
+			$('#from-agenda-medica').find('#select-medico').append("<p class='alert alert-info'>Este médico ainda não tem agenda cadastrada.</p>");
+		}
 
 	})
 	.fail(function(xhr) {
