@@ -52,13 +52,13 @@
 				  </thead>
 				  <tbody>
 				    <tr>
-				    	<th class="text-center costumer-bg-color" id="DomMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="SegMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="TerMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="QuaMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="QuiMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="SexMat">Matutino</th>
-				    	<th class="text-center costumer-bg-color" id="SabMat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="dom-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="seg-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="ter-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="qua-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="qui-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="sex-mat">Matutino</th>
+				    	<th class="text-center costumer-bg-color" id="sab-mat">Matutino</th>
 				    </tr>
 				    <tr>
 				      	<th scope="row">
@@ -133,13 +133,13 @@
 						</th>
 				    </tr>
 				    <tr>
-				    	<th class="text-center costumer-bg-color" id="DomVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="SegVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="TerVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="QuaVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="QuiVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="SexVesp">Vespertino</th>
-				    	<th class="text-center costumer-bg-color" id="SabVesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="dom-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="deg-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="ter-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="qua-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="qui-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="sex-vesp">Vespertino</th>
+				    	<th class="text-center costumer-bg-color" id="sab-vesp">Vespertino</th>
 				    </tr>
 				    <tr>
 				    	<th scope="row">
@@ -281,95 +281,27 @@ $(document).on('change', 'select#Imed', function(){
 		console.log(data);
 		$('#form-agenda-medica').find('input.clear-input').val('');
 		$('#form-agenda-medica').find('.costumer-bg-color').css({'background-color':'rgba(33,37,41,1)'});
-		if(data.exist == 1){
-			$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').show();
-			//DOMINGO
-			if(data.agenda.sunday == 1){
-				if(data.agenda.sunday_morning == 1){
-					$('#form-agenda-medica').find('#DomMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-dom-m-TimeStart').val(data.agenda.sunday_morning_start_time);
-					$('#form-agenda-medica').find('#I-dom-m-TimeEnd').val(data.agenda.sunday_morning_end_time);
-				}if(data.agenda.sunday_afternoon == 1){
-					$('#form-agenda-medica').find('#DomVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-dom-t-TimeEnd').val(data.agenda.sunday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-dom-t-TimeEnd').val(data.agenda.sunday_afternoon_end_time);
-				}
-			}
-			//SENGUNDA
-			if(data.agenda.monday == 1){
-				if(data.agenda.monday_morning == 1){
-					$('#form-agenda-medica').find('#SegMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-seg-m-TimeStart').val(data.agenda.monday_morning_start_time);
-					$('#form-agenda-medica').find('#I-seg-m-TimeEnd').val(data.agenda.monday_morning_end_time);
-				}if(data.agenda.monday_afternoon == 1){
-					$('#form-agenda-medica').find('#SegVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-seg-t-TimeStart').val(data.agenda.monday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-seg-t-TimeEnd').val(data.agenda.monday_afternoon_end_time);
-				}
-			}
-			//TERÇA
-			if(data.agenda.tuesday == 1){
-				if(data.agenda.tuesday_morning == 1){
-					$('#form-agenda-medica').find('#TerMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-ter-m-TimeStart').val(data.agenda.tuesday_morning_start_time);
-					$('#form-agenda-medica').find('#I-ter-m-TimeEnd').val(data.agenda.tuesday_morning_end_time);
-				}if(data.agenda.tuesday_afternoon == 1)
-					$('#form-agenda-medica').find('#TerVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-ter-t-TimeStart').val(data.agenda.tuesday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-ter-t-TimeEnd').val(data.agenda.tuesday_afternoon_end_time);
-			}
-			//QUARTA
-			if(data.agenda.wednesday == 1){
-				if(data.agenda.wednesday_morning == 1){
-					$('#form-agenda-medica').find('#QuaMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-qua-m-TimeStart').val(data.agenda.wednesday_morning_start_time);
-					$('#form-agenda-medica').find('#I-qua-m-TimeEnd').val(data.agenda.wednesday_morning_end_time);
-				}if(data.agenda.wednesday_afternoon == 1)
-					$('#form-agenda-medica').find('#QuaVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-qua-t-TimeStart').val(data.agenda.wednesday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-qua-t-TimeEnd').val(data.agenda.wednesday_afternoon_end_time);
-			}
-			//QUINTA
-			if(data.agenda.thursday == 1){
-				if(data.agenda.thursday_morning == 1){
-					$('#form-agenda-medica').find('#QuiMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-qui-m-TimeStart').val(data.agenda.thursday_morning_start_time);
-					$('#form-agenda-medica').find('#I-qui-m-TimeEnd').val(data.agenda.thursday_morning_end_time);
-				}if(data.agenda.thursday_afternoon == 1){
-					$('#form-agenda-medica').find('#QuiVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-qui-t-TimeStart').val(data.agenda.thursday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-qui-t-TimeEnd').val(data.agenda.thursday_afternoon_end_time);
-				}
-			}
-			//SEXTA
-			if(data.agenda.friday == 1){
-				if(data.agenda.friday_morning == 1){
-					$('#form-agenda-medica').find('#SexMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-sex-m-TimeStart').val(data.agenda.friday_morning_start_time);
-					$('#form-agenda-medica').find('#I-sex-m-TimeEnd').val(data.agenda.friday_morning_end_time);
-				}if(data.agenda.friday_afternoon == 1){
-					$('#form-agenda-medica').find('#SexVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-sex-t-TimeStart').val(data.agenda.friday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-sex-t-TimeEnd').val(data.agenda.friday_afternoon_end_time);
-				}
-			}
-			//SÁBADO
-			if(data.agenda.saturday == 1){
-				if(data.agenda.saturday_morning == 1){
-					$('#form-agenda-medica').find('#SabMat').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-sab-m-TimeStart').val(data.agenda.saturday_morning_start_time);
-					$('#form-agenda-medica').find('#I-sab-m-TimeEnd').val(data.agenda.saturday_morning_end_time);
-				}if(data.agenda.saturday_afternoon == 1){
-					$('#form-agenda-medica').find('#SabVesp').css({'background-color':'rgba(77,255,77,1)'});
-					$('#form-agenda-medica').find('#I-sab-m-TimeStart').val(data.agenda.saturday_afternoon_start_time);
-					$('#form-agenda-medica').find('#I-sab-m-TimeEnd').val(data.agenda.saturday_afternoon_end_time);
-				}
-			}
-		}if(data.exist == 0){
+{{-- 	
 			$('#form-agenda-medica').find('#btn-submit-cadastrar-form-agenda').show();
 
 			console.log('Não há agenda cadastrada para este médico');
-		}
+--}}
+			
+		$.each(data.agendaf.dia, function (key, value) {
+			$('#form-agenda-medica').find('#btn-submit-salvar-form-agenda').show();
+			//matutino
+			if(value.m_inicio){
+				$('#form-agenda-medica').find("#"+value.name+"-mat").css({'background-color':'rgba(77,255,77,1)'});
+				$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeStart").val(value.m_inicio);
+				$('#form-agenda-medica').find("#I-"+value.name+"-m-TimeEnd").val(value.m_fim);
+			}if(value.v_inicio){
+			//vespertino
+				$('#form-agenda-medica').find("#"+value.name+"-vesp").css({'background-color':'rgba(77,255,77,1)'});
+				$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeStart").val(value.v_inicio);
+				$('#form-agenda-medica').find("#I-"+value.name+"-t-TimeEnd").val(value.v_fim);
+			}
+		});
+
 	})
 	.fail(function(xhr) {
 		console.log("error");

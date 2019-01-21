@@ -53,6 +53,7 @@
                           <a class="dropdown-item" href="{{ route('medico.create') }}">Médico</a>
                           <a class="dropdown-item" href="{{ route('especialidade.create') }}">Especialidade Médica</a>
                           <a class="dropdown-item" href="{{ route('plano.create') }}">Convênio</a>
+                          <a class="dropdown-item" href="{{ route('agenda.create') }}">Agenda Médica</a>
                         </div>
                       </li>
                         <li class="nav-item dropdown">
@@ -65,6 +66,7 @@
                           <a class="dropdown-item" href="{{ route('medico.find') }}">Médico</a>
                           <a class="dropdown-item" href="{{ route('especialidade.create') }}">Especialidade Médica</a>
                           <a class="dropdown-item" href="{{ route('plano.create') }}">Convênio</a>
+                          <a class="dropdown-item" href="{{ route('agenda.create') }}">Agenda Médica</a>
                         </div>
                       </li>
                     </ul>

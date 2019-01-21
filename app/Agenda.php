@@ -115,6 +115,63 @@ class Agenda extends Model
         return $agendaf;
     }
 
+    public static function getAgenda($agenda)
+    {
+
+        //Array com os dias da semana em inglês pois o banco de dados lógico está em inglês
+        $week = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday','friday', 'saturday');
+        //Array de arrays que por sua vez guarda o nome do dia da semana e os horários
+        $semana = array($domingo    = (object) [
+                            'name' => 'dom',
+                        ],
+                        $segunda    = (object) [
+                            'name' => 'seg',
+                        ], 
+                        $terca      = (object) [
+                            'name' => 'ter',
+                        ], 
+                        $quarta     = (object) [
+                            'name' => 'qua',
+                        ], 
+                        $quinta     = (object) [
+                            'name' => 'qui',
+                        ], 
+                        $sexta      = (object) [
+                            'name' => 'sex',
+                        ], 
+                        $sábado     = (object) [
+                            'name' => 'sab',
+                        ]
+        );
+          
+        //Criação de uma stdClass para guardar as informações
+        $agendaf = (object) [];
+        //Criação de um atributo tipo array para inserir as informação pertinentes aos dias de atendimento
+        $agendaf->dia = [];
+        //Laço "for" para percorrer o object $agenda 
+        for($i=0; $i < sizeof($week); $i++){
+              
+            if($agenda->{$week[$i]} == 1){    
+                if($agenda->{$week[$i].'_morning'} == 1){
+                    //Inserção dos horários do turno matutino correspondente ao dia em questão
+                    $semana[$i]->matutino   = 'matutino';
+                    $semana[$i]->m_inicio     = $agenda->{$week[$i].'_morning_start_time'};
+                    $semana[$i]->m_fim        = $agenda->{$week[$i].'_morning_end_time'};
+
+                }if($agenda->{$week[$i].'_afternoon'} == 1){
+                    //nserção dos horários do turno vespertino correspondente ao dia em questão
+                    $semana[$i]->vespertino = 'vespertino';
+                    $semana[$i]->v_inicio     = $agenda->{$week[$i].'_afternoon_start_time'};
+                    $semana[$i]->v_fim        = $agenda->{$week[$i].'_afternoon_end_time'};
+                }
+                //Faz a inserção no laço se for verdaeira os parâmetros
+                array_push($agendaf->dia, $semana[$i]);
+            }
+        }
+
+        return $agendaf;
+    }
+
     public static function getAgendaMedico($medicoid, $especialidadeid)
     {
         if(isset($medicoid, $especialidadeid)){
