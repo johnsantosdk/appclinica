@@ -165,6 +165,8 @@ $('#form-ajax-request-consulta')
 .find('#medico-info')
 .hide();
 
+//$('select#Iesp option[value="84"]').attr("selected",true);
+
 //Filtra os médicos ao escolher a especialidade
 $(document).on('change', 'select#Iesp', function(){
 	$('select#Ihor')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Editando Cadastro')
+@section('title', 'Pesquisa\\Agendamento\\Edição\\Deleção de Cadastros')
 
 @section('content')
 
@@ -132,7 +132,9 @@
 {{-- Modal edit --}}
 @include('paciente.modals.modal_edit_paciente')
 {{-- Modal delete--}}
-@include('paciente.modals.modal_delete_paciente') 
+@include('paciente.modals.modal_delete_paciente')
+{{-- Modal Agendamento de Paciente --}} 
+@include('paciente.modals.modal_agenda_paciente') 
 @endsection
 
 @section('customer-javaScript')
